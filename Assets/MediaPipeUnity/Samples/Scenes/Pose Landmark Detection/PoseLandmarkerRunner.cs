@@ -14,6 +14,8 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
   public class PoseLandmarkerRunner : VisionTaskApiRunner<PoseLandmarker>
   {
     [SerializeField] private PoseLandmarkerResultAnnotationController _poseLandmarkerResultAnnotationController;
+    [SerializeField] private CustomPoseDetector _customPoseDetector;
+    [SerializeField] private bool _debugPoseForwarding = true;
 
     private Experimental.TextureFramePool _textureFramePool;
 
@@ -134,6 +136,7 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
             if (taskApi.TryDetect(image, imageProcessingOptions, ref result))
             {
               _poseLandmarkerResultAnnotationController.DrawNow(result);
+              ForwardToCustomPoseDetector(result);
             }
             else
             {
@@ -145,6 +148,7 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
             if (taskApi.TryDetectForVideo(image, GetCurrentTimestampMillisec(), imageProcessingOptions, ref result))
             {
               _poseLandmarkerResultAnnotationController.DrawNow(result);
+              ForwardToCustomPoseDetector(result);
             }
             else
             {
@@ -162,7 +166,23 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
     private void OnPoseLandmarkDetectionOutput(PoseLandmarkerResult result, Image image, long timestamp)
     {
       _poseLandmarkerResultAnnotationController.DrawLater(result);
+      ForwardToCustomPoseDetector(result);
       DisposeAllMasks(result);
+    }
+
+    private void ForwardToCustomPoseDetector(PoseLandmarkerResult result)
+    {
+      if (_customPoseDetector == null)
+      {
+        if (_debugPoseForwarding)
+        {
+          Debug.LogWarning($"{nameof(PoseLandmarkerRunner)}: CustomPoseDetector is not assigned in Runner.", this);
+          _debugPoseForwarding = false;
+        }
+        return;
+      }
+
+      _customPoseDetector.ProcessLandmarksList(result.poseLandmarks);
     }
 
     private void DisposeAllMasks(PoseLandmarkerResult result)

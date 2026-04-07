@@ -1,21 +1,26 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InteractionUIManager : MonoBehaviour
 {
     [Header("Texto feedback")]
     [SerializeField] private CanvasGroup feedbackCanvasGroup;
-    [SerializeField] private Text feedbackText;
+    [SerializeField] private TMP_Text feedbackText;
     [SerializeField] private float fadeInDuration = 0.35f;
     [SerializeField] private float visibleDuration = 1.8f;
     [SerializeField] private float fadeOutDuration = 0.35f;
 
     [Header("Texto pregunta")]
-    [SerializeField] private Text questionText;
+    [SerializeField] private TMP_Text questionText;
 
-    [Header("3 imágenes pose correcta")]
+    [Header("3 imágenes de Pose options")]
     [SerializeField] private Image[] poseImages = new Image[3];
+
+    [Header("Hold fill por opción (índices 0,1,2)")]
+    [Tooltip("Asigna aquí las imágenes Fill hijas de cada opción.")]
+    [SerializeField] private Image[] holdProgressFills = new Image[3];
 
     private Coroutine feedbackRoutine;
 
@@ -25,6 +30,8 @@ public class InteractionUIManager : MonoBehaviour
         {
             feedbackCanvasGroup.alpha = 0f;
         }
+
+        ClearHoldProgress();
     }
 
     public void SetQuestion(string question)
@@ -67,6 +74,39 @@ public class InteractionUIManager : MonoBehaviour
         }
 
         feedbackRoutine = StartCoroutine(FeedbackRoutine());
+    }
+
+    public void SetHoldProgressForOption(int optionIndex, float normalizedProgress)
+    {
+        if (holdProgressFills == null || holdProgressFills.Length == 0)
+        {
+            return;
+        }
+
+        float progress = Mathf.Clamp01(normalizedProgress);
+
+        for (int i = 0; i < holdProgressFills.Length; i++)
+        {
+            Image fill = holdProgressFills[i];
+            if (fill == null) continue;
+
+            bool isSelected = i == optionIndex;
+            fill.gameObject.SetActive(isSelected && progress > 0f);
+            fill.fillAmount = isSelected ? progress : 0f;
+        }
+    }
+
+    public void ClearHoldProgress()
+    {
+        if (holdProgressFills == null) return;
+
+        for (int i = 0; i < holdProgressFills.Length; i++)
+        {
+            Image fill = holdProgressFills[i];
+            if (fill == null) continue;
+            fill.fillAmount = 0f;
+            fill.gameObject.SetActive(false);
+        }
     }
 
     private IEnumerator FeedbackRoutine()

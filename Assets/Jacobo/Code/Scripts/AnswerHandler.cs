@@ -6,12 +6,12 @@ using System.Collections.Generic;
 public class AnswerHandler : MonoBehaviour
 {
     [Serializable]
-    public class AnswerEvent : UnityEvent<string> { }
+    public class AnswerEvent : UnityEvent<InteractionType> { }
 
     [Serializable]
     public class InteractionBinding
     {
-        public string interactionId;
+        public InteractionType interactionType;
         public InteractionActionBase interactionAction;
     }
 
@@ -26,7 +26,7 @@ public class AnswerHandler : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool debugLogs = true;
 
-    private readonly Dictionary<string, InteractionActionBase> actionByInteractionId = new Dictionary<string, InteractionActionBase>();
+    private readonly Dictionary<InteractionType, InteractionActionBase> actionByInteractionType = new Dictionary<InteractionType, InteractionActionBase>();
 
     private void Awake()
     {
@@ -40,12 +40,12 @@ public class AnswerHandler : MonoBehaviour
 
     private void BuildLookup()
     {
-        actionByInteractionId.Clear();
+        actionByInteractionType.Clear();
 
         for (int i = 0; i < interactions.Count; i++)
         {
             var item = interactions[i];
-            if (item == null || string.IsNullOrWhiteSpace(item.interactionId) || item.interactionAction == null)
+            if (item == null || item.interactionAction == null)
             {
                 if (debugLogs)
                 {
@@ -54,38 +54,28 @@ public class AnswerHandler : MonoBehaviour
                 continue;
             }
 
-            string key = item.interactionId.Trim();
-            if (actionByInteractionId.ContainsKey(key))
+            InteractionType key = item.interactionType;
+            if (actionByInteractionType.ContainsKey(key))
             {
                 if (debugLogs)
                 {
-                    Debug.LogWarning($"{nameof(AnswerHandler)}: interactionId duplicado '{key}'. Se conserva el primero.", this);
+                    Debug.LogWarning($"{nameof(AnswerHandler)}: interactionType duplicado '{key}'. Se conserva el primero.", this);
                 }
                 continue;
             }
 
-            actionByInteractionId.Add(key, item.interactionAction);
+            actionByInteractionType.Add(key, item.interactionAction);
         }
     }
 
     // Nuevo flujo: recibe cuál opción (0,1,2) eligió el usuario.
-    public void SubmitAnswer(string interactionId, int selectedOptionIndex)
+    public void SubmitAnswer(InteractionType interactionType, int selectedOptionIndex)
     {
-        if (string.IsNullOrWhiteSpace(interactionId))
+        if (!actionByInteractionType.TryGetValue(interactionType, out var action))
         {
             if (debugLogs)
             {
-                Debug.LogWarning($"{nameof(AnswerHandler)}: interactionId vacío.", this);
-            }
-            return;
-        }
-
-        string key = interactionId.Trim();
-        if (!actionByInteractionId.TryGetValue(key, out var action))
-        {
-            if (debugLogs)
-            {
-                Debug.LogWarning($"{nameof(AnswerHandler)}: No se encontró interacción para '{key}'.", this);
+                Debug.LogWarning($"{nameof(AnswerHandler)}: No se encontró interacción para '{interactionType}'.", this);
             }
             return;
         }
@@ -94,46 +84,65 @@ public class AnswerHandler : MonoBehaviour
 
         if (isCorrect)
         {
-            onAnswerCorrect?.Invoke(key);
+            onAnswerCorrect?.Invoke(interactionType);
         }
         else
         {
-            onAnswerWrong?.Invoke(key);
+            onAnswerWrong?.Invoke(interactionType);
         }
 
         if (debugLogs)
         {
-            Debug.Log($"{nameof(AnswerHandler)}: '{key}' opción {selectedOptionIndex} => {(isCorrect ? "CORRECTA" : "INCORRECTA")}", this);
+            Debug.Log($"{nameof(AnswerHandler)}: '{interactionType}' opción {selectedOptionIndex} => {(isCorrect ? "CORRECTA" : "INCORRECTA")}", this);
         }
     }
 
     // Compatibilidad con el detector de poses existente (bool).
-    public void SubmitAnswer(string interactionId, bool isCorrect)
+    public void SubmitAnswer(InteractionType interactionType, bool isCorrect)
     {
-        if (string.IsNullOrWhiteSpace(interactionId))
+        if (!actionByInteractionType.TryGetValue(interactionType, out var action))
         {
             if (debugLogs)
             {
-                Debug.LogWarning($"{nameof(AnswerHandler)}: interactionId vacío.", this);
-            }
-            return;
-        }
-
-        string key = interactionId.Trim();
-        if (!actionByInteractionId.TryGetValue(key, out var action))
-        {
-            if (debugLogs)
-            {
-                Debug.LogWarning($"{nameof(AnswerHandler)}: No se encontró interacción para '{key}'.", this);
+                Debug.LogWarning($"{nameof(AnswerHandler)}: No se encontró interacción para '{interactionType}'.", this);
             }
 
             // Si no hay acción enrutable, al menos se reportan los eventos globales.
-            if (isCorrect) onAnswerCorrect?.Invoke(key);
-            else onAnswerWrong?.Invoke(key);
+            if (isCorrect) onAnswerCorrect?.Invoke(interactionType);
+            else onAnswerWrong?.Invoke(interactionType);
             return;
         }
 
         int fallbackOption = isCorrect ? action.CorrectOptionIndex : action.WrongOption1Index;
-        SubmitAnswer(key, fallbackOption);
+        SubmitAnswer(interactionType, fallbackOption);
+    }
+
+    // Compatibilidad para llamados antiguos por string.
+    public void SubmitAnswer(string interactionTypeName, int selectedOptionIndex)
+    {
+        if (!Enum.TryParse(interactionTypeName, true, out InteractionType parsedType))
+        {
+            if (debugLogs)
+            {
+                Debug.LogWarning($"{nameof(AnswerHandler)}: interactionType inválido '{interactionTypeName}'.", this);
+            }
+            return;
+        }
+
+        SubmitAnswer(parsedType, selectedOptionIndex);
+    }
+
+    public void SubmitAnswer(string interactionTypeName, bool isCorrect)
+    {
+        if (!Enum.TryParse(interactionTypeName, true, out InteractionType parsedType))
+        {
+            if (debugLogs)
+            {
+                Debug.LogWarning($"{nameof(AnswerHandler)}: interactionType inválido '{interactionTypeName}'.", this);
+            }
+            return;
+        }
+
+        SubmitAnswer(parsedType, isCorrect);
     }
 }

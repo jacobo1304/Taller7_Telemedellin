@@ -1,17 +1,27 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using System;
 using mptcc = Mediapipe.Tasks.Components.Containers;
 
 public class CustomPoseDetector : MonoBehaviour
 {
+    public enum PosePresetType
+    {
+        TPose,
+        APose,
+        YPose
+    }
+
     [System.Serializable]
     public class CustomPoseConfig
     {
         public string poseName = "New Pose";
-        [Tooltip("Question ID to send to AnswerHandler when pose is matched")]
-        public string questionId;
-        public bool answerValue = true;
+        [Tooltip("Interaction type to send to AnswerHandler when pose is matched")]
+        public InteractionType interactionType = InteractionType.Titulares;
+        [Tooltip("Option index to send to AnswerHandler (0, 1, 2...) ")]
+        public int selectedOptionIndex = 0;
+        public PosePresetType presetType = PosePresetType.TPose;
 
         [Tooltip("How long must the pose be held (seconds) before firing the event?")]
         public float holdTime = 1.0f;
@@ -67,6 +77,7 @@ public class CustomPoseDetector : MonoBehaviour
 
     [Header("Dependencies")]
     public AnswerHandler answerHandler;
+    public InteractionUIManager uiManager;
     [Tooltip("Target annotation script to change connection colors (e.g. PoseLandmarkListAnnotation or MultiPoseLandmarkListWithMaskAnnotation)")]
     public MonoBehaviour targetAnnotation;
 
@@ -74,8 +85,25 @@ public class CustomPoseDetector : MonoBehaviour
     public Color defaultConnectionColor = Color.white;
     public Color matchConnectionColor = Color.green;
 
+    [Header("Debug")]
+    [SerializeField] private bool debugLogs = false;
+    [SerializeField] private bool debugAngleDetails = false;
+    [SerializeField] private bool debugPoseScores = false;
+    [SerializeField, Min(0.1f)] private float debugLogInterval = 0.5f;
+
+    [Header("Detection")]
+    [SerializeField] private bool use3DAngles = true;
+
     [Header("Poses")]
     public List<CustomPoseConfig> customPoses = new List<CustomPoseConfig>();
+
+    [Header("Preset Builder (T/A/Y)")]
+    [SerializeField] private InteractionType presetInteractionType = InteractionType.Titulares;
+    [SerializeField] private int tPoseOptionIndex = 0;
+    [SerializeField] private int aPoseOptionIndex = 1;
+    [SerializeField] private int yPoseOptionIndex = 2;
+    [SerializeField] private float presetHoldTime = 1.0f;
+    [SerializeField] private float presetMarginDegrees = 22f;
 
     [System.Serializable]
     public class ColorEvent : UnityEvent<Color> { }
@@ -86,25 +114,160 @@ public class CustomPoseDetector : MonoBehaviour
     public ColorEvent onColorChangeRequested; // Connect this to SetConnectionColor externally if needed
 
     private bool anyWasMatched = false;
+    private float nextDebugLogTime = 0f;
+    private bool warnedNoPoses = false;
+    private bool warnedNoLandmarkFeed = false;
+    private float startedAtTime;
+
+    // LiveStream callback can arrive off main thread.
+    // We only enqueue data there and evaluate in Update (main thread).
+    private readonly object pendingFrameLock = new object();
+    private List<Vector3> pendingLandmarks;
+    private bool pendingFrameAvailable;
+    private bool pendingFrameValid;
 
     private void Start()
     {
+        startedAtTime = Time.time;
+
         if (answerHandler == null)
             answerHandler = FindFirstObjectByType<AnswerHandler>();
 
+        if (uiManager == null)
+            uiManager = FindFirstObjectByType<InteractionUIManager>();
+
+        if (debugLogs || debugAngleDetails || debugPoseScores)
+        {
+            Debug.Log($"{nameof(CustomPoseDetector)} started. Poses configured: {customPoses.Count}. use3DAngles={use3DAngles}", this);
+        }
+
         ApplyColor(defaultConnectionColor);
+        uiManager?.ClearHoldProgress();
     }
 
-    // Call this from MediaPipe tasks, e.g. PoseDetection graph
-    public void ProcessLandmarks(mptcc.NormalizedLandmarks landmarks)
+    private void Update()
     {
-        if (landmarks.landmarks == null || landmarks.landmarks.Count < 33)
+        List<Vector3> frameCopy = null;
+        bool hasFrame = false;
+        bool isValid = false;
+
+        lock (pendingFrameLock)
+        {
+            if (pendingFrameAvailable)
+            {
+                hasFrame = true;
+                isValid = pendingFrameValid;
+
+                if (pendingLandmarks != null)
+                {
+                    frameCopy = new List<Vector3>(pendingLandmarks);
+                }
+
+                pendingFrameAvailable = false;
+            }
+        }
+
+        if (!hasFrame)
+        {
+            return;
+        }
+
+        if (!isValid || frameCopy == null || frameCopy.Count < 33)
         {
             ResetAllHolds();
             return;
         }
 
-        EvaluatePoses(landmarks);
+        EvaluatePoses(frameCopy);
+    }
+
+    [ContextMenu("Create T/A/Y Presets (same question)")]
+    public void CreateTAYPresets()
+    {
+        customPoses.Clear();
+
+        customPoses.Add(CreatePreset("T Pose", PosePresetType.TPose, tPoseOptionIndex));
+        customPoses.Add(CreatePreset("A Pose", PosePresetType.APose, aPoseOptionIndex));
+        customPoses.Add(CreatePreset("Y Pose", PosePresetType.YPose, yPoseOptionIndex));
+    }
+
+    private CustomPoseConfig CreatePreset(string poseName, PosePresetType presetType, int optionIndex)
+    {
+        var pose = new CustomPoseConfig
+        {
+            poseName = poseName,
+            interactionType = presetInteractionType,
+            selectedOptionIndex = optionIndex,
+            presetType = presetType,
+            holdTime = presetHoldTime,
+            marginDegrees = presetMarginDegrees,
+            conditions = BuildConditionsForPreset(presetType)
+        };
+
+        return pose;
+    }
+
+    private List<JointAngleCondition> BuildConditionsForPreset(PosePresetType presetType)
+    {
+        // Elbows mostly extended in the 3 poses.
+        var conditions = new List<JointAngleCondition>
+        {
+            new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.LeftArm, targetAngle = 172f },
+            new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.RightArm, targetAngle = 172f },
+        };
+
+        // Shoulder angle reference uses Hip-Shoulder-Elbow:
+        // T pose ~90°, A pose ~45°, Y pose ~135°.
+        switch (presetType)
+        {
+            case PosePresetType.TPose:
+                conditions.Add(new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 92f });
+                conditions.Add(new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 92f });
+                break;
+
+            case PosePresetType.APose:
+                conditions.Add(new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 48f });
+                conditions.Add(new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 48f });
+                break;
+
+            case PosePresetType.YPose:
+                conditions.Add(new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 136f });
+                conditions.Add(new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 136f });
+                break;
+        }
+
+        return conditions;
+    }
+
+    // Call this from MediaPipe tasks, e.g. PoseDetection graph
+    public void ProcessLandmarks(mptcc.NormalizedLandmarks landmarks)
+    {
+        warnedNoLandmarkFeed = false;
+
+        if (landmarks.landmarks == null || landmarks.landmarks.Count < 33)
+        {
+            lock (pendingFrameLock)
+            {
+                pendingFrameValid = false;
+                pendingLandmarks = null;
+                pendingFrameAvailable = true;
+            }
+            return;
+        }
+
+        var snapshot = new List<Vector3>(landmarks.landmarks.Count);
+        for (int i = 0; i < landmarks.landmarks.Count; i++)
+        {
+            var l = landmarks.landmarks[i];
+            snapshot.Add(new Vector3(l.x, l.y, l.z));
+        }
+
+        lock (pendingFrameLock)
+        {
+            pendingFrameValid = true;
+            pendingLandmarks = snapshot;
+            pendingFrameAvailable = true;
+        }
     }
 
     // Overload for multiple targets
@@ -112,7 +275,13 @@ public class CustomPoseDetector : MonoBehaviour
     {
         if (targets == null || targets.Count == 0)
         {
-            ResetAllHolds();
+            warnedNoLandmarkFeed = true;
+            lock (pendingFrameLock)
+            {
+                pendingFrameValid = false;
+                pendingLandmarks = null;
+                pendingFrameAvailable = true;
+            }
             return;
         }
 
@@ -120,29 +289,86 @@ public class CustomPoseDetector : MonoBehaviour
         ProcessLandmarks(targets[0]);
     }
 
-    private void EvaluatePoses(mptcc.NormalizedLandmarks poseData)
+    private void EvaluatePoses(IReadOnlyList<Vector3> poseData)
     {
+        if (customPoses == null || customPoses.Count == 0)
+        {
+            if ((debugLogs || debugAngleDetails || debugPoseScores) && !warnedNoPoses)
+            {
+                Debug.LogWarning($"{nameof(CustomPoseDetector)}: No poses configured. Use 'Create T/A/Y Presets' or fill customPoses in Inspector.", this);
+                warnedNoPoses = true;
+            }
+            ResetAllHolds();
+            return;
+        }
+
+        if (warnedNoLandmarkFeed && (debugLogs || debugAngleDetails || debugPoseScores) && (Time.time - startedAtTime) > 2f && Time.time >= nextDebugLogTime)
+        {
+            Debug.LogWarning($"{nameof(CustomPoseDetector)}: Latest callback had 0 targets (persona no detectada o feed intermitente).", this);
+            nextDebugLogTime = Time.time + debugLogInterval;
+            warnedNoLandmarkFeed = false;
+        }
+
         bool currentAnyMatched = false;
+        float highestProgress = 0f;
+        int activeOptionIndex = -1;
+        string bestPoseName = string.Empty;
+        float bestPoseAverageDelta = float.MaxValue;
+        string bestPoseDetail = string.Empty;
 
         foreach (var pose in customPoses)
         {
             bool match = true;
+            float totalDelta = 0f;
+            int conditionCount = 0;
+            string failDetail = string.Empty;
+            string scoreDetail = string.Empty;
 
             foreach (var cond in pose.conditions)
             {
                 cond.GetIndices(out int iA, out int iB, out int iC);
-                
-                var lA = poseData.landmarks[iA];
-                var lB = poseData.landmarks[iB];
-                var lC = poseData.landmarks[iC];
 
-                float angle = CalculateAngle(lA, lB, lC);
-
-                if (Mathf.Abs(angle - cond.targetAngle) > pose.marginDegrees)
+                if (iA < 0 || iA >= poseData.Count ||
+                    iB < 0 || iB >= poseData.Count ||
+                    iC < 0 || iC >= poseData.Count)
                 {
                     match = false;
+                    failDetail = $"Índices inválidos ({iA},{iB},{iC}) para landmarks Count={poseData.Count}";
                     break;
                 }
+                
+                var lA = poseData[iA];
+                var lB = poseData[iB];
+                var lC = poseData[iC];
+
+                float angle = CalculateAngle(lA, lB, lC);
+                float delta = Mathf.Abs(angle - cond.targetAngle);
+                totalDelta += delta;
+                conditionCount++;
+                scoreDetail += $"[{cond.jointType}: {angle:F1}/{cond.targetAngle:F1} Δ{delta:F1}] ";
+
+                if (delta > pose.marginDegrees)
+                {
+                    match = false;
+                    if (string.IsNullOrEmpty(failDetail))
+                    {
+                        failDetail = $"{cond.jointType}: angle={angle:F1}, target={cond.targetAngle:F1}, delta={delta:F1}, margin={pose.marginDegrees:F1}";
+                    }
+                    break;
+                }
+            }
+
+            float avgDelta = conditionCount > 0 ? totalDelta / conditionCount : float.MaxValue;
+            if (avgDelta < bestPoseAverageDelta)
+            {
+                bestPoseAverageDelta = avgDelta;
+                bestPoseName = pose.poseName;
+                bestPoseDetail = string.IsNullOrEmpty(failDetail) ? "all conditions within margin" : failDetail;
+            }
+
+            if (debugPoseScores && Time.time >= nextDebugLogTime)
+            {
+                Debug.Log($"PoseScore '{pose.poseName}' match={match} hold={pose.currentHoldTimer:F2}/{pose.holdTime:F2} avgΔ={avgDelta:F1} :: {scoreDetail}", this);
             }
 
             if (match)
@@ -151,14 +377,30 @@ public class CustomPoseDetector : MonoBehaviour
                 pose.isMatched = true;
                 pose.currentHoldTimer += Time.deltaTime;
 
+                float normalizedProgress = pose.holdTime <= 0f
+                    ? 1f
+                    : Mathf.Clamp01(pose.currentHoldTimer / pose.holdTime);
+                if (normalizedProgress > highestProgress)
+                {
+                    highestProgress = normalizedProgress;
+                    activeOptionIndex = pose.selectedOptionIndex;
+                }
+
                 if (pose.currentHoldTimer >= pose.holdTime && !pose.eventFired)
                 {
                     pose.eventFired = true;
                     // Send to Answer Handler
-                    if (answerHandler != null && !string.IsNullOrEmpty(pose.questionId))
+                    if (answerHandler != null)
                     {
-                        answerHandler.SubmitAnswer(pose.questionId, pose.answerValue);
-                        Debug.Log($"Pose '{pose.poseName}' detected! Sent answer for {pose.questionId}");
+                        answerHandler.SubmitAnswer(pose.interactionType, pose.selectedOptionIndex);
+                        if (debugLogs || debugAngleDetails || debugPoseScores)
+                        {
+                            Debug.Log($"Pose '{pose.poseName}' detected! Sent option {pose.selectedOptionIndex} for {pose.interactionType}", this);
+                        }
+                    }
+                    else if (debugLogs || debugAngleDetails || debugPoseScores)
+                    {
+                        Debug.LogWarning($"{nameof(CustomPoseDetector)}: Pose matched but AnswerHandler is not assigned.", this);
                     }
                 }
             }
@@ -168,6 +410,36 @@ public class CustomPoseDetector : MonoBehaviour
                 pose.currentHoldTimer = 0f;
                 pose.eventFired = false;
             }
+        }
+
+        if (highestProgress > 0f && activeOptionIndex >= 0)
+        {
+            uiManager?.SetHoldProgressForOption(activeOptionIndex, highestProgress);
+        }
+        else
+        {
+            uiManager?.ClearHoldProgress();
+        }
+
+        if ((debugLogs || debugAngleDetails || debugPoseScores) && Time.time >= nextDebugLogTime)
+        {
+            if (currentAnyMatched)
+            {
+                Debug.Log($"{nameof(CustomPoseDetector)}: pose candidate matched. Hold progress={highestProgress:F2}", this);
+            }
+            else
+            {
+                if (debugAngleDetails)
+                {
+                    Debug.Log($"{nameof(CustomPoseDetector)}: no pose matched. Closest='{bestPoseName}' | {bestPoseDetail}", this);
+                }
+                else
+                {
+                    Debug.Log($"{nameof(CustomPoseDetector)}: no pose matched. Closest='{bestPoseName}'", this);
+                }
+            }
+
+            nextDebugLogTime = Time.time + debugLogInterval;
         }
 
         // Handle Visuals/Color changing
@@ -194,6 +466,8 @@ public class CustomPoseDetector : MonoBehaviour
             pose.eventFired = false;
         }
 
+        uiManager?.ClearHoldProgress();
+
         if (anyWasMatched)
         {
             ApplyColor(defaultConnectionColor);
@@ -202,8 +476,15 @@ public class CustomPoseDetector : MonoBehaviour
         }
     }
 
-    private float CalculateAngle(mptcc.NormalizedLandmark a, mptcc.NormalizedLandmark b, mptcc.NormalizedLandmark c)
+    private float CalculateAngle(Vector3 a, Vector3 b, Vector3 c)
     {
+        if (use3DAngles)
+        {
+            Vector3 vector13 = a - b;
+            Vector3 vector23 = c - b;
+            return Vector3.Angle(vector13, vector23);
+        }
+
         Vector2 vA = new Vector2(a.x, a.y);
         Vector2 vB = new Vector2(b.x, b.y);
         Vector2 vC = new Vector2(c.x, c.y);
