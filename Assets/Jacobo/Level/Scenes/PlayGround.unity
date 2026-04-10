@@ -3248,9 +3248,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionType: 0
   questionText: 
-  correctOptionIndex: 0
-  wrongOption1Index: 1
-  wrongOption2Index: 2
   correctMessage: 
   wrongMessage1: 
   wrongMessage2: 
@@ -3401,19 +3398,7 @@ MonoBehaviour:
   uiManager: {fileID: 1795540745}
   onAnswerCorrect:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 828516652}
-        m_TargetAssemblyTypeName: LightsCrewInteractionAction, Assembly-CSharp
-        m_MethodName: PresentToUI
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1795540745}
-          m_ObjectArgumentAssemblyTypeName: InteractionUIManager, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onAnswerWrong:
     m_PersistentCalls:
       m_Calls: []
@@ -5084,7 +5069,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &385040033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6399,17 +6384,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 3
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
   m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!108 &468137297
 Light:
   m_ObjectHideFlags: 0
@@ -6418,14 +6409,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468137294}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
@@ -6997,8 +6988,9 @@ GameObject:
   m_Component:
   - component: {fileID: 497750068}
   - component: {fileID: 497750067}
+  - component: {fileID: 497750069}
   m_Layer: 0
-  m_Name: PoseDetector
+  m_Name: PoseManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7021,108 +7013,9 @@ MonoBehaviour:
   targetAnnotation: {fileID: 1874217391}
   defaultConnectionColor: {r: 0.9912149, g: 1, b: 0.8132075, a: 1}
   matchConnectionColor: {r: 0.028301716, g: 1, b: 0.028301716, a: 1}
+  holdTime: 1
+  marginDegrees: 26.7
   debugLogs: 0
-  debugAngleDetails: 0
-  debugPoseScores: 0
-  debugLogInterval: 0.5
-  use3DAngles: 0
-  customPoses:
-  - poseName: T Pose
-    interactionType: 2
-    selectedOptionIndex: 0
-    presetType: 0
-    holdTime: 1.5
-    marginDegrees: 26.1
-    conditions:
-    - jointType: 0
-      customJointA: 11
-      customJointB: 13
-      customJointC: 15
-      targetAngle: 172
-    - jointType: 1
-      customJointA: 11
-      customJointB: 13
-      customJointC: 15
-      targetAngle: 172
-    - jointType: 2
-      customJointA: 11
-      customJointB: 13
-      customJointC: 15
-      targetAngle: 92
-    - jointType: 3
-      customJointA: 11
-      customJointB: 13
-      customJointC: 15
-      targetAngle: 92
-    currentHoldTimer: 0
-    isMatched: 0
-    eventFired: 0
-  - poseName: Y Pose
-    interactionType: 2
-    selectedOptionIndex: 1
-    presetType: 2
-    holdTime: 1.5
-    marginDegrees: 29.5
-    conditions:
-    - jointType: 0
-      customJointA: 11
-      customJointB: 13
-      customJointC: 15
-      targetAngle: 172
-    - jointType: 1
-      customJointA: 11
-      customJointB: 13
-      customJointC: 15
-      targetAngle: 172
-    - jointType: 2
-      customJointA: 11
-      customJointB: 13
-      customJointC: 15
-      targetAngle: 136
-    - jointType: 3
-      customJointA: 11
-      customJointB: 13
-      customJointC: 15
-      targetAngle: 136
-    currentHoldTimer: 0
-    isMatched: 0
-    eventFired: 0
-  - poseName: A Pose
-    interactionType: 2
-    selectedOptionIndex: 2
-    presetType: 1
-    holdTime: 1.5
-    marginDegrees: 38.2
-    conditions:
-    - jointType: 0
-      customJointA: 11
-      customJointB: 13
-      customJointC: 15
-      targetAngle: 172
-    - jointType: 1
-      customJointA: 11
-      customJointB: 13
-      customJointC: 15
-      targetAngle: 172
-    - jointType: 2
-      customJointA: 11
-      customJointB: 13
-      customJointC: 15
-      targetAngle: 48
-    - jointType: 3
-      customJointA: 11
-      customJointB: 13
-      customJointC: 15
-      targetAngle: 48
-    currentHoldTimer: 0
-    isMatched: 0
-    eventFired: 0
-  presetInteractionType: 2
-  tPoseOptionIndex: 0
-  aPoseOptionIndex: 1
-  yPoseOptionIndex: 2
-  presetHoldTime: 3
-  presetMarginDegrees: 24
   onAnyPoseMatched:
     m_PersistentCalls:
       m_Calls: []
@@ -7150,6 +7043,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &497750069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497750066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62882b2ceed9f35449ea67b77e20315e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PoseGenerator
 --- !u!1001 &502855664
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10038,7 +9943,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &752441397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10051,17 +9956,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 3
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
   m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!108 &752441398
 Light:
   m_ObjectHideFlags: 0
@@ -10070,14 +9981,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 752441396}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 0
     m_Resolution: -1
@@ -10943,70 +10854,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionType: 2
   questionText: Donde deberian ir las luces?
-  correctOptionIndex: 2
-  wrongOption1Index: 0
-  wrongOption2Index: 1
   correctMessage: "Bien hecho las luces se cuadraron\t"
   wrongMessage1: Perro
   wrongMessage2: Hijueputa
   PoseOptions:
-  - {fileID: 21300000, guid: 8d4f7c3b480094e4ca25b2ada01e47d9, type: 3}
-  - {fileID: 21300000, guid: 7f0ed917cba96834fb3fa4ec32ef857a, type: 3}
-  - {fileID: 21300000, guid: 746229f9d9bb3234b97f7e361e1d78a7, type: 3}
+  - {fileID: 11400000, guid: d043af0cd326b3446b9da59c04f105f3, type: 2}
+  - {fileID: 11400000, guid: 354e42246874d034e96449e492e1d77a, type: 2}
+  - {fileID: 11400000, guid: 10f1f2762cbcc5e46bf68f36d35abd60, type: 2}
   onCorrect:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 752441396}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   onWrong1:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1630174846}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   onWrong2:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1886214433}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   winningPoseOptionIndex: 1
-  frontalLight: {fileID: 752441398}
-  presenterFillLights:
-  - {fileID: 1630174848}
-  audienceLights:
-  - {fileID: 1886214435}
-  frontalIntensityCorrect: 1.3
-  fillIntensityCorrect: 0.8
-  audienceIntensityWrong: 1.2
+  correctLight: {fileID: 752441398}
+  incorrectLight1: {fileID: 1630174848}
+  incorrectLight2: {fileID: 1886214435}
+  correctLightTargetIntensity: 1
+  incorrectLight1Intensity: 15
+  incorrectLight2Intensity: 20
+  fadeDuration: 0.5
 --- !u!4 &828516653
 Transform:
   m_ObjectHideFlags: 0
@@ -13114,9 +12985,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionType: 1
   questionText: 
-  correctOptionIndex: 0
-  wrongOption1Index: 1
-  wrongOption2Index: 2
   correctMessage: 
   wrongMessage1: 
   wrongMessage2: 
@@ -19071,7 +18939,6 @@ MonoBehaviour:
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
-  m_Version: 2
   m_TaaSettings:
     m_Quality: 3
     m_FrameInfluence: 0.1
@@ -19079,6 +18946,7 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!81 &1570812034
 AudioListener:
   m_ObjectHideFlags: 0
@@ -19963,7 +19831,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1630174847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19976,17 +19844,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 3
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
   m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!108 &1630174848
 Light:
   m_ObjectHideFlags: 0
@@ -19995,14 +19869,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1630174846}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 12.37
+  m_Intensity: 5.7
   m_Range: 14.68
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 0
     m_Resolution: -1
@@ -22586,6 +22460,7 @@ MonoBehaviour:
   - {fileID: 385040033}
   - {fileID: 945989390}
   - {fileID: 1705177684}
+  debugLogs: 1
 --- !u!4 &1795540746
 Transform:
   m_ObjectHideFlags: 0
@@ -23625,7 +23500,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1886214434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23638,17 +23513,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 3
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
   m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!108 &1886214435
 Light:
   m_ObjectHideFlags: 0
@@ -23657,14 +23538,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1886214433}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 12.37
+  m_Intensity: 20.07
   m_Range: 14.68
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 0
     m_Resolution: -1
@@ -24024,6 +23905,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiManager: {fileID: 1795540745}
   answerHandler: {fileID: 235863370}
+  poseDetector: {fileID: 497750067}
   interactionOrder:
   - {fileID: 828516652}
   startIndex: 0

@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private InteractionUIManager uiManager;
     [SerializeField] private AnswerHandler answerHandler;
+    [SerializeField] private CustomPoseDetector poseDetector;
 
     [Header("Flow")]
     [SerializeField] private List<InteractionActionBase> interactionOrder = new List<InteractionActionBase>();
@@ -25,6 +26,11 @@ public class GameManager : MonoBehaviour
         if (answerHandler == null)
         {
             answerHandler = FindFirstObjectByType<AnswerHandler>();
+        }
+
+        if (poseDetector == null)
+        {
+            poseDetector = FindFirstObjectByType<CustomPoseDetector>();
         }
     }
 
@@ -95,7 +101,18 @@ public class GameManager : MonoBehaviour
         }
 
         current.PresentToUI(uiManager);
-        uiManager?.ClearHoldProgress();
+        
+        // Setup UI with correct pose order
+        if (uiManager != null)
+        {
+            uiManager.SetupPoseUI(current);
+        }
+        
+        // Assign interaction to pose detector
+        if (poseDetector != null)
+        {
+            poseDetector.SetCurrentInteraction(current);
+        }
     }
 
     private void HandleCorrectAnswer(InteractionType type)

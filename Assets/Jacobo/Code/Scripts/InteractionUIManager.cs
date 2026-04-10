@@ -22,7 +22,27 @@ public class InteractionUIManager : MonoBehaviour
     [Tooltip("Asigna aquí las imágenes Fill hijas de cada opción.")]
     [SerializeField] private Image[] holdProgressFills = new Image[3];
 
+    [Header("Debug")]
+    [SerializeField] private bool debugLogs = false;
+
+    private float nextDebugLogTime = 0f;
     private Coroutine feedbackRoutine;
+
+    private bool CanLogDebug()
+    {
+        if (!debugLogs)
+        {
+            return false;
+        }
+
+        if (Time.unscaledTime < nextDebugLogTime)
+        {
+            return false;
+        }
+
+        nextDebugLogTime = Time.unscaledTime + 1f;
+        return true;
+    }
 
     private void Awake()
     {
@@ -46,6 +66,11 @@ public class InteractionUIManager : MonoBehaviour
     {
         if (poseImages == null) return;
 
+        if (CanLogDebug())
+        {
+            Debug.Log($"{nameof(InteractionUIManager)}: ShowPoseImages called with spritesCount={(sprites == null ? 0 : sprites.Length)} and poseImagesCount={poseImages.Length}");
+        }
+
         for (int i = 0; i < poseImages.Length; i++)
         {
             if (poseImages[i] == null) continue;
@@ -53,6 +78,11 @@ public class InteractionUIManager : MonoBehaviour
             Sprite sprite = (sprites != null && i < sprites.Length) ? sprites[i] : null;
             poseImages[i].sprite = sprite;
             poseImages[i].enabled = sprite != null;
+
+            if (CanLogDebug())
+            {
+                Debug.Log($"{nameof(InteractionUIManager)}: poseImages[{i}] sprite={(sprite == null ? "null" : sprite.name)} enabled={poseImages[i].enabled}");
+            }
         }
     }
 
@@ -85,6 +115,11 @@ public class InteractionUIManager : MonoBehaviour
 
         float progress = Mathf.Clamp01(normalizedProgress);
 
+        if (CanLogDebug())
+        {
+            Debug.Log($"{nameof(InteractionUIManager)}: SetHoldProgressForOption optionIndex={optionIndex} normalizedProgress={progress:F2}");
+        }
+
         for (int i = 0; i < holdProgressFills.Length; i++)
         {
             Image fill = holdProgressFills[i];
@@ -93,7 +128,42 @@ public class InteractionUIManager : MonoBehaviour
             bool isSelected = i == optionIndex;
             fill.gameObject.SetActive(isSelected && progress > 0f);
             fill.fillAmount = isSelected ? progress : 0f;
+
+            if (CanLogDebug())
+            {
+                Debug.Log($"{nameof(InteractionUIManager)}: holdProgressFills[{i}] name={fill.gameObject.name} active={fill.gameObject.activeSelf} fillAmount={fill.fillAmount:F2}");
+            }
         }
+    }
+
+    public void SetupPoseUI(InteractionActionBase interaction)
+    {
+        if (interaction == null || interaction.PoseOptions == null)
+        {
+            return;
+        }
+
+        if (CanLogDebug())
+        {
+            Debug.Log($"{nameof(InteractionUIManager)}: SetupPoseUI with poseOptionsCount={interaction.PoseOptions.Length} and poseImagesCount={poseImages.Length}");
+        }
+
+        // Sync the pose images and fills with the InteractionActionBase pose order
+        for (int i = 0; i < poseImages.Length && i < interaction.PoseOptions.Length; i++)
+        {
+            if (poseImages[i] != null && interaction.PoseOptions[i] != null)
+            {
+                poseImages[i].sprite = interaction.PoseOptions[i].poseImage;
+                poseImages[i].enabled = true;
+
+                if (CanLogDebug())
+                {
+                    Debug.Log($"{nameof(InteractionUIManager)}: SetupPoseUI pose[{i}] name={interaction.PoseOptions[i].poseName} sprite={(interaction.PoseOptions[i].poseImage == null ? "null" : interaction.PoseOptions[i].poseImage.name)}");
+                }
+            }
+        }
+
+        ClearHoldProgress();
     }
 
     public void ClearHoldProgress()

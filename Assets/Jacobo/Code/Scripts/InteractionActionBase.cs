@@ -11,10 +11,8 @@ public abstract class InteractionActionBase : MonoBehaviour
     [SerializeField] private string questionText;
 
     [Header("Opciones")]
-    [Tooltip("Índice correcto por defecto (usado si la interacción no lo sobreescribe).")]
-    [SerializeField] private int correctOptionIndex = 0;
-    [SerializeField] private int wrongOption1Index = 1;
-    [SerializeField] private int wrongOption2Index = 2;
+    // La interacción define cuál es la opción correcta.
+    // Los demás índices se derivan automáticamente.
 
     [Header("Mensajes")]
     [TextArea(2, 4)] [SerializeField] private string correctMessage;
@@ -22,7 +20,7 @@ public abstract class InteractionActionBase : MonoBehaviour
     [TextArea(2, 4)] [SerializeField] private string wrongMessage2;
 
     [Header("3 imágenes de Opcion de pose")]
-    [SerializeField] private Sprite[] PoseOptions = new Sprite[3];
+    [SerializeField] public PoseData[] PoseOptions = new PoseData[3];
 
     [Header("Eventos extra")]
     [SerializeField] private UnityEvent onCorrect;
@@ -31,7 +29,8 @@ public abstract class InteractionActionBase : MonoBehaviour
 
     public InteractionType InteractionType => interactionType;
     public int CorrectOptionIndex => ResolveCorrectOptionIndex();
-    public int WrongOption1Index => wrongOption1Index;
+    public int WrongOption1Index => GetWrongOptionIndex(1);
+    public int WrongOption2Index => GetWrongOptionIndex(2);
     protected int PoseOptionsCount => PoseOptions == null ? 0 : PoseOptions.Length;
 
     public void PresentToUI(InteractionUIManager uiManager)
@@ -42,7 +41,14 @@ public abstract class InteractionActionBase : MonoBehaviour
         }
 
         uiManager.SetQuestion(questionText);
-        uiManager.ShowPoseImages(PoseOptions);
+
+        // Pass the sprites from PoseData to the UI Manager
+        Sprite[] sprites = new Sprite[PoseOptions.Length];
+        for (int i = 0; i < PoseOptions.Length; i++)
+        {
+            sprites[i] = PoseOptions[i]?.poseImage;
+        }
+        uiManager.ShowPoseImages(sprites);
     }
 
     public bool HandleAnswer(int selectedOptionIndex, InteractionUIManager uiManager)
@@ -50,24 +56,30 @@ public abstract class InteractionActionBase : MonoBehaviour
         PresentToUI(uiManager);
 
         int resolvedCorrectIndex = ResolveCorrectOptionIndex();
+        int resolvedWrong1Index = WrongOption1Index;
+        int resolvedWrong2Index = WrongOption2Index;
 
         if (selectedOptionIndex == resolvedCorrectIndex)
         {
-            ApplyCorrectEffect();
             onCorrect?.Invoke();
             uiManager?.ShowFeedback(correctMessage);
             return true;
         }
 
-        if (selectedOptionIndex == wrongOption1Index)
+        if (selectedOptionIndex == resolvedWrong1Index)
         {
-            ApplyWrongEffect1();
             onWrong1?.Invoke();
             uiManager?.ShowFeedback(wrongMessage1);
             return false;
         }
 
-        ApplyWrongEffect2();
+        if (selectedOptionIndex == resolvedWrong2Index)
+        {
+            onWrong2?.Invoke();
+            uiManager?.ShowFeedback(wrongMessage2);
+            return false;
+        }
+
         onWrong2?.Invoke();
         uiManager?.ShowFeedback(wrongMessage2);
         return false;
@@ -77,10 +89,68 @@ public abstract class InteractionActionBase : MonoBehaviour
     {
         if (PoseOptionsCount <= 0)
         {
-            return correctOptionIndex;
+            return 0;
         }
 
-        return Mathf.Clamp(correctOptionIndex, 0, PoseOptionsCount - 1);
+        return 0;
+    }
+
+    protected int GetWrongOptionIndex(int wrongNumber)
+    {
+        int correctIndex = ResolveCorrectOptionIndex();
+        if (PoseOptionsCount <= 0 || wrongNumber < 1)
+        {
+            return -1;
+        }
+
+        int found = 0;
+        for (int i = 0; i < PoseOptionsCount; i++)
+        {
+            if (i == correctIndex)
+            {
+                continue;
+            }
+
+            found++;
+            if (found == wrongNumber)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public void PreviewOption(int selectedOptionIndex)
+    {
+        int resolvedCorrectIndex = ResolveCorrectOptionIndex();
+        int resolvedWrong1Index = WrongOption1Index;
+        int resolvedWrong2Index = WrongOption2Index;
+
+        if (selectedOptionIndex == resolvedCorrectIndex)
+        {
+            ApplyCorrectEffect();
+            return;
+        }
+
+        if (selectedOptionIndex == resolvedWrong1Index)
+        {
+            ApplyWrongEffect1();
+            return;
+        }
+
+        if (selectedOptionIndex == resolvedWrong2Index)
+        {
+            ApplyWrongEffect2();
+            return;
+        }
+
+        ResetHoldEffects();
+    }
+
+    public virtual void ResetHoldEffects()
+    {
+        // Override in derived interactions if needed.
     }
 
     protected abstract void ApplyCorrectEffect();

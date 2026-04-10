@@ -14,23 +14,8 @@ public class CustomPoseDetector : MonoBehaviour
     }
 
     [System.Serializable]
-    public class CustomPoseConfig
+    public class PoseState
     {
-        public string poseName = "New Pose";
-        [Tooltip("Interaction type to send to AnswerHandler when pose is matched")]
-        public InteractionType interactionType = InteractionType.Titulares;
-        [Tooltip("Option index to send to AnswerHandler (0, 1, 2...) ")]
-        public int selectedOptionIndex = 0;
-        public PosePresetType presetType = PosePresetType.TPose;
-
-        [Tooltip("How long must the pose be held (seconds) before firing the event?")]
-        public float holdTime = 1.0f;
-
-        [Header("Angle Conditions")]
-        [Tooltip("Margin of error in degrees")]
-        public float marginDegrees = 20f;
-        public List<JointAngleCondition> conditions = new List<JointAngleCondition>();
-        
         [HideInInspector] public float currentHoldTimer = 0f;
         [HideInInspector] public bool isMatched = false;
         [HideInInspector] public bool eventFired = false;
@@ -81,29 +66,16 @@ public class CustomPoseDetector : MonoBehaviour
     [Tooltip("Target annotation script to change connection colors (e.g. PoseLandmarkListAnnotation or MultiPoseLandmarkListWithMaskAnnotation)")]
     public MonoBehaviour targetAnnotation;
 
+    private InteractionActionBase currentInteraction;
+
     [Header("Settings")]
     public Color defaultConnectionColor = Color.white;
     public Color matchConnectionColor = Color.green;
+    [SerializeField] private float holdTime = 1.0f;
+    [SerializeField] private float marginDegrees = 20f;
 
     [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
-    [SerializeField] private bool debugAngleDetails = false;
-    [SerializeField] private bool debugPoseScores = false;
-    [SerializeField, Min(0.1f)] private float debugLogInterval = 0.5f;
-
-    [Header("Detection")]
-    [SerializeField] private bool use3DAngles = true;
-
-    [Header("Poses")]
-    public List<CustomPoseConfig> customPoses = new List<CustomPoseConfig>();
-
-    [Header("Preset Builder (T/A/Y)")]
-    [SerializeField] private InteractionType presetInteractionType = InteractionType.Titulares;
-    [SerializeField] private int tPoseOptionIndex = 0;
-    [SerializeField] private int aPoseOptionIndex = 1;
-    [SerializeField] private int yPoseOptionIndex = 2;
-    [SerializeField] private float presetHoldTime = 1.0f;
-    [SerializeField] private float presetMarginDegrees = 22f;
 
     [System.Serializable]
     public class ColorEvent : UnityEvent<Color> { }
@@ -120,8 +92,32 @@ public class CustomPoseDetector : MonoBehaviour
     private bool anyWasMatched = false;
     private float nextDebugLogTime = 0f;
     private bool warnedNoPoses = false;
-    private bool warnedNoLandmarkFeed = false;
-    private float startedAtTime;
+    private int currentActiveOptionIndex = -1;
+    private List<PoseState> poseStates = new List<PoseState>();
+
+    private bool CanLogDebug()
+    {
+        if (!debugLogs)
+        {
+            return false;
+        }
+
+        if (Time.unscaledTime < nextDebugLogTime)
+        {
+            return false;
+        }
+
+        nextDebugLogTime = Time.unscaledTime + 1f;
+        return true;
+    }
+
+    private void LogDebug(string message)
+    {
+        if (CanLogDebug())
+        {
+            Debug.Log(message, this);
+        }
+    }
 
     // LiveStream callback can arrive off main thread.
     // We only enqueue data there and evaluate in Update (main thread).
@@ -132,21 +128,34 @@ public class CustomPoseDetector : MonoBehaviour
 
     private void Start()
     {
-        startedAtTime = Time.time;
-
         if (answerHandler == null)
             answerHandler = FindFirstObjectByType<AnswerHandler>();
 
         if (uiManager == null)
             uiManager = FindFirstObjectByType<InteractionUIManager>();
 
-        if (debugLogs || debugAngleDetails || debugPoseScores)
-        {
-            Debug.Log($"{nameof(CustomPoseDetector)} started. Poses configured: {customPoses.Count}. use3DAngles={use3DAngles}", this);
-        }
-
         ApplyColor(defaultConnectionColor);
         uiManager?.ClearHoldProgress();
+    }
+
+    public void SetCurrentInteraction(InteractionActionBase interaction)
+    {
+        currentInteraction = interaction;
+        poseStates.Clear();
+        currentActiveOptionIndex = -1;
+        currentInteraction?.ResetHoldEffects();
+
+        if (currentInteraction != null && currentInteraction.PoseOptions != null)
+        {
+            for (int i = 0; i < currentInteraction.PoseOptions.Length; i++)
+            {
+                poseStates.Add(new PoseState());
+            }
+            if (debugLogs)
+            {
+                Debug.Log($"{nameof(CustomPoseDetector)}: Interaction set with {currentInteraction.PoseOptions.Length} poses.", this);
+            }
+        }
     }
 
     private void Update()
@@ -185,23 +194,10 @@ public class CustomPoseDetector : MonoBehaviour
         EvaluatePoses(frameCopy);
     }
 
-    [ContextMenu("Create T/A/Y Presets (same question)")]
-    public void CreateTAYPresets()
-    {
-        customPoses = PosePresetLibrary.CreateTayPresets(
-            presetInteractionType,
-            tPoseOptionIndex,
-            aPoseOptionIndex,
-            yPoseOptionIndex,
-            presetHoldTime,
-            presetMarginDegrees);
-    }
 
-    // Call this from MediaPipe tasks, e.g. PoseDetection graph
+
     public void ProcessLandmarks(mptcc.NormalizedLandmarks landmarks)
     {
-        warnedNoLandmarkFeed = false;
-
         if (landmarks.landmarks == null || landmarks.landmarks.Count < 33)
         {
             lock (pendingFrameLock)
@@ -233,7 +229,6 @@ public class CustomPoseDetector : MonoBehaviour
     {
         if (targets == null || targets.Count == 0)
         {
-            warnedNoLandmarkFeed = true;
             lock (pendingFrameLock)
             {
                 pendingFrameValid = false;
@@ -249,33 +244,34 @@ public class CustomPoseDetector : MonoBehaviour
 
     private void EvaluatePoses(IReadOnlyList<Vector3> poseData)
     {
-        if (customPoses == null || customPoses.Count == 0)
+        if (currentInteraction == null || currentInteraction.PoseOptions == null || currentInteraction.PoseOptions.Length == 0)
         {
-            if ((debugLogs || debugAngleDetails || debugPoseScores) && !warnedNoPoses)
+            if (debugLogs && !warnedNoPoses)
             {
-                Debug.LogWarning($"{nameof(CustomPoseDetector)}: No poses configured. Use 'Create T/A/Y Presets' or fill customPoses in Inspector.", this);
+                Debug.LogWarning($"{nameof(CustomPoseDetector)}: No poses configured. Assign currentInteraction with PoseOptions.", this);
                 warnedNoPoses = true;
             }
             ResetAllHolds();
             return;
         }
 
-        if (warnedNoLandmarkFeed && (debugLogs || debugAngleDetails || debugPoseScores) && (Time.time - startedAtTime) > 2f && Time.time >= nextDebugLogTime)
-        {
-            Debug.LogWarning($"{nameof(CustomPoseDetector)}: Latest callback had 0 targets (persona no detectada o feed intermitente).", this);
-            nextDebugLogTime = Time.time + debugLogInterval;
-            warnedNoLandmarkFeed = false;
-        }
+
 
         bool currentAnyMatched = false;
         float highestProgress = 0f;
         int activeOptionIndex = -1;
+        int bestPoseIndex = -1;
         string bestPoseName = string.Empty;
         float bestPoseAverageDelta = float.MaxValue;
         string bestPoseDetail = string.Empty;
 
-        foreach (var pose in customPoses)
+        PoseData[] poses = currentInteraction.PoseOptions;
+
+        for (int i = 0; i < poses.Length; i++)
         {
+            var pose = poses[i];
+            var state = poseStates[i];
+
             bool match = true;
             float totalDelta = 0f;
             int conditionCount = 0;
@@ -305,87 +301,85 @@ public class CustomPoseDetector : MonoBehaviour
                 conditionCount++;
                 scoreDetail += $"[{cond.jointType}: {angle:F1}/{cond.targetAngle:F1} Δ{delta:F1}] ";
 
-                if (delta > pose.marginDegrees)
+                if (delta > marginDegrees)
                 {
                     match = false;
                     if (string.IsNullOrEmpty(failDetail))
                     {
-                        failDetail = $"{cond.jointType}: angle={angle:F1}, target={cond.targetAngle:F1}, delta={delta:F1}, margin={pose.marginDegrees:F1}";
+                        failDetail = $"{cond.jointType}: angle={angle:F1}, target={cond.targetAngle:F1}, delta={delta:F1}, margin={marginDegrees:F1}";
                     }
                     break;
                 }
             }
 
             float avgDelta = conditionCount > 0 ? totalDelta / conditionCount : float.MaxValue;
+            string poseDetail = string.IsNullOrEmpty(failDetail) ? "all conditions within margin" : failDetail;
+
             if (avgDelta < bestPoseAverageDelta)
             {
                 bestPoseAverageDelta = avgDelta;
+                bestPoseIndex = i;
                 bestPoseName = pose.poseName;
-                bestPoseDetail = string.IsNullOrEmpty(failDetail) ? "all conditions within margin" : failDetail;
+                bestPoseDetail = poseDetail;
             }
 
-            if (debugPoseScores && Time.time >= nextDebugLogTime)
-            {
-                Debug.Log($"PoseScore '{pose.poseName}' match={match} hold={pose.currentHoldTimer:F2}/{pose.holdTime:F2} avgΔ={avgDelta:F1} :: {scoreDetail}", this);
-            }
+            LogDebug($"{nameof(CustomPoseDetector)}: Pose[{i}] '{pose.poseName}' match={match} avgDelta={avgDelta:F1} detail='{poseDetail}' score='{scoreDetail}'");
 
             if (match)
             {
                 currentAnyMatched = true;
-                pose.isMatched = true;
-                pose.currentHoldTimer += Time.deltaTime;
+                state.isMatched = true;
+                state.currentHoldTimer += Time.deltaTime;
 
-                float normalizedProgress = pose.holdTime <= 0f
+                float normalizedProgress = holdTime <= 0f
                     ? 1f
-                    : Mathf.Clamp01(pose.currentHoldTimer / pose.holdTime);
+                    : Mathf.Clamp01(state.currentHoldTimer / holdTime);
                 if (normalizedProgress > highestProgress)
                 {
                     highestProgress = normalizedProgress;
-                    activeOptionIndex = pose.selectedOptionIndex;
+                    activeOptionIndex = i;
                 }
 
-                if (pose.currentHoldTimer >= pose.holdTime && !pose.eventFired)
+                if (state.currentHoldTimer >= holdTime && !state.eventFired)
                 {
-                    pose.eventFired = true;
-                    ConfirmPoseSelection(pose);
+                    state.eventFired = true;
+                    ConfirmPoseSelection(i);
                 }
             }
             else
             {
-                pose.isMatched = false;
-                pose.currentHoldTimer = 0f;
-                pose.eventFired = false;
+                state.isMatched = false;
+                state.currentHoldTimer = 0f;
+                state.eventFired = false;
             }
         }
 
-        if (highestProgress > 0f && activeOptionIndex >= 0)
+        if (activeOptionIndex >= 0)
         {
+            if (activeOptionIndex != currentActiveOptionIndex)
+            {
+                currentInteraction?.PreviewOption(activeOptionIndex);
+                currentActiveOptionIndex = activeOptionIndex;
+            }
+
             uiManager?.SetHoldProgressForOption(activeOptionIndex, highestProgress);
         }
         else
         {
+            if (currentActiveOptionIndex != -1)
+            {
+                currentInteraction?.ResetHoldEffects();
+                currentActiveOptionIndex = -1;
+            }
+
             uiManager?.ClearHoldProgress();
         }
 
-        if ((debugLogs || debugAngleDetails || debugPoseScores) && Time.time >= nextDebugLogTime)
-        {
-            if (currentAnyMatched)
-            {
-                Debug.Log($"{nameof(CustomPoseDetector)}: pose candidate matched. Hold progress={highestProgress:F2}", this);
-            }
-            else
-            {
-                if (debugAngleDetails)
-                {
-                    Debug.Log($"{nameof(CustomPoseDetector)}: no pose matched. Closest='{bestPoseName}' | {bestPoseDetail}", this);
-                }
-                else
-                {
-                    Debug.Log($"{nameof(CustomPoseDetector)}: no pose matched. Closest='{bestPoseName}'", this);
-                }
-            }
+        LogDebug($"{nameof(CustomPoseDetector)}: Closest pose: index={bestPoseIndex}, name='{bestPoseName}', avgDelta={bestPoseAverageDelta:F1}, detail='{bestPoseDetail}'");
 
-            nextDebugLogTime = Time.time + debugLogInterval;
+        if (currentAnyMatched)
+        {
+            LogDebug($"{nameof(CustomPoseDetector)}: Pose matched. Progress: {highestProgress:F2}");
         }
 
         // Handle Visuals/Color changing
@@ -405,11 +399,11 @@ public class CustomPoseDetector : MonoBehaviour
 
     private void ResetAllHolds()
     {
-        foreach (var pose in customPoses)
+        foreach (var state in poseStates)
         {
-            pose.isMatched = false;
-            pose.currentHoldTimer = 0f;
-            pose.eventFired = false;
+            state.isMatched = false;
+            state.currentHoldTimer = 0f;
+            state.eventFired = false;
         }
 
         uiManager?.ClearHoldProgress();
@@ -424,13 +418,6 @@ public class CustomPoseDetector : MonoBehaviour
 
     private float CalculateAngle(Vector3 a, Vector3 b, Vector3 c)
     {
-        if (use3DAngles)
-        {
-            Vector3 vector13 = a - b;
-            Vector3 vector23 = c - b;
-            return Vector3.Angle(vector13, vector23);
-        }
-
         Vector2 vA = new Vector2(a.x, a.y);
         Vector2 vB = new Vector2(b.x, b.y);
         Vector2 vC = new Vector2(c.x, c.y);
@@ -452,21 +439,31 @@ public class CustomPoseDetector : MonoBehaviour
         }
     }
 
-    private void ConfirmPoseSelection(CustomPoseConfig pose)
+    private void ConfirmPoseSelection(int index)
     {
-        onPoseHoldConfirmed?.Invoke(pose.interactionType, pose.selectedOptionIndex, pose.poseName);
+        if (currentInteraction == null || currentInteraction.PoseOptions == null)
+        {
+            Debug.LogWarning($"{nameof(CustomPoseDetector)}: ConfirmPoseSelection called without a valid current interaction.", this);
+            return;
+        }
+
+        if (index < 0 || index >= currentInteraction.PoseOptions.Length)
+        {
+            Debug.LogWarning($"{nameof(CustomPoseDetector)}: ConfirmPoseSelection index {index} is out of range for PoseOptions length {currentInteraction.PoseOptions.Length}.", this);
+            return;
+        }
+
+        var pose = currentInteraction.PoseOptions[index];
+        onPoseHoldConfirmed?.Invoke(currentInteraction.InteractionType, index, pose.poseName);
 
         if (answerHandler != null)
         {
-            answerHandler.SubmitAnswer(pose.interactionType, pose.selectedOptionIndex);
-            if (debugLogs || debugAngleDetails || debugPoseScores)
-            {
-                Debug.Log($"Pose '{pose.poseName}' HOLD complete. Sent interaction={pose.interactionType}, option={pose.selectedOptionIndex}", this);
-            }
+            answerHandler.SubmitAnswer(currentInteraction.InteractionType, index);
+            LogDebug($"Pose '{pose.poseName}' held. Option {index} submitted.");
         }
-        else if (debugLogs || debugAngleDetails || debugPoseScores)
+        else
         {
-            Debug.LogWarning($"{nameof(CustomPoseDetector)}: Hold complete but AnswerHandler is not assigned.", this);
+            Debug.LogWarning($"{nameof(CustomPoseDetector)}: Pose held but AnswerHandler not assigned.", this);
         }
     }
 }
