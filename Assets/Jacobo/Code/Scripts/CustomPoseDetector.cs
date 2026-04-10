@@ -108,10 +108,14 @@ public class CustomPoseDetector : MonoBehaviour
     [System.Serializable]
     public class ColorEvent : UnityEvent<Color> { }
 
+    [System.Serializable]
+    public class PoseConfirmedEvent : UnityEvent<InteractionType, int, string> { }
+
     [Header("Optional Output Events")]
     public UnityEvent onAnyPoseMatched;
     public UnityEvent onAllPosesLost;
     public ColorEvent onColorChangeRequested; // Connect this to SetConnectionColor externally if needed
+    public PoseConfirmedEvent onPoseHoldConfirmed;
 
     private bool anyWasMatched = false;
     private float nextDebugLogTime = 0f;
@@ -184,59 +188,13 @@ public class CustomPoseDetector : MonoBehaviour
     [ContextMenu("Create T/A/Y Presets (same question)")]
     public void CreateTAYPresets()
     {
-        customPoses.Clear();
-
-        customPoses.Add(CreatePreset("T Pose", PosePresetType.TPose, tPoseOptionIndex));
-        customPoses.Add(CreatePreset("A Pose", PosePresetType.APose, aPoseOptionIndex));
-        customPoses.Add(CreatePreset("Y Pose", PosePresetType.YPose, yPoseOptionIndex));
-    }
-
-    private CustomPoseConfig CreatePreset(string poseName, PosePresetType presetType, int optionIndex)
-    {
-        var pose = new CustomPoseConfig
-        {
-            poseName = poseName,
-            interactionType = presetInteractionType,
-            selectedOptionIndex = optionIndex,
-            presetType = presetType,
-            holdTime = presetHoldTime,
-            marginDegrees = presetMarginDegrees,
-            conditions = BuildConditionsForPreset(presetType)
-        };
-
-        return pose;
-    }
-
-    private List<JointAngleCondition> BuildConditionsForPreset(PosePresetType presetType)
-    {
-        // Elbows mostly extended in the 3 poses.
-        var conditions = new List<JointAngleCondition>
-        {
-            new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.LeftArm, targetAngle = 172f },
-            new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.RightArm, targetAngle = 172f },
-        };
-
-        // Shoulder angle reference uses Hip-Shoulder-Elbow:
-        // T pose ~90°, A pose ~45°, Y pose ~135°.
-        switch (presetType)
-        {
-            case PosePresetType.TPose:
-                conditions.Add(new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 92f });
-                conditions.Add(new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 92f });
-                break;
-
-            case PosePresetType.APose:
-                conditions.Add(new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 48f });
-                conditions.Add(new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 48f });
-                break;
-
-            case PosePresetType.YPose:
-                conditions.Add(new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 136f });
-                conditions.Add(new JointAngleCondition { jointType = JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 136f });
-                break;
-        }
-
-        return conditions;
+        customPoses = PosePresetLibrary.CreateTayPresets(
+            presetInteractionType,
+            tPoseOptionIndex,
+            aPoseOptionIndex,
+            yPoseOptionIndex,
+            presetHoldTime,
+            presetMarginDegrees);
     }
 
     // Call this from MediaPipe tasks, e.g. PoseDetection graph
@@ -389,19 +347,7 @@ public class CustomPoseDetector : MonoBehaviour
                 if (pose.currentHoldTimer >= pose.holdTime && !pose.eventFired)
                 {
                     pose.eventFired = true;
-                    // Send to Answer Handler
-                    if (answerHandler != null)
-                    {
-                        answerHandler.SubmitAnswer(pose.interactionType, pose.selectedOptionIndex);
-                        if (debugLogs || debugAngleDetails || debugPoseScores)
-                        {
-                            Debug.Log($"Pose '{pose.poseName}' detected! Sent option {pose.selectedOptionIndex} for {pose.interactionType}", this);
-                        }
-                    }
-                    else if (debugLogs || debugAngleDetails || debugPoseScores)
-                    {
-                        Debug.LogWarning($"{nameof(CustomPoseDetector)}: Pose matched but AnswerHandler is not assigned.", this);
-                    }
+                    ConfirmPoseSelection(pose);
                 }
             }
             else
@@ -503,6 +449,24 @@ public class CustomPoseDetector : MonoBehaviour
         {
             // We use SendMessage so you don't need to tightly couple with the specific homuler annotation class name
             targetAnnotation.SendMessage("SetConnectionColor", color, SendMessageOptions.DontRequireReceiver);
+        }
+    }
+
+    private void ConfirmPoseSelection(CustomPoseConfig pose)
+    {
+        onPoseHoldConfirmed?.Invoke(pose.interactionType, pose.selectedOptionIndex, pose.poseName);
+
+        if (answerHandler != null)
+        {
+            answerHandler.SubmitAnswer(pose.interactionType, pose.selectedOptionIndex);
+            if (debugLogs || debugAngleDetails || debugPoseScores)
+            {
+                Debug.Log($"Pose '{pose.poseName}' HOLD complete. Sent interaction={pose.interactionType}, option={pose.selectedOptionIndex}", this);
+            }
+        }
+        else if (debugLogs || debugAngleDetails || debugPoseScores)
+        {
+            Debug.LogWarning($"{nameof(CustomPoseDetector)}: Hold complete but AnswerHandler is not assigned.", this);
         }
     }
 }

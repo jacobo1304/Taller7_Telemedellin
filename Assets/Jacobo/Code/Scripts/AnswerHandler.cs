@@ -84,6 +84,10 @@ public class AnswerHandler : MonoBehaviour
 
         if (isCorrect)
         {
+            if (debugLogs)
+            {
+                Debug.Log($"Respuesta correcta para la pregunta de tipo {interactionType} seleccionaste la opcion {selectedOptionIndex}.", this);
+            }
             onAnswerCorrect?.Invoke(interactionType);
         }
         else

@@ -42,7 +42,7 @@ public abstract class InteractionActionBase : MonoBehaviour
         }
 
         uiManager.SetQuestion(questionText);
-        uiManager.ShowCorrectPoseImages(PoseOptions);
+        uiManager.ShowPoseImages(PoseOptions);
     }
 
     public bool HandleAnswer(int selectedOptionIndex, InteractionUIManager uiManager)

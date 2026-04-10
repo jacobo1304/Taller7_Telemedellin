@@ -42,7 +42,7 @@ public class InteractionUIManager : MonoBehaviour
         }
     }
 
-    public void ShowCorrectPoseImages(Sprite[] sprites)
+    public void ShowPoseImages(Sprite[] sprites)
     {
         if (poseImages == null) return;
 

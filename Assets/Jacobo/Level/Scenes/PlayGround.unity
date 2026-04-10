@@ -3393,9 +3393,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactions:
   - interactionType: 2
-    interactionAction: {fileID: 225540847}
-  - interactionType: 0
     interactionAction: {fileID: 828516652}
+  - interactionType: 0
+    interactionAction: {fileID: 225540847}
   - interactionType: 1
     interactionAction: {fileID: 1038473825}
   uiManager: {fileID: 1795540745}
@@ -3407,7 +3407,7 @@ MonoBehaviour:
         m_MethodName: PresentToUI
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgument: {fileID: 1795540745}
           m_ObjectArgumentAssemblyTypeName: InteractionUIManager, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -5424,8 +5424,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 80.21
+  m_fontSizeBase: 80.21
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7019,10 +7019,10 @@ MonoBehaviour:
   answerHandler: {fileID: 235863370}
   uiManager: {fileID: 1795540745}
   targetAnnotation: {fileID: 1874217391}
-  defaultConnectionColor: {r: 0.68490565, g: 1, b: 0.9859888, a: 1}
-  matchConnectionColor: {r: 0, g: 1, b: 0, a: 1}
+  defaultConnectionColor: {r: 0.9912149, g: 1, b: 0.8132075, a: 1}
+  matchConnectionColor: {r: 0.028301716, g: 1, b: 0.028301716, a: 1}
   debugLogs: 0
-  debugAngleDetails: 1
+  debugAngleDetails: 0
   debugPoseScores: 0
   debugLogInterval: 0.5
   use3DAngles: 0
@@ -7031,7 +7031,7 @@ MonoBehaviour:
     interactionType: 2
     selectedOptionIndex: 0
     presetType: 0
-    holdTime: 1
+    holdTime: 1.5
     marginDegrees: 26.1
     conditions:
     - jointType: 0
@@ -7061,7 +7061,7 @@ MonoBehaviour:
     interactionType: 2
     selectedOptionIndex: 1
     presetType: 2
-    holdTime: 3
+    holdTime: 1.5
     marginDegrees: 29.5
     conditions:
     - jointType: 0
@@ -7091,8 +7091,8 @@ MonoBehaviour:
     interactionType: 2
     selectedOptionIndex: 2
     presetType: 1
-    holdTime: 3
-    marginDegrees: 31.6
+    holdTime: 1.5
+    marginDegrees: 38.2
     conditions:
     - jointType: 0
       customJointA: 11
@@ -7130,6 +7130,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onColorChangeRequested:
+    m_PersistentCalls:
+      m_Calls: []
+  onPoseHoldConfirmed:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &497750068
@@ -10940,9 +10943,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionType: 2
   questionText: Donde deberian ir las luces?
-  correctOptionIndex: 1
+  correctOptionIndex: 2
   wrongOption1Index: 0
-  wrongOption2Index: 2
+  wrongOption2Index: 1
   correctMessage: "Bien hecho las luces se cuadraron\t"
   wrongMessage1: Perro
   wrongMessage2: Hijueputa
@@ -19507,7 +19510,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 115}
+  m_AnchoredPosition: {x: 0, y: 285}
   m_SizeDelta: {x: 961.2, y: 314}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1601049063
@@ -26017,7 +26020,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571076842583978917, guid: 140d1d2c406167c50819d89f86d9092e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -859.00006
+      value: -859.0001
       objectReference: {fileID: 0}
     - target: {fileID: 8571076842583978917, guid: 140d1d2c406167c50819d89f86d9092e, type: 3}
       propertyPath: m_AnchoredPosition.y
