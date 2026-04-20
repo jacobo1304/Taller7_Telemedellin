@@ -2,52 +2,120 @@ using UnityEngine;
 
 public class CameraCrewInteractionAction : InteractionActionBase
 {
-    [Header("Efecto correcto")]
+    [Header("Cámara")]
     [SerializeField] private Transform cameraRig;
-    [SerializeField] private Transform correctSpot;
+    [Tooltip("Opciones de cámara por índice de pose (0,1,2)")]
+    [SerializeField] private Transform[] cameraOptionSpots = new Transform[3];
+    [SerializeField] private float interpolationDuration = 0.35f;
 
-    [Header("Efecto incorrecto 1")]
-    [SerializeField] private Transform wrongSpot1;
+    [Header("Reset (opcional)")]
+    [SerializeField] private bool resetToDefaultOnNoPose = false;
+    [SerializeField] private Transform defaultSpot;
 
-    [Header("Efecto incorrecto 2")]
-    [SerializeField] private Transform wrongSpot2;
+    private Coroutine moveRoutine;
+    private bool hasPendingMove;
+    private Transform pendingTargetSpot;
 
-    [Header("Audio ambiente / voz")]
-    [SerializeField] private AudioSource presenterVoice;
-    [SerializeField] private AudioSource ambientAudio;
-    [SerializeField] private float correctVoiceVolume = 1f;
-    [SerializeField] private float wrongVoiceVolume = 0.35f;
-    [SerializeField] private float correctAmbientVolume = 0.25f;
-    [SerializeField] private float wrongAmbientVolume = 0.8f;
+    private void OnEnable()
+    {
+        if (!hasPendingMove || pendingTargetSpot == null)
+        {
+            return;
+        }
+
+        Transform target = pendingTargetSpot;
+        hasPendingMove = false;
+        pendingTargetSpot = null;
+        MoveRigTo(target);
+    }
+
+    public override void ResetHoldEffects()
+    {
+        if (!resetToDefaultOnNoPose)
+        {
+            return;
+        }
+
+        MoveRigTo(defaultSpot);
+    }
+
+    public override void PreviewOption(int selectedOptionIndex)
+    {
+        MoveRigToOption(selectedOptionIndex);
+    }
 
     protected override void ApplyCorrectEffect()
     {
-        MoveRigTo(correctSpot);
-        SetAudioMix(correctVoiceVolume, correctAmbientVolume);
+        MoveRigToOption(CorrectOptionIndex);
     }
 
     protected override void ApplyWrongEffect1()
     {
-        MoveRigTo(wrongSpot1);
-        SetAudioMix(wrongVoiceVolume, wrongAmbientVolume);
+        MoveRigToOption(WrongOption1Index);
     }
 
     protected override void ApplyWrongEffect2()
     {
-        MoveRigTo(wrongSpot2);
-        SetAudioMix(wrongVoiceVolume * 0.8f, Mathf.Clamp01(wrongAmbientVolume + 0.1f));
+        MoveRigToOption(WrongOption2Index);
     }
 
-    private void MoveRigTo(Transform target)
+    private void MoveRigToOption(int optionIndex)
     {
-        if (cameraRig == null || target == null) return;
-        cameraRig.position = target.position;
-        cameraRig.rotation = target.rotation;
+        if (cameraOptionSpots == null || optionIndex < 0 || optionIndex >= cameraOptionSpots.Length)
+        {
+            return;
+        }
+
+        MoveRigTo(cameraOptionSpots[optionIndex]);
     }
 
-    private void SetAudioMix(float voiceVolume, float ambienceVolume)
+    private void MoveRigTo(Transform targetSpot)
     {
-        if (presenterVoice != null) presenterVoice.volume = Mathf.Clamp01(voiceVolume);
-        if (ambientAudio != null) ambientAudio.volume = Mathf.Clamp01(ambienceVolume);
+        if (cameraRig == null || targetSpot == null)
+        {
+            return;
+        }
+
+        if (!isActiveAndEnabled || !gameObject.activeInHierarchy)
+        {
+            hasPendingMove = true;
+            pendingTargetSpot = targetSpot;
+            return;
+        }
+
+        if (moveRoutine != null)
+        {
+            StopCoroutine(moveRoutine);
+        }
+
+        moveRoutine = StartCoroutine(InterpolateToTarget(targetSpot));
+    }
+
+    private System.Collections.IEnumerator InterpolateToTarget(Transform targetSpot)
+    {
+        Vector3 startPos = cameraRig.position;
+        Quaternion startRot = cameraRig.rotation;
+
+        if (interpolationDuration <= 0f)
+        {
+            cameraRig.position = targetSpot.position;
+            cameraRig.rotation = targetSpot.rotation;
+            moveRoutine = null;
+            yield break;
+        }
+
+        float t = 0f;
+        while (t < interpolationDuration)
+        {
+            t += Time.deltaTime;
+            float k = Mathf.Clamp01(t / interpolationDuration);
+            cameraRig.position = Vector3.Lerp(startPos, targetSpot.position, k);
+            cameraRig.rotation = Quaternion.Slerp(startRot, targetSpot.rotation, k);
+            yield return null;
+        }
+
+        cameraRig.position = targetSpot.position;
+        cameraRig.rotation = targetSpot.rotation;
+        moveRoutine = null;
     }
 }

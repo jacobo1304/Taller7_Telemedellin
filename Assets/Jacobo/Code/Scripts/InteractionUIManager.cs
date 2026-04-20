@@ -106,6 +106,14 @@ public class InteractionUIManager : MonoBehaviour
         feedbackRoutine = StartCoroutine(FeedbackRoutine());
     }
 
+    public float GetFeedbackSequenceDuration()
+    {
+        float a = Mathf.Max(0f, fadeInDuration);
+        float b = Mathf.Max(0f, visibleDuration);
+        float c = Mathf.Max(0f, fadeOutDuration);
+        return a + b + c;
+    }
+
     public void SetHoldProgressForOption(int optionIndex, float normalizedProgress)
     {
         if (holdProgressFills == null || holdProgressFills.Length == 0)

@@ -6,15 +6,18 @@ public class GameManager : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private InteractionUIManager uiManager;
     [SerializeField] private AnswerHandler answerHandler;
-    [SerializeField] private CustomPoseDetector poseDetector;
+    [SerializeField] private CustomPoseDetector customPoseDetector;
 
     [Header("Flow")]
     [SerializeField] private List<InteractionActionBase> interactionOrder = new List<InteractionActionBase>();
     [SerializeField] private int startIndex = 0;
     [SerializeField] private bool autoAdvanceOnCorrect = true;
+    [SerializeField, Min(0f)] private float extraDelayAfterFeedback = 0f;
     [SerializeField] private bool onlyCurrentInteractionActive = true;
 
     private int currentIndex = -1;
+    private int queuedNextIndex = -1;
+    private Coroutine delayedAdvanceRoutine;
 
     private void Awake()
     {
@@ -28,9 +31,9 @@ public class GameManager : MonoBehaviour
             answerHandler = FindFirstObjectByType<AnswerHandler>();
         }
 
-        if (poseDetector == null)
+        if (customPoseDetector == null)
         {
-            poseDetector = FindFirstObjectByType<CustomPoseDetector>();
+            customPoseDetector = FindFirstObjectByType<CustomPoseDetector>();
         }
     }
 
@@ -39,6 +42,7 @@ public class GameManager : MonoBehaviour
         if (answerHandler != null)
         {
             answerHandler.onAnswerCorrect.AddListener(HandleCorrectAnswer);
+            answerHandler.onAnswerWrong.AddListener(HandleWrongAnswer);
         }
     }
 
@@ -58,6 +62,13 @@ public class GameManager : MonoBehaviour
         if (answerHandler != null)
         {
             answerHandler.onAnswerCorrect.RemoveListener(HandleCorrectAnswer);
+            answerHandler.onAnswerWrong.RemoveListener(HandleWrongAnswer);
+        }
+
+        if (delayedAdvanceRoutine != null)
+        {
+            StopCoroutine(delayedAdvanceRoutine);
+            delayedAdvanceRoutine = null;
         }
     }
 
@@ -71,12 +82,38 @@ public class GameManager : MonoBehaviour
         SetCurrentInteraction(currentIndex - 1);
     }
 
+    // Método público para futuro uso desde Director/Timeline.
+    // Si hay una interacción en cola, avanza a esa; si no, avanza a la siguiente inmediata.
+    public void ContinueAfterCinematic()
+    {
+        if (queuedNextIndex >= 0)
+        {
+            int target = queuedNextIndex;
+            queuedNextIndex = -1;
+            SetCurrentInteraction(target);
+            return;
+        }
+
+        if (currentIndex >= 0 && currentIndex < interactionOrder.Count - 1)
+        {
+            SetCurrentInteraction(currentIndex + 1);
+        }
+    }
+
     public void SetCurrentInteraction(int index)
     {
         if (interactionOrder.Count == 0)
         {
             return;
         }
+
+        if (delayedAdvanceRoutine != null)
+        {
+            StopCoroutine(delayedAdvanceRoutine);
+            delayedAdvanceRoutine = null;
+        }
+
+        queuedNextIndex = -1;
 
         int clampedIndex = Mathf.Clamp(index, 0, interactionOrder.Count - 1);
         currentIndex = clampedIndex;
@@ -100,28 +137,23 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        customPoseDetector?.SetCurrentInteraction(current);
         current.PresentToUI(uiManager);
-        
-        // Setup UI with correct pose order
-        if (uiManager != null)
-        {
-            uiManager.SetupPoseUI(current);
-        }
-        
-        // Assign interaction to pose detector
-        if (poseDetector != null)
-        {
-            poseDetector.SetCurrentInteraction(current);
-        }
+        uiManager?.ClearHoldProgress();
     }
 
     private void HandleCorrectAnswer(InteractionType type)
     {
-        if (!autoAdvanceOnCorrect)
-        {
-            return;
-        }
+        HandleAnyAnswer(type);
+    }
 
+    private void HandleWrongAnswer(InteractionType type)
+    {
+        HandleAnyAnswer(type);
+    }
+
+    private void HandleAnyAnswer(InteractionType type)
+    {
         if (currentIndex < 0 || currentIndex >= interactionOrder.Count)
         {
             return;
@@ -135,7 +167,42 @@ public class GameManager : MonoBehaviour
 
         if (current.InteractionType == type && currentIndex < interactionOrder.Count - 1)
         {
-            SetCurrentInteraction(currentIndex + 1);
+            if (queuedNextIndex >= 0)
+            {
+                return;
+            }
+
+            queuedNextIndex = currentIndex + 1;
+            customPoseDetector?.RestartDetectionForCurrentInteraction();
+
+            if (!autoAdvanceOnCorrect)
+            {
+                return;
+            }
+
+            if (delayedAdvanceRoutine != null)
+            {
+                StopCoroutine(delayedAdvanceRoutine);
+            }
+
+            delayedAdvanceRoutine = StartCoroutine(AdvanceAfterFeedbackRoutine());
         }
+    }
+
+    private System.Collections.IEnumerator AdvanceAfterFeedbackRoutine()
+    {
+        float waitTime = extraDelayAfterFeedback;
+        if (uiManager != null)
+        {
+            waitTime += uiManager.GetFeedbackSequenceDuration();
+        }
+
+        if (waitTime > 0f)
+        {
+            yield return new WaitForSeconds(waitTime);
+        }
+
+        ContinueAfterCinematic();
+        delayedAdvanceRoutine = null;
     }
 }

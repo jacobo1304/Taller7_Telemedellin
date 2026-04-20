@@ -46,6 +46,8 @@ public class PoseData : ScriptableObject
     [Header("Pose Information")]
     public string poseName;
     public Sprite poseImage;
+    [Tooltip("Margen permitido en grados para esta pose. Si <= 0, el detector usará su margen por defecto.")]
+    public float marginDegrees = 20f;
 
     [Header("Pose Matching Conditions")]
     public List<JointAngleCondition> conditions = new List<JointAngleCondition>();

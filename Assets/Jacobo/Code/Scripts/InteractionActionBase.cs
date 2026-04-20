@@ -11,8 +11,8 @@ public abstract class InteractionActionBase : MonoBehaviour
     [SerializeField] private string questionText;
 
     [Header("Opciones")]
-    // La interacción define cuál es la opción correcta.
-    // Los demás índices se derivan automáticamente.
+    [Tooltip("Índice de la opción correcta (0,1,2...). Las incorrectas se derivan automáticamente.")]
+    [SerializeField] private int winningPoseOptionIndex = 0;
 
     [Header("Mensajes")]
     [TextArea(2, 4)] [SerializeField] private string correctMessage;
@@ -61,6 +61,7 @@ public abstract class InteractionActionBase : MonoBehaviour
 
         if (selectedOptionIndex == resolvedCorrectIndex)
         {
+            ApplyCorrectEffect();
             onCorrect?.Invoke();
             uiManager?.ShowFeedback(correctMessage);
             return true;
@@ -68,6 +69,7 @@ public abstract class InteractionActionBase : MonoBehaviour
 
         if (selectedOptionIndex == resolvedWrong1Index)
         {
+            ApplyWrongEffect1();
             onWrong1?.Invoke();
             uiManager?.ShowFeedback(wrongMessage1);
             return false;
@@ -75,11 +77,13 @@ public abstract class InteractionActionBase : MonoBehaviour
 
         if (selectedOptionIndex == resolvedWrong2Index)
         {
+            ApplyWrongEffect2();
             onWrong2?.Invoke();
             uiManager?.ShowFeedback(wrongMessage2);
             return false;
         }
 
+        ApplyWrongEffect2();
         onWrong2?.Invoke();
         uiManager?.ShowFeedback(wrongMessage2);
         return false;
@@ -89,10 +93,10 @@ public abstract class InteractionActionBase : MonoBehaviour
     {
         if (PoseOptionsCount <= 0)
         {
-            return 0;
+            return Mathf.Max(0, winningPoseOptionIndex);
         }
 
-        return 0;
+        return Mathf.Clamp(winningPoseOptionIndex, 0, PoseOptionsCount - 1);
     }
 
     protected int GetWrongOptionIndex(int wrongNumber)
@@ -121,7 +125,7 @@ public abstract class InteractionActionBase : MonoBehaviour
         return -1;
     }
 
-    public void PreviewOption(int selectedOptionIndex)
+    public virtual void PreviewOption(int selectedOptionIndex)
     {
         int resolvedCorrectIndex = ResolveCorrectOptionIndex();
         int resolvedWrong1Index = WrongOption1Index;

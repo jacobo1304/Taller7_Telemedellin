@@ -149,4 +149,32 @@ public class AnswerHandler : MonoBehaviour
 
         SubmitAnswer(parsedType, isCorrect);
     }
+
+    public void PreviewSelection(InteractionType interactionType, int selectedOptionIndex)
+    {
+        if (!actionByInteractionType.TryGetValue(interactionType, out var action))
+        {
+            return;
+        }
+
+        action.PreviewOption(selectedOptionIndex);
+    }
+
+    public void ClearPreview(InteractionType interactionType)
+    {
+        if (!actionByInteractionType.TryGetValue(interactionType, out var action))
+        {
+            return;
+        }
+
+        action.ResetHoldEffects();
+    }
+
+    public void ClearAllPreviews()
+    {
+        foreach (var pair in actionByInteractionType)
+        {
+            pair.Value?.ResetHoldEffects();
+        }
+    }
 }
