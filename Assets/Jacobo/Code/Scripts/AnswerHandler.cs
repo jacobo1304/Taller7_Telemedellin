@@ -25,8 +25,19 @@ public class AnswerHandler : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private bool debugLogs = true;
+    [SerializeField] private bool inputLocked = false;
 
     private readonly Dictionary<InteractionType, InteractionActionBase> actionByInteractionType = new Dictionary<InteractionType, InteractionActionBase>();
+
+    public void SetInputLocked(bool locked)
+    {
+        inputLocked = locked;
+
+        if (debugLogs)
+        {
+            Debug.Log($"{nameof(AnswerHandler)}: inputLocked={(inputLocked ? "TRUE" : "FALSE")}", this);
+        }
+    }
 
     private void Awake()
     {
@@ -71,6 +82,15 @@ public class AnswerHandler : MonoBehaviour
     // Nuevo flujo: recibe cuál opción (0,1,2) eligió el usuario.
     public void SubmitAnswer(InteractionType interactionType, int selectedOptionIndex)
     {
+        if (inputLocked)
+        {
+            if (debugLogs)
+            {
+                Debug.Log($"{nameof(AnswerHandler)}: Input bloqueado. Ignorando respuesta para '{interactionType}' opción {selectedOptionIndex}.", this);
+            }
+            return;
+        }
+
         if (!actionByInteractionType.TryGetValue(interactionType, out var action))
         {
             if (debugLogs)

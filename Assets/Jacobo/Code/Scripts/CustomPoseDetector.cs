@@ -55,6 +55,7 @@ public class CustomPoseDetector : MonoBehaviour
     private bool pendingFrameValid;
     private float[] holdTimers = new float[0];
     private bool[] holdEventsFired = new bool[0];
+    private bool responseLocked = false;
 
     private void Start()
     {
@@ -84,6 +85,7 @@ public class CustomPoseDetector : MonoBehaviour
 
     public void SetCurrentInteraction(InteractionActionBase interaction)
     {
+        responseLocked = false;
         currentInteraction = interaction;
         warnedNoPosesInInteraction = false;
         ResetAllHolds();
@@ -95,15 +97,35 @@ public class CustomPoseDetector : MonoBehaviour
         }
     }
 
-    // Public hook for flow controllers (e.g., GameManager) to keep detection responsive
-    // while feedback/cinematics are playing in the same interaction.
-    public void RestartDetectionForCurrentInteraction()
+    public void SetResponseLock(bool locked)
     {
-        ResetAllHolds();
+        responseLocked = locked;
+
+        // While locked we stop hold visuals, but we do not clear previews/effects,
+        // so selected answer remains frozen until next interaction.
+        if (responseLocked)
+        {
+            for (int i = 0; i < holdTimers.Length; i++)
+            {
+                holdTimers[i] = 0f;
+                holdEventsFired[i] = false;
+            }
+
+            uiManager?.ClearHoldProgress();
+        }
     }
 
     private void Update()
     {
+        if (responseLocked)
+        {
+            lock (pendingFrameLock)
+            {
+                pendingFrameAvailable = false;
+            }
+            return;
+        }
+
         List<Vector3> frameCopy = null;
         bool hasFrame = false;
         bool isValid = false;
@@ -311,6 +333,7 @@ public class CustomPoseDetector : MonoBehaviour
                 {
                     holdEventsFired[poseIndex] = true;
                     ConfirmPoseSelection(poseIndex, pose);
+                    return;
                 }
             }
             else

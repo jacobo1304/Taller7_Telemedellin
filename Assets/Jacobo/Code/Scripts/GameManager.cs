@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        answerHandler?.SetInputLocked(false);
+        customPoseDetector?.SetResponseLock(false);
         SetCurrentInteraction(startIndex);
     }
 
@@ -137,6 +139,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        answerHandler?.SetInputLocked(false);
+        customPoseDetector?.SetResponseLock(false);
         customPoseDetector?.SetCurrentInteraction(current);
         current.PresentToUI(uiManager);
         uiManager?.ClearHoldProgress();
@@ -173,7 +177,8 @@ public class GameManager : MonoBehaviour
             }
 
             queuedNextIndex = currentIndex + 1;
-            customPoseDetector?.RestartDetectionForCurrentInteraction();
+            answerHandler?.SetInputLocked(true);
+            customPoseDetector?.SetResponseLock(true);
 
             if (!autoAdvanceOnCorrect)
             {
