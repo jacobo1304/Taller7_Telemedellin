@@ -30,6 +30,7 @@ public class CinematicManager : MonoBehaviour
     [Header("Events")]
     [SerializeField] private IntEvent onCinematicChanged;
 
+    [SerializeField] bool debugLogs = false;    
     private int currentIndex = -1;
 
     public int CurrentIndex => currentIndex;
@@ -38,6 +39,10 @@ public class CinematicManager : MonoBehaviour
     {
         if (cinematics.Count == 0)
         {
+            if (debugLogs)
+            {
+                Debug.LogWarning($"{nameof(CinematicManager)}: No hay cinemáticas configuradas.", this);
+            }
             return;
         }
 
@@ -51,6 +56,10 @@ public class CinematicManager : MonoBehaviour
 
     public void PlayCurrent()
     {
+        if(debugLogs)
+        {
+            Debug.Log($"{nameof(CinematicManager)}: PlayCurrent called. CurrentIndex={currentIndex}", this);
+        }
         var entry = GetCurrent();
         if (entry == null)
         {
@@ -58,7 +67,45 @@ public class CinematicManager : MonoBehaviour
         }
 
         ApplyCameraPriority(currentIndex);
+        if (debugLogs)
+        {
+            Debug.Log($"{nameof(CinematicManager)}: Playing current director={(entry.director == null ? "null" : entry.director.name)}", this);
+        }
         entry.director?.Play();
+    }
+
+    public void ReplayCurrent()
+    {
+        var entry = GetCurrent();
+        if (entry == null)
+        {
+            if (debugLogs)
+            {
+                Debug.LogWarning($"{nameof(CinematicManager)}: ReplayCurrent ignorado. Current entry es null (index={currentIndex}).", this);
+            }
+            return;
+        }
+
+        if (entry.director == null)
+        {
+            if (debugLogs)
+            {
+                Debug.LogWarning($"{nameof(CinematicManager)}: ReplayCurrent ignorado. Director null en index={currentIndex}.", this);
+            }
+            return;
+        }
+
+        if (debugLogs)
+        {
+            Debug.Log($"{nameof(CinematicManager)}: ReplayCurrent called for director={entry.director.name} at index={currentIndex}", this);
+        }
+
+        ApplyCameraPriority(currentIndex);
+        entry.director.gameObject.SetActive(true);
+        entry.director.Stop();
+        entry.director.time = 0d;
+        entry.director.Evaluate();
+        entry.director.Play();
     }
 
     public void StopCurrent()
@@ -99,8 +146,16 @@ public class CinematicManager : MonoBehaviour
 
     public void PlayNext()
     {
+        if (debugLogs)
+        {
+            Debug.Log($"{nameof(CinematicManager)}: PlayNext called. CurrentIndex={currentIndex}, CinematicsCount={cinematics.Count}, activeInHierarchy={gameObject.activeInHierarchy}", this);
+        }
         if (cinematics.Count == 0)
         {
+            if (debugLogs)
+            {
+                Debug.LogWarning($"{nameof(CinematicManager)}: PlayNext ignorado porque no hay cinemáticas.", this);
+            }
             return;
         }
 
@@ -187,7 +242,16 @@ public class CinematicManager : MonoBehaviour
     {
         if (nextIndex < 0 || nextIndex >= cinematics.Count)
         {
+            if (debugLogs)
+            {
+                Debug.LogWarning($"{nameof(CinematicManager)}: nextIndex fuera de rango ({nextIndex}).", this);
+            }
             return;
+        }
+
+        if (debugLogs)
+        {
+            Debug.Log($"{nameof(CinematicManager)}: SetCurrentIndex from {currentIndex} to {nextIndex}. playNew={playNew}", this);
         }
 
         int previousIndex = currentIndex;
@@ -214,6 +278,10 @@ public class CinematicManager : MonoBehaviour
         var current = GetCurrent();
         if (current == null)
         {
+            if (debugLogs)
+            {
+                Debug.LogWarning($"{nameof(CinematicManager)}: CinematicEntry null en índice {currentIndex}.", this);
+            }
             return;
         }
 
@@ -221,12 +289,20 @@ public class CinematicManager : MonoBehaviour
         {
             current.director.gameObject.SetActive(true);
         }
+        else if (debugLogs)
+        {
+            Debug.LogWarning($"{nameof(CinematicManager)}: Director null en índice {currentIndex}.", this);
+        }
 
         ApplyCameraPriority(currentIndex);
         onCinematicChanged?.Invoke(currentIndex);
 
         if (playNew)
         {
+            if (debugLogs)
+            {
+                Debug.Log($"{nameof(CinematicManager)}: Play director={(current.director == null ? "null" : current.director.name)} at index={currentIndex}", this);
+            }
             current.director?.Play();
         }
     }

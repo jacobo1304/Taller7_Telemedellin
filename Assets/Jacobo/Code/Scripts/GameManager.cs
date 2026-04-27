@@ -7,10 +7,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private InteractionUIManager uiManager;
     [SerializeField] private AnswerHandler answerHandler;
     [SerializeField] private CustomPoseDetector customPoseDetector;
+    [SerializeField] private GameObject panelPregunta;
 
     [Header("Flow")]
     [SerializeField] private List<InteractionActionBase> interactionOrder = new List<InteractionActionBase>();
     [SerializeField] private int startIndex = 0;
+    [SerializeField] private bool waitForStartInteractionsSignal = true;
     [SerializeField] private bool autoAdvanceOnCorrect = true;
     [SerializeField, Min(0f)] private float extraDelayAfterFeedback = 0f;
     [SerializeField] private bool onlyCurrentInteractionActive = true;
@@ -18,6 +20,7 @@ public class GameManager : MonoBehaviour
     private int currentIndex = -1;
     private int queuedNextIndex = -1;
     private Coroutine delayedAdvanceRoutine;
+    private bool interactionsStarted = false;
 
     private void Awake()
     {
@@ -54,9 +57,12 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        answerHandler?.SetInputLocked(false);
-        customPoseDetector?.SetResponseLock(false);
-        SetCurrentInteraction(startIndex);
+        PrepareWaitingState();
+
+        if (!waitForStartInteractionsSignal)
+        {
+            StartInteractions();
+        }
     }
 
     private void OnDisable()
@@ -76,7 +82,13 @@ public class GameManager : MonoBehaviour
 
     public void NextInteraction()
     {
-        SetCurrentInteraction(currentIndex + 1);
+        if (!interactionsStarted)
+        {
+            Debug.LogWarning($"{nameof(GameManager)}: NextInteraction llamado antes de StartInteractions().", this);
+            return;
+        }
+
+        ContinueAfterCinematic();
     }
 
     public void PreviousInteraction()
@@ -88,6 +100,12 @@ public class GameManager : MonoBehaviour
     // Si hay una interacción en cola, avanza a esa; si no, avanza a la siguiente inmediata.
     public void ContinueAfterCinematic()
     {
+        if (!interactionsStarted)
+        {
+            Debug.LogWarning($"{nameof(GameManager)}: ContinueAfterCinematic llamado antes de StartInteractions().", this);
+            return;
+        }
+
         if (queuedNextIndex >= 0)
         {
             int target = queuedNextIndex;
@@ -104,6 +122,12 @@ public class GameManager : MonoBehaviour
 
     public void SetCurrentInteraction(int index)
     {
+        if (!interactionsStarted)
+        {
+            Debug.LogWarning($"{nameof(GameManager)}: SetCurrentInteraction bloqueado hasta StartInteractions().", this);
+            return;
+        }
+
         if (interactionOrder.Count == 0)
         {
             return;
@@ -146,6 +170,45 @@ public class GameManager : MonoBehaviour
         uiManager?.ClearHoldProgress();
     }
 
+    // Llamar desde Signal/Director para iniciar el flujo de interacciones.
+    public void StartInteractions()
+    {
+        if (interactionOrder.Count == 0)
+        {
+            Debug.LogWarning($"{nameof(GameManager)}: No hay interacciones configuradas en 'interactionOrder'.", this);
+            return;
+        }
+
+        if (interactionsStarted)
+        {
+            return;
+        }
+
+        interactionsStarted = true;
+        if (panelPregunta != null)
+        {
+            panelPregunta.SetActive(true);
+        }
+        int clampedStart = Mathf.Clamp(startIndex, 0, interactionOrder.Count - 1);
+        SetCurrentInteraction(clampedStart);
+    }
+
+    // Utilidad para reiniciar desde cinemática si necesitas re-jugar el flujo.
+    public void ResetAndWaitForStartSignal()
+    {
+        interactionsStarted = false;
+        currentIndex = -1;
+        queuedNextIndex = -1;
+
+        if (delayedAdvanceRoutine != null)
+        {
+            StopCoroutine(delayedAdvanceRoutine);
+            delayedAdvanceRoutine = null;
+        }
+
+        PrepareWaitingState();
+    }
+
     private void HandleCorrectAnswer(InteractionType type)
     {
         HandleAnyAnswer(type);
@@ -158,6 +221,11 @@ public class GameManager : MonoBehaviour
 
     private void HandleAnyAnswer(InteractionType type)
     {
+        if (!interactionsStarted)
+        {
+            return;
+        }
+
         if (currentIndex < 0 || currentIndex >= interactionOrder.Count)
         {
             return;
@@ -209,5 +277,30 @@ public class GameManager : MonoBehaviour
 
         ContinueAfterCinematic();
         delayedAdvanceRoutine = null;
+    }
+
+    private void PrepareWaitingState()
+    {
+        answerHandler?.SetInputLocked(true);
+        customPoseDetector?.SetResponseLock(true);
+
+        if (panelPregunta != null)
+        {
+            panelPregunta.SetActive(false);
+        }
+
+        if (onlyCurrentInteractionActive)
+        {
+            for (int i = 0; i < interactionOrder.Count; i++)
+            {
+                InteractionActionBase item = interactionOrder[i];
+                if (item != null)
+                {
+                    item.gameObject.SetActive(false);
+                }
+            }
+        }
+
+        uiManager?.ClearHoldProgress();
     }
 }
