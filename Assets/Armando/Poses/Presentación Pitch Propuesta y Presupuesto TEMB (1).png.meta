@@ -1,0 +1,442 @@
+fileFormatVersion: 2
+guid: 41c6790ed0d966345b142197b1b24431
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_0"
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 665
+        width: 144
+        height: 222
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11c6efb2afbb22b428f773234a3a302a
+      internalID: -954303487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_1"
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 655
+        width: 210
+        height: 209
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a388e36cf5a64204881ed7114a1f6684
+      internalID: -1442886423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_2"
+      rect:
+        serializedVersion: 2
+        x: 755
+        y: 444
+        width: 100
+        height: 224
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8113b307640f34d47a4c5a30a068a0a9
+      internalID: -543373753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_3"
+      rect:
+        serializedVersion: 2
+        x: 966
+        y: 644
+        width: 150
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8be151077582c204996ce240adcf0f44
+      internalID: -1105211704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_4"
+      rect:
+        serializedVersion: 2
+        x: 1308
+        y: 641
+        width: 151
+        height: 198
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 101f4533013a2334f96085a6309b57b5
+      internalID: 2054553517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_5"
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 322
+        width: 220
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b78aef0ff4e9fb548802d19f83c4bcb7
+      internalID: 1814082912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_6"
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 331
+        width: 156
+        height: 185
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c2e8824281eb3a47953826617f4c6ba
+      internalID: -827250083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_7"
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 329
+        width: 145
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 480a091b80b2f1648a2db258fb58424a
+      internalID: 798111339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_8"
+      rect:
+        serializedVersion: 2
+        x: 1343
+        y: 357
+        width: 141
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6863af6feee6884eb1d8da7876d049b
+      internalID: -405516120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_9"
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 35
+        width: 142
+        height: 200
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35740c7b20fb8c1408a967a06f8390a8
+      internalID: -267489013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_10"
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 38
+        width: 128
+        height: 210
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 954a81bce24474e49bdef9f4fbb1ace3
+      internalID: 1238588577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_11"
+      rect:
+        serializedVersion: 2
+        x: 959
+        y: 42
+        width: 182
+        height: 213
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a23e0457ca6935479126312406bccd9
+      internalID: 1794791140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_12"
+      rect:
+        serializedVersion: 2
+        x: 1302
+        y: 36
+        width: 141
+        height: 219
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cffeeff097f8cd742ab7027284f0edbe
+      internalID: -2073659073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 46bba022b8d670c458c1e5072198a708
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_0": -954303487
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_1": -1442886423
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_10": 1238588577
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_11": 1794791140
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_12": -2073659073
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_2": -543373753
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_3": -1105211704
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_4": 2054553517
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_5": 1814082912
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_6": -827250083
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_7": 798111339
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_8": -405516120
+      "Presentaci\xF3n Pitch Propuesta y Presupuesto TEMB (1)_9": -267489013
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
