@@ -15,11 +15,24 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
   {
     [SerializeField] private PoseLandmarkerResultAnnotationController _poseLandmarkerResultAnnotationController;
     [SerializeField] private CustomPoseDetector _customPoseDetector;
+    [SerializeField] private SimplePoseListener _simplePoseListener;
+    [SerializeField] private TwoPoseListener _twoPoseListener;
+    [SerializeField] private bool _autoResolveListenersOnStart = true;
     [SerializeField] private bool _debugPoseForwarding = true;
+    [SerializeField] private bool _debugSimpleForwarding = true;
+    [SerializeField] private bool _debugTwoPoseForwarding = true;
 
     private Experimental.TextureFramePool _textureFramePool;
 
     public readonly PoseLandmarkDetectionConfig config = new PoseLandmarkDetectionConfig();
+
+    private void Awake()
+    {
+      if (_autoResolveListenersOnStart)
+      {
+        ResolveListenersOnMainThread();
+      }
+    }
 
     public override void Stop()
     {
@@ -30,6 +43,11 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
 
     protected override IEnumerator Run()
     {
+      if (_autoResolveListenersOnStart)
+      {
+        ResolveListenersOnMainThread();
+      }
+
       Debug.Log($"Delegate = {config.Delegate}");
       Debug.Log($"Image Read Mode = {config.ImageReadMode}");
       Debug.Log($"Model = {config.ModelName}");
@@ -136,7 +154,7 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
             if (taskApi.TryDetect(image, imageProcessingOptions, ref result))
             {
               _poseLandmarkerResultAnnotationController.DrawNow(result);
-              ForwardToCustomPoseDetector(result);
+              ForwardToPoseListeners(result);
             }
             else
             {
@@ -148,7 +166,7 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
             if (taskApi.TryDetectForVideo(image, GetCurrentTimestampMillisec(), imageProcessingOptions, ref result))
             {
               _poseLandmarkerResultAnnotationController.DrawNow(result);
-              ForwardToCustomPoseDetector(result);
+              ForwardToPoseListeners(result);
             }
             else
             {
@@ -166,23 +184,80 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
     private void OnPoseLandmarkDetectionOutput(PoseLandmarkerResult result, Image image, long timestamp)
     {
       _poseLandmarkerResultAnnotationController.DrawLater(result);
-      ForwardToCustomPoseDetector(result);
+      ForwardToPoseListeners(result);
       DisposeAllMasks(result);
     }
 
-    private void ForwardToCustomPoseDetector(PoseLandmarkerResult result)
+    private void ForwardToPoseListeners(PoseLandmarkerResult result)
+    {
+      if (_customPoseDetector != null)
+      {
+        _customPoseDetector.ProcessLandmarksList(result.poseLandmarks);
+      }
+      else if (_debugPoseForwarding)
+      {
+        Debug.LogWarning($"{nameof(PoseLandmarkerRunner)}: CustomPoseDetector is not assigned in Runner.", this);
+        _debugPoseForwarding = false;
+      }
+
+      if (_simplePoseListener == null)
+      {
+        if (_debugSimpleForwarding)
+        {
+          Debug.LogWarning($"{nameof(PoseLandmarkerRunner)}: SimplePoseListener is not assigned in Runner.", this);
+          _debugSimpleForwarding = false;
+        }
+      }
+      else
+      {
+        _simplePoseListener.ProcessLandmarksList(result.poseLandmarks);
+      }
+
+      if (_twoPoseListener == null)
+      {
+        if (_debugTwoPoseForwarding)
+        {
+          Debug.LogWarning($"{nameof(PoseLandmarkerRunner)}: TwoPoseListener is not assigned in Runner.", this);
+          _debugTwoPoseForwarding = false;
+        }
+      }
+      else
+      {
+        _twoPoseListener.ProcessLandmarksList(result.poseLandmarks);
+      }
+    }
+
+    private void ResolveListenersOnMainThread()
     {
       if (_customPoseDetector == null)
       {
-        if (_debugPoseForwarding)
-        {
-          Debug.LogWarning($"{nameof(PoseLandmarkerRunner)}: CustomPoseDetector is not assigned in Runner.", this);
-          _debugPoseForwarding = false;
-        }
-        return;
+        _customPoseDetector = FindFirstObjectByType<CustomPoseDetector>();
       }
 
-      _customPoseDetector.ProcessLandmarksList(result.poseLandmarks);
+      if (_simplePoseListener == null)
+      {
+        _simplePoseListener = FindFirstObjectByType<SimplePoseListener>();
+      }
+
+      if (_twoPoseListener == null)
+      {
+        _twoPoseListener = FindFirstObjectByType<TwoPoseListener>();
+      }
+    }
+
+    public void SetCustomPoseDetector(CustomPoseDetector detector)
+    {
+      _customPoseDetector = detector;
+    }
+
+    public void SetSimplePoseListener(SimplePoseListener listener)
+    {
+      _simplePoseListener = listener;
+    }
+
+    public void SetTwoPoseListener(TwoPoseListener listener)
+    {
+      _twoPoseListener = listener;
     }
 
     private void DisposeAllMasks(PoseLandmarkerResult result)

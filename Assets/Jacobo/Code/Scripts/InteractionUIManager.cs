@@ -108,6 +108,11 @@ public class InteractionUIManager : MonoBehaviour
 
     public float GetFeedbackSequenceDuration()
     {
+        if (feedbackRoutine == null)
+        {
+            return 0f;
+        }
+
         float a = Mathf.Max(0f, fadeInDuration);
         float b = Mathf.Max(0f, visibleDuration);
         float c = Mathf.Max(0f, fadeOutDuration);

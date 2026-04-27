@@ -1433,7 +1433,9 @@ MonoBehaviour:
   runningMode: 0
   _poseLandmarkerResultAnnotationController: {fileID: 539208304}
   _customPoseDetector: {fileID: 497750067}
+  _simplePoseListener: {fileID: 0}
   _debugPoseForwarding: 1
+  _debugSimpleForwarding: 1
 --- !u!4 &105487739
 Transform:
   m_ObjectHideFlags: 0
@@ -9272,7 +9274,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1218, y: -547.1034}
+  m_AnchoredPosition: {x: 1218, y: -423.50598}
   m_SizeDelta: {x: 300, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &644600861
@@ -9947,7 +9949,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1583, y: -547.1034}
+  m_AnchoredPosition: {x: 1583, y: -423.50598}
   m_SizeDelta: {x: 300, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &702736827
@@ -17254,7 +17256,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1334578912
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21770,7 +21772,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 853, y: -547.1034}
+  m_AnchoredPosition: {x: 853, y: -423.50598}
   m_SizeDelta: {x: 300, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1657535652
@@ -27971,7 +27973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571076842583978906, guid: 140d1d2c406167c50819d89f86d9092e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8571076842583978917, guid: 140d1d2c406167c50819d89f86d9092e, type: 3}
       propertyPath: m_AnchorMax.x

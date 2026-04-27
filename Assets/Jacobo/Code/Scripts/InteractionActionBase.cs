@@ -40,7 +40,7 @@ public abstract class InteractionActionBase : MonoBehaviour
             return;
         }
 
-        uiManager.SetQuestion(questionText);
+        uiManager.SetQuestion(questionText ?? string.Empty);
 
         if (PoseOptions == null || PoseOptions.Length == 0)
         {
@@ -69,7 +69,7 @@ public abstract class InteractionActionBase : MonoBehaviour
         {
             ApplyCorrectEffect();
             onCorrect?.Invoke();
-            uiManager?.ShowFeedback(correctMessage);
+            ShowFeedbackIfAny(uiManager, correctMessage);
             return true;
         }
 
@@ -77,7 +77,7 @@ public abstract class InteractionActionBase : MonoBehaviour
         {
             ApplyWrongEffect1();
             onWrong1?.Invoke();
-            uiManager?.ShowFeedback(wrongMessage1);
+            ShowFeedbackIfAny(uiManager, wrongMessage1);
             return false;
         }
 
@@ -85,14 +85,24 @@ public abstract class InteractionActionBase : MonoBehaviour
         {
             ApplyWrongEffect2();
             onWrong2?.Invoke();
-            uiManager?.ShowFeedback(wrongMessage2);
+            ShowFeedbackIfAny(uiManager, wrongMessage2);
             return false;
         }
 
         ApplyWrongEffect2();
         onWrong2?.Invoke();
-        uiManager?.ShowFeedback(wrongMessage2);
+        ShowFeedbackIfAny(uiManager, wrongMessage2);
         return false;
+    }
+
+    private static void ShowFeedbackIfAny(InteractionUIManager uiManager, string message)
+    {
+        if (uiManager == null || string.IsNullOrWhiteSpace(message))
+        {
+            return;
+        }
+
+        uiManager.ShowFeedback(message);
     }
 
     protected virtual int ResolveCorrectOptionIndex()
