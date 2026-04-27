@@ -2,31 +2,30 @@ using UnityEngine;
 
 public class CameraCrewInteractionAction : InteractionActionBase
 {
-    [Header("Cámara")]
-    [SerializeField] private Transform cameraRig;
-    [Tooltip("Opciones de cámara por índice de pose (0,1,2)")]
-    [SerializeField] private Transform[] cameraOptionSpots = new Transform[3];
-    [SerializeField] private float interpolationDuration = 0.35f;
+    [Header("Cámara (Cinemachine)")]
+    [Tooltip("Opciones de cámara por índice de pose (0,1,2,3).")]
+    [SerializeField] private MonoBehaviour[] cameraOptionVirtualCameras = new MonoBehaviour[4];
+    [SerializeField] private int activePriority = 40;
+    [SerializeField] private int inactivePriority = 0;
 
     [Header("Reset (opcional)")]
     [SerializeField] private bool resetToDefaultOnNoPose = false;
-    [SerializeField] private Transform defaultSpot;
+    [SerializeField] private MonoBehaviour defaultVirtualCamera;
 
-    private Coroutine moveRoutine;
-    private bool hasPendingMove;
-    private Transform pendingTargetSpot;
+    private bool hasPendingSwitch;
+    private int pendingOptionIndex = -1;
 
     private void OnEnable()
     {
-        if (!hasPendingMove || pendingTargetSpot == null)
+        if (!hasPendingSwitch)
         {
             return;
         }
 
-        Transform target = pendingTargetSpot;
-        hasPendingMove = false;
-        pendingTargetSpot = null;
-        MoveRigTo(target);
+        int optionIndex = pendingOptionIndex;
+        hasPendingSwitch = false;
+        pendingOptionIndex = -1;
+        SetActiveCameraForOption(optionIndex);
     }
 
     public override void ResetHoldEffects()
@@ -36,86 +35,155 @@ public class CameraCrewInteractionAction : InteractionActionBase
             return;
         }
 
-        MoveRigTo(defaultSpot);
+        SetOnlyActiveCamera(defaultVirtualCamera);
     }
 
     public override void PreviewOption(int selectedOptionIndex)
     {
-        MoveRigToOption(selectedOptionIndex);
+        SetActiveCameraForOption(selectedOptionIndex);
     }
 
     protected override void ApplyCorrectEffect()
     {
-        MoveRigToOption(CorrectOptionIndex);
+        SetActiveCameraForOption(CorrectOptionIndex);
     }
 
     protected override void ApplyWrongEffect1()
     {
-        MoveRigToOption(WrongOption1Index);
+        SetActiveCameraForOption(WrongOption1Index);
     }
 
     protected override void ApplyWrongEffect2()
     {
-        MoveRigToOption(WrongOption2Index);
+        SetActiveCameraForOption(WrongOption2Index);
     }
 
-    private void MoveRigToOption(int optionIndex)
+    private void SetActiveCameraForOption(int optionIndex)
     {
-        if (cameraOptionSpots == null || optionIndex < 0 || optionIndex >= cameraOptionSpots.Length)
+        if (cameraOptionVirtualCameras == null || optionIndex < 0 || optionIndex >= cameraOptionVirtualCameras.Length)
         {
             return;
         }
 
-        MoveRigTo(cameraOptionSpots[optionIndex]);
-    }
-
-    private void MoveRigTo(Transform targetSpot)
-    {
-        if (cameraRig == null || targetSpot == null)
+        MonoBehaviour selectedCamera = cameraOptionVirtualCameras[optionIndex];
+        if (selectedCamera == null)
         {
             return;
         }
 
         if (!isActiveAndEnabled || !gameObject.activeInHierarchy)
         {
-            hasPendingMove = true;
-            pendingTargetSpot = targetSpot;
+            hasPendingSwitch = true;
+            pendingOptionIndex = optionIndex;
             return;
         }
 
-        if (moveRoutine != null)
-        {
-            StopCoroutine(moveRoutine);
-        }
-
-        moveRoutine = StartCoroutine(InterpolateToTarget(targetSpot));
+        SetOnlyActiveCamera(selectedCamera);
     }
 
-    private System.Collections.IEnumerator InterpolateToTarget(Transform targetSpot)
+    private void SetOnlyActiveCamera(MonoBehaviour selectedCamera)
     {
-        Vector3 startPos = cameraRig.position;
-        Quaternion startRot = cameraRig.rotation;
-
-        if (interpolationDuration <= 0f)
+        if (selectedCamera == null)
         {
-            cameraRig.position = targetSpot.position;
-            cameraRig.rotation = targetSpot.rotation;
-            moveRoutine = null;
-            yield break;
+            return;
         }
 
-        float t = 0f;
-        while (t < interpolationDuration)
+        if (defaultVirtualCamera != null)
         {
-            t += Time.deltaTime;
-            float k = Mathf.Clamp01(t / interpolationDuration);
-            cameraRig.position = Vector3.Lerp(startPos, targetSpot.position, k);
-            cameraRig.rotation = Quaternion.Slerp(startRot, targetSpot.rotation, k);
-            yield return null;
+            SetCameraPriority(defaultVirtualCamera, selectedCamera == defaultVirtualCamera ? activePriority : inactivePriority);
         }
 
-        cameraRig.position = targetSpot.position;
-        cameraRig.rotation = targetSpot.rotation;
-        moveRoutine = null;
+        for (int i = 0; i < cameraOptionVirtualCameras.Length; i++)
+        {
+            MonoBehaviour cam = cameraOptionVirtualCameras[i];
+            if (cam == null)
+            {
+                continue;
+            }
+
+            int targetPriority = cam == selectedCamera ? activePriority : inactivePriority;
+            SetCameraPriority(cam, targetPriority);
+        }
+    }
+
+    private static void SetCameraPriority(MonoBehaviour cameraComponent, int priority)
+    {
+        if (cameraComponent == null)
+        {
+            return;
+        }
+
+        var type = cameraComponent.GetType();
+
+        var priorityProp = type.GetProperty("Priority");
+        if (priorityProp != null && priorityProp.CanWrite)
+        {
+            if (TrySetPriorityValue(priorityProp.PropertyType, priorityProp.GetValue(cameraComponent), priority, out object updatedPropValue))
+            {
+                priorityProp.SetValue(cameraComponent, updatedPropValue);
+                return;
+            }
+        }
+
+        var priorityField = type.GetField("m_Priority");
+        if (priorityField != null)
+        {
+            if (TrySetPriorityValue(priorityField.FieldType, priorityField.GetValue(cameraComponent), priority, out object updatedFieldValue))
+            {
+                priorityField.SetValue(cameraComponent, updatedFieldValue);
+                return;
+            }
+        }
+
+        var directPriorityField = type.GetField("Priority");
+        if (directPriorityField != null)
+        {
+            if (TrySetPriorityValue(directPriorityField.FieldType, directPriorityField.GetValue(cameraComponent), priority, out object updatedDirectFieldValue))
+            {
+                directPriorityField.SetValue(cameraComponent, updatedDirectFieldValue);
+            }
+        }
+    }
+
+    private static bool TrySetPriorityValue(System.Type memberType, object currentValue, int priority, out object updatedValue)
+    {
+        updatedValue = currentValue;
+
+        if (memberType == typeof(int))
+        {
+            updatedValue = priority;
+            return true;
+        }
+
+        if (currentValue == null)
+        {
+            return false;
+        }
+
+        var wrappedType = currentValue.GetType();
+
+        var valueProp = wrappedType.GetProperty("Value");
+        if (valueProp != null && valueProp.CanWrite && valueProp.PropertyType == typeof(int))
+        {
+            valueProp.SetValue(currentValue, priority);
+            updatedValue = currentValue;
+            return true;
+        }
+
+        var valueField = wrappedType.GetField("Value");
+        if (valueField != null && valueField.FieldType == typeof(int))
+        {
+            valueField.SetValue(currentValue, priority);
+            updatedValue = currentValue;
+            return true;
+        }
+
+        return false;
+    }
+
+    private void OnDisable()
+    {
+        hasPendingSwitch = false;
+        pendingOptionIndex = -1;
     }
 }
