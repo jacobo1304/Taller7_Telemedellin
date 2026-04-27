@@ -26,14 +26,14 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &-3325589279243448565
+--- !u!1102 &-6817689081959619769
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StandingPose
+  m_Name: Talking (1)
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -46,20 +46,20 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: f7a29efc6c470d041bafd100604ca4a6, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: f96a6c0e3ce495e4980f64f8f509199c, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &-1453777807215526348
+--- !u!1102 &-2466042701598181912
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StandingPose1
+  m_Name: Talking
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -72,7 +72,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: f4f670359ad76824a8ac302e4244144d, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: 8fc27a72723ac8f4f9491051992f5d6e, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -100,32 +100,6 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1102 &832580969787954390
-AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Antorcha
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: ce49a26407b078c4bbd23a158f4cf473, type: 3}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
 --- !u!1107 &2947189568653573041
 AnimatorStateMachine:
   serializedVersion: 6
@@ -139,20 +113,17 @@ AnimatorStateMachine:
     m_State: {fileID: -6882760353604451864}
     m_Position: {x: 30, y: 200, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -3325589279243448565}
-    m_Position: {x: 260, y: 100, z: 0}
+    m_State: {fileID: 3488307545740992894}
+    m_Position: {x: 300, y: 80, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -1453777807215526348}
-    m_Position: {x: 260, y: 170, z: 0}
+    m_State: {fileID: 6941645583548266489}
+    m_Position: {x: 300, y: 130, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 832580969787954390}
-    m_Position: {x: 260, y: 300, z: 0}
+    m_State: {fileID: -2466042701598181912}
+    m_Position: {x: 300, y: 180, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 3744290947509280152}
-    m_Position: {x: 260, y: 360, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 5094929940262309977}
-    m_Position: {x: 260, y: 420, z: 0}
+    m_State: {fileID: -6817689081959619769}
+    m_Position: {x: 300, y: 230, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -163,14 +134,14 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -6882760353604451864}
---- !u!1102 &3744290947509280152
+--- !u!1102 &3488307545740992894
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hablando
+  m_Name: Pointing
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -183,20 +154,20 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: a67c579184d247545852ee4eb424bec1, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: 50f06690dadee2d4db3be6e89f13bc87, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &5094929940262309977
+--- !u!1102 &6941645583548266489
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hablando1
+  m_Name: Standing Arguing
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -209,7 +180,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: c14f85ce724b95b479e8780c3ae54f3f, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: 968e60ad333fcd045b09ab1814e2b3e3, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

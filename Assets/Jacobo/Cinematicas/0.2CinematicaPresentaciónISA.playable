@@ -16,30 +16,6 @@ MonoBehaviour:
   VirtualCamera:
     exposedName: 903c3d1e50ac1fc42ae37ff41e76d2d8
     defaultValue: {fileID: 0}
---- !u!114 &-7289495907216626800
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b46e36075dd1c124a8422c228e75e1fb, type: 3}
-  m_Name: Signal Track (1)
-  m_EditorClassIdentifier: 
-  m_Version: 3
-  m_AnimClip: {fileID: 0}
-  m_Locked: 0
-  m_Muted: 0
-  m_CustomPlayableFullTypename: 
-  m_Curves: {fileID: 0}
-  m_Parent: {fileID: 11400000}
-  m_Children: []
-  m_Clips: []
-  m_Markers:
-    m_Objects:
-    - {fileID: 2174349241558115774}
 --- !u!114 &-7274077550868174962
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -284,7 +260,6 @@ MonoBehaviour:
   - {fileID: -5686203551964014012}
   - {fileID: 8845120195932436777}
   - {fileID: 8261347603993224866}
-  - {fileID: -7289495907216626800}
   - {fileID: -7274077550868174962}
   m_FixedDuration: 0
   m_EditorSettings:
