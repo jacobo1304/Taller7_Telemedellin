@@ -41,7 +41,7 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 1108106269611675705}
-    m_Duration: 29.100408163265307
+    m_Duration: 17.266938775510205
     m_TimeScale: 1
     m_ParentTrack: {fileID: -5686203551964014012}
     m_EaseInDuration: 0
@@ -134,7 +134,7 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: -7721036183355704874}
-    m_Duration: 29.100408163265307
+    m_Duration: 17.266938775510205
     m_TimeScale: 1
     m_ParentTrack: {fileID: -5340789637822176180}
     m_EaseInDuration: 0
@@ -202,6 +202,23 @@ MonoBehaviour:
   m_Markers:
     m_Objects: []
   TrackPriority: 0
+--- !u!114 &-2923201297337161927
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f10dd60657c6004587f237a7e90f8e4, type: 3}
+  m_Name: AudioPlayableAsset
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 8300000, guid: e4580ced2bb740348ad8b43870fe1906, type: 3}
+  m_Loop: 0
+  m_bufferingTime: 0.1
+  m_ClipProperties:
+    volume: 1
 --- !u!114 &-2169316843765918861
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -227,7 +244,7 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 6055581648155420293}
-    m_Duration: 29.100408163265307
+    m_Duration: 17.266938775510205
     m_TimeScale: 1
     m_ParentTrack: {fileID: -2169316843765918861}
     m_EaseInDuration: 0
@@ -321,23 +338,6 @@ MonoBehaviour:
     m_ScenePreview: 1
   m_DurationMode: 0
   m_MarkerTrack: {fileID: 0}
---- !u!114 &324074637765758294
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f10dd60657c6004587f237a7e90f8e4, type: 3}
-  m_Name: AudioPlayableAsset
-  m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: 189be8378454eaf4e80829f464aafcfd, type: 3}
-  m_Loop: 0
-  m_bufferingTime: 0.1
-  m_ClipProperties:
-    volume: 1
 --- !u!114 &1108106269611675705
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -375,7 +375,7 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 4865261128928063880}
-    m_Duration: 29.100408163265307
+    m_Duration: 17.266938775510205
     m_TimeScale: 1
     m_ParentTrack: {fileID: 3247668008306550102}
     m_EaseInDuration: 0
@@ -531,8 +531,8 @@ MonoBehaviour:
   - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: 324074637765758294}
-    m_Duration: 29.100408163265307
+    m_Asset: {fileID: -2923201297337161927}
+    m_Duration: 17.266938775510205
     m_TimeScale: 1
     m_ParentTrack: {fileID: 8845120195932436777}
     m_EaseInDuration: 0
@@ -596,7 +596,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: "Confirmaci\xF3n para Iniciar"
+    m_DisplayName: "Confirmaci\xF3nExperiencia"
   m_Markers:
     m_Objects: []
   m_TrackProperties:
