@@ -474,6 +474,13 @@ MonoBehaviour:
   screen: {fileID: 1006057043}
   runningMode: 0
   _poseLandmarkerResultAnnotationController: {fileID: 1006057044}
+  _customPoseDetector: {fileID: 0}
+  _simplePoseListener: {fileID: 0}
+  _twoPoseListener: {fileID: 0}
+  _autoResolveListenersOnStart: 1
+  _debugPoseForwarding: 1
+  _debugSimpleForwarding: 1
+  _debugTwoPoseForwarding: 1
 --- !u!224 &1229135957 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3259285889726014650, guid: 5713b959e3c77a58fb258133fc8e4aef, type: 3}

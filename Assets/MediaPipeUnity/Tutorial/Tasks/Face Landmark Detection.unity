@@ -322,7 +322,6 @@ MonoBehaviour:
   width: 1280
   height: 720
   fps: 30
-  modelAsset: {fileID: 4900000, guid: 5838e83559205ed6b9bdd94fa57e9a18, type: 3}
 --- !u!1 &884590454
 GameObject:
   m_ObjectHideFlags: 0
