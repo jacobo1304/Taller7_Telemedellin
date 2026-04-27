@@ -25,6 +25,7 @@ public class CustomPoseDetector : MonoBehaviour
     [SerializeField] private bool use3DAngles = true;
     [SerializeField, Min(0f)] private float holdTimeSeconds = 1.0f;
     [SerializeField, Min(0f)] private float defaultMarginDegrees = 20f;
+    [SerializeField, Min(0f)] private float matchLossGraceSeconds = 0.2f;
 
     [Header("Current Interaction (runtime)")]
     [SerializeField] private InteractionActionBase currentInteraction;
@@ -55,7 +56,11 @@ public class CustomPoseDetector : MonoBehaviour
     private bool pendingFrameValid;
     private float[] holdTimers = new float[0];
     private bool[] holdEventsFired = new bool[0];
+    private bool[] poseMatchedThisFrame = new bool[0];
     private bool responseLocked = false;
+    private float lastStrictMatchTime = float.NegativeInfinity;
+    private int lastMatchedOptionIndex = -1;
+    private float lastMatchedProgress = 0f;
 
     private void Start()
     {
@@ -153,7 +158,7 @@ public class CustomPoseDetector : MonoBehaviour
 
         if (!isValid || frameCopy == null || frameCopy.Count < 33)
         {
-            ResetAllHolds();
+            HandleMatchLossWithGrace();
             return;
         }
 
@@ -237,6 +242,11 @@ public class CustomPoseDetector : MonoBehaviour
 
         EnsureRuntimePoseState(poseOptions.Length);
 
+        for (int i = 0; i < poseMatchedThisFrame.Length; i++)
+        {
+            poseMatchedThisFrame[i] = false;
+        }
+
         if (warnedNoLandmarkFeed && (debugLogs || debugAngleDetails || debugPoseScores) && (Time.time - startedAtTime) > 2f && Time.time >= nextDebugLogTime)
         {
             Debug.LogWarning($"{nameof(CustomPoseDetector)}: Latest callback had 0 targets (persona no detectada o feed intermitente).", this);
@@ -318,35 +328,63 @@ public class CustomPoseDetector : MonoBehaviour
             if (match)
             {
                 currentAnyMatched = true;
-                holdTimers[poseIndex] += Time.deltaTime;
-
-                float normalizedProgress = holdTimeSeconds <= 0f
-                    ? 1f
-                    : Mathf.Clamp01(holdTimers[poseIndex] / holdTimeSeconds);
-                if (normalizedProgress > highestProgress)
-                {
-                    highestProgress = normalizedProgress;
-                    activeOptionIndex = poseIndex;
-                }
-
-                if (holdTimers[poseIndex] >= holdTimeSeconds && !holdEventsFired[poseIndex])
-                {
-                    holdEventsFired[poseIndex] = true;
-                    ConfirmPoseSelection(poseIndex, pose);
-                    return;
-                }
-            }
-            else
-            {
-                holdTimers[poseIndex] = 0f;
-                holdEventsFired[poseIndex] = false;
+                poseMatchedThisFrame[poseIndex] = true;
             }
         }
 
-        if (highestProgress > 0f && activeOptionIndex >= 0)
+        if (currentAnyMatched)
+        {
+            lastStrictMatchTime = Time.time;
+
+            for (int poseIndex = 0; poseIndex < poseOptions.Length; poseIndex++)
+            {
+                if (poseMatchedThisFrame[poseIndex])
+                {
+                    holdTimers[poseIndex] += Time.deltaTime;
+
+                    float normalizedProgress = holdTimeSeconds <= 0f
+                        ? 1f
+                        : Mathf.Clamp01(holdTimers[poseIndex] / holdTimeSeconds);
+
+                    if (normalizedProgress > highestProgress)
+                    {
+                        highestProgress = normalizedProgress;
+                        activeOptionIndex = poseIndex;
+                    }
+
+                    if (holdTimers[poseIndex] >= holdTimeSeconds && !holdEventsFired[poseIndex])
+                    {
+                        holdEventsFired[poseIndex] = true;
+                        ConfirmPoseSelection(poseIndex, poseOptions[poseIndex]);
+                        return;
+                    }
+                }
+                else
+                {
+                    holdTimers[poseIndex] = 0f;
+                    holdEventsFired[poseIndex] = false;
+                }
+            }
+
+            if (activeOptionIndex >= 0)
+            {
+                lastMatchedOptionIndex = activeOptionIndex;
+                lastMatchedProgress = highestProgress;
+            }
+        }
+
+        bool keepMatchByGrace = !currentAnyMatched && IsWithinMatchLossGrace();
+        bool effectiveAnyMatched = currentAnyMatched || keepMatchByGrace;
+
+        if (currentAnyMatched && highestProgress > 0f && activeOptionIndex >= 0)
         {
             uiManager?.SetHoldProgressForOption(activeOptionIndex, highestProgress);
             answerHandler?.PreviewSelection(currentInteraction.InteractionType, activeOptionIndex);
+        }
+        else if (keepMatchByGrace && lastMatchedOptionIndex >= 0 && lastMatchedProgress > 0f)
+        {
+            uiManager?.SetHoldProgressForOption(lastMatchedOptionIndex, lastMatchedProgress);
+            answerHandler?.PreviewSelection(currentInteraction.InteractionType, lastMatchedOptionIndex);
         }
         else
         {
@@ -359,6 +397,11 @@ public class CustomPoseDetector : MonoBehaviour
             if (currentAnyMatched)
             {
                 Debug.Log($"{nameof(CustomPoseDetector)}: pose candidate matched. Hold progress={highestProgress:F2}", this);
+            }
+            else if (keepMatchByGrace)
+            {
+                float graceRemaining = Mathf.Max(0f, matchLossGraceSeconds - (Time.time - lastStrictMatchTime));
+                Debug.Log($"{nameof(CustomPoseDetector)}: pose momentáneamente perdida. Manteniendo match por gracia ({graceRemaining:F2}s restantes).", this);
             }
             else
             {
@@ -376,13 +419,13 @@ public class CustomPoseDetector : MonoBehaviour
         }
 
         // Handle Visuals/Color changing
-        if (currentAnyMatched && !anyWasMatched)
+        if (effectiveAnyMatched && !anyWasMatched)
         {
             ApplyColor(matchConnectionColor);
             onAnyPoseMatched?.Invoke();
             anyWasMatched = true;
         }
-        else if (!currentAnyMatched && anyWasMatched)
+        else if (!effectiveAnyMatched && anyWasMatched)
         {
             ApplyColor(defaultConnectionColor);
             onAllPosesLost?.Invoke();
@@ -398,6 +441,10 @@ public class CustomPoseDetector : MonoBehaviour
             holdEventsFired[i] = false;
         }
 
+        lastStrictMatchTime = float.NegativeInfinity;
+        lastMatchedOptionIndex = -1;
+        lastMatchedProgress = 0f;
+
         uiManager?.ClearHoldProgress();
         answerHandler?.ClearAllPreviews();
 
@@ -411,13 +458,49 @@ public class CustomPoseDetector : MonoBehaviour
 
     private void EnsureRuntimePoseState(int count)
     {
-        if (holdTimers.Length == count && holdEventsFired.Length == count)
+        if (holdTimers.Length == count && holdEventsFired.Length == count && poseMatchedThisFrame.Length == count)
         {
             return;
         }
 
         holdTimers = new float[count];
         holdEventsFired = new bool[count];
+        poseMatchedThisFrame = new bool[count];
+    }
+
+    private bool IsWithinMatchLossGrace()
+    {
+        if (matchLossGraceSeconds <= 0f)
+        {
+            return false;
+        }
+
+        if (!anyWasMatched)
+        {
+            return false;
+        }
+
+        return (Time.time - lastStrictMatchTime) <= matchLossGraceSeconds;
+    }
+
+    private void HandleMatchLossWithGrace()
+    {
+        if (IsWithinMatchLossGrace())
+        {
+            if (lastMatchedOptionIndex >= 0 && lastMatchedProgress > 0f)
+            {
+                uiManager?.SetHoldProgressForOption(lastMatchedOptionIndex, lastMatchedProgress);
+
+                if (currentInteraction != null)
+                {
+                    answerHandler?.PreviewSelection(currentInteraction.InteractionType, lastMatchedOptionIndex);
+                }
+            }
+
+            return;
+        }
+
+        ResetAllHolds();
     }
 
     private float CalculateAngle(Vector3 a, Vector3 b, Vector3 c)

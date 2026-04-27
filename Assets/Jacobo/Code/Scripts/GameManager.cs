@@ -8,6 +8,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AnswerHandler answerHandler;
     [SerializeField] private CustomPoseDetector customPoseDetector;
     [SerializeField] private GameObject panelPregunta;
+    [SerializeField] private GameObject viewportContainer;
+
+    [Header("Interaction Camera")]
+    [Tooltip("Cámara Cinemachine por defecto para el bloque de interacciones (post-cinemática).")]
+    [SerializeField] private MonoBehaviour defaultInteractionVirtualCamera;
+    [SerializeField] private int interactionCameraPriority = 40;
+    [SerializeField] private int interactionCameraInactivePriority = 0;
 
     [Header("Flow")]
     [SerializeField] private List<InteractionActionBase> interactionOrder = new List<InteractionActionBase>();
@@ -73,6 +80,8 @@ public class GameManager : MonoBehaviour
             answerHandler.onAnswerWrong.RemoveListener(HandleWrongAnswer);
         }
 
+        SetCameraPriority(defaultInteractionVirtualCamera, interactionCameraInactivePriority);
+
         if (delayedAdvanceRoutine != null)
         {
             StopCoroutine(delayedAdvanceRoutine);
@@ -86,6 +95,16 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning($"{nameof(GameManager)}: NextInteraction llamado antes de StartInteractions().", this);
             return;
+        }
+
+        if (panelPregunta != null)
+        {
+            panelPregunta.SetActive(true);
+        }
+
+        if (viewportContainer != null)
+        {
+            viewportContainer.SetActive(true);
         }
 
         ContinueAfterCinematic();
@@ -189,6 +208,14 @@ public class GameManager : MonoBehaviour
         {
             panelPregunta.SetActive(true);
         }
+
+        if (viewportContainer != null)
+        {
+            viewportContainer.SetActive(true);
+        }
+
+        SetCameraPriority(defaultInteractionVirtualCamera, interactionCameraPriority);
+
         int clampedStart = Mathf.Clamp(startIndex, 0, interactionOrder.Count - 1);
         SetCurrentInteraction(clampedStart);
     }
@@ -283,10 +310,16 @@ public class GameManager : MonoBehaviour
     {
         answerHandler?.SetInputLocked(true);
         customPoseDetector?.SetResponseLock(true);
+        SetCameraPriority(defaultInteractionVirtualCamera, interactionCameraInactivePriority);
 
         if (panelPregunta != null)
         {
             panelPregunta.SetActive(false);
+        }
+
+        if (viewportContainer != null)
+        {
+            viewportContainer.SetActive(false);
         }
 
         if (onlyCurrentInteractionActive)
@@ -302,5 +335,81 @@ public class GameManager : MonoBehaviour
         }
 
         uiManager?.ClearHoldProgress();
+    }
+
+    private static void SetCameraPriority(MonoBehaviour cameraComponent, int priority)
+    {
+        if (cameraComponent == null)
+        {
+            return;
+        }
+
+        var type = cameraComponent.GetType();
+
+        var priorityProp = type.GetProperty("Priority");
+        if (priorityProp != null && priorityProp.CanWrite)
+        {
+            if (TrySetPriorityValueOnMember(cameraComponent, priorityProp.PropertyType, priorityProp.GetValue(cameraComponent), priority, out object updatedPropValue))
+            {
+                priorityProp.SetValue(cameraComponent, updatedPropValue);
+                return;
+            }
+        }
+
+        var priorityField = type.GetField("m_Priority");
+        if (priorityField != null)
+        {
+            if (TrySetPriorityValueOnMember(cameraComponent, priorityField.FieldType, priorityField.GetValue(cameraComponent), priority, out object updatedFieldValue))
+            {
+                priorityField.SetValue(cameraComponent, updatedFieldValue);
+                return;
+            }
+        }
+
+        var directPriorityField = type.GetField("Priority");
+        if (directPriorityField != null)
+        {
+            if (TrySetPriorityValueOnMember(cameraComponent, directPriorityField.FieldType, directPriorityField.GetValue(cameraComponent), priority, out object updatedDirectFieldValue))
+            {
+                directPriorityField.SetValue(cameraComponent, updatedDirectFieldValue);
+            }
+        }
+    }
+
+    private static bool TrySetPriorityValueOnMember(object owner, System.Type memberType, object currentValue, int priority, out object updatedValue)
+    {
+        updatedValue = currentValue;
+
+        if (memberType == typeof(int))
+        {
+            updatedValue = priority;
+            return true;
+        }
+
+        // Soporta wrappers tipo PrioritySettings (Cinemachine 3.x): campo/propiedad "Value".
+        if (currentValue == null)
+        {
+            return false;
+        }
+
+        var wrappedType = currentValue.GetType();
+
+        var valueProp = wrappedType.GetProperty("Value");
+        if (valueProp != null && valueProp.CanWrite && valueProp.PropertyType == typeof(int))
+        {
+            valueProp.SetValue(currentValue, priority);
+            updatedValue = currentValue;
+            return true;
+        }
+
+        var valueField = wrappedType.GetField("Value");
+        if (valueField != null && valueField.FieldType == typeof(int))
+        {
+            valueField.SetValue(currentValue, priority);
+            updatedValue = currentValue;
+            return true;
+        }
+
+        return false;
     }
 }
