@@ -87,7 +87,7 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 1108106269611675705}
-    m_Duration: 32.966530612244895
+    m_Duration: 19.77469387755102
     m_TimeScale: 1
     m_ParentTrack: {fileID: -5686203551964014012}
     m_EaseInDuration: 0
@@ -180,7 +180,7 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: -7721036183355704874}
-    m_Duration: 32.966530612244895
+    m_Duration: 19.77469387755102
     m_TimeScale: 1
     m_ParentTrack: {fileID: -5340789637822176180}
     m_EaseInDuration: 0
@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
   m_Name: Signal Emitter
   m_EditorClassIdentifier: 
-  m_Time: 32.966530612244895
+  m_Time: 19.77469387755102
   m_Retroactive: 0
   m_EmitOnce: 0
   m_Asset: {fileID: 11400000, guid: 9146b437d4415864cb7cce439ce4f1f7, type: 2}
@@ -538,7 +538,7 @@ MonoBehaviour:
     m_Start: 17.633333333333333
     m_ClipIn: 0
     m_Asset: {fileID: 7587980833190355772}
-    m_Duration: 15.333197278911562
+    m_Duration: 2.1413605442176866
     m_TimeScale: 1
     m_ParentTrack: {fileID: 6114964243557660632}
     m_EaseInDuration: 0
@@ -609,7 +609,7 @@ MonoBehaviour:
   m_Loop: 0
   m_Version: 1
   m_Rotation: {x: 0, y: 0, z: 0, w: 1}
---- !u!114 &8032441783047234416
+--- !u!114 &8027781843974320735
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -621,11 +621,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f10dd60657c6004587f237a7e90f8e4, type: 3}
   m_Name: AudioPlayableAsset
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: 810d59c86987e0b479d918380ed5f836, type: 3}
+  m_Clip: {fileID: 8300000, guid: 0b4c9e714d5138d44a6d6b5e53181de4, type: 3}
   m_Loop: 0
   m_bufferingTime: 0.1
   m_ClipProperties:
-    volume: 0.635
+    volume: 1
 --- !u!114 &8261347603993224866
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -674,8 +674,8 @@ MonoBehaviour:
   - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: 8032441783047234416}
-    m_Duration: 32.966530612244895
+    m_Asset: {fileID: 8027781843974320735}
+    m_Duration: 19.77469387755102
     m_TimeScale: 1
     m_ParentTrack: {fileID: 8845120195932436777}
     m_EaseInDuration: 0
@@ -739,7 +739,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: "Presentaci\xF3n y Contexto_Isa"
+    m_DisplayName: "Presentaci\xF3nIsa"
   m_Markers:
     m_Objects: []
   m_TrackProperties:
