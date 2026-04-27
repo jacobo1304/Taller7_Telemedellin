@@ -26,6 +26,9 @@ public abstract class InteractionActionBase : MonoBehaviour
     [SerializeField] private UnityEvent onCorrect;
     [SerializeField] private UnityEvent onWrong1;
     [SerializeField] private UnityEvent onWrong2;
+    [SerializeField] private UnityEvent onHoldComplete;
+
+    private Coroutine holdCompleteRoutine;
 
     public InteractionType InteractionType => interactionType;
     public int CorrectOptionIndex => ResolveCorrectOptionIndex();
@@ -70,6 +73,7 @@ public abstract class InteractionActionBase : MonoBehaviour
             ApplyCorrectEffect();
             onCorrect?.Invoke();
             ShowFeedbackIfAny(uiManager, correctMessage);
+            ScheduleHoldComplete(uiManager, correctMessage);
             return true;
         }
 
@@ -78,6 +82,7 @@ public abstract class InteractionActionBase : MonoBehaviour
             ApplyWrongEffect1();
             onWrong1?.Invoke();
             ShowFeedbackIfAny(uiManager, wrongMessage1);
+            ScheduleHoldComplete(uiManager, wrongMessage1);
             return false;
         }
 
@@ -86,12 +91,14 @@ public abstract class InteractionActionBase : MonoBehaviour
             ApplyWrongEffect2();
             onWrong2?.Invoke();
             ShowFeedbackIfAny(uiManager, wrongMessage2);
+            ScheduleHoldComplete(uiManager, wrongMessage2);
             return false;
         }
 
         ApplyWrongEffect2();
         onWrong2?.Invoke();
         ShowFeedbackIfAny(uiManager, wrongMessage2);
+        ScheduleHoldComplete(uiManager, wrongMessage2);
         return false;
     }
 
@@ -171,6 +178,33 @@ public abstract class InteractionActionBase : MonoBehaviour
     public virtual void ResetHoldEffects()
     {
         // Override in derived interactions if needed.
+    }
+
+    private void ScheduleHoldComplete(InteractionUIManager uiManager, string feedbackMessage)
+    {
+        if (holdCompleteRoutine != null)
+        {
+            StopCoroutine(holdCompleteRoutine);
+        }
+
+        float waitTime = 0f;
+        if (uiManager != null && !string.IsNullOrWhiteSpace(feedbackMessage))
+        {
+            waitTime = uiManager.GetFeedbackSequenceDuration();
+        }
+
+        holdCompleteRoutine = StartCoroutine(InvokeHoldCompleteAfterDelay(waitTime));
+    }
+
+    private System.Collections.IEnumerator InvokeHoldCompleteAfterDelay(float waitTime)
+    {
+        if (waitTime > 0f)
+        {
+            yield return new WaitForSeconds(waitTime);
+        }
+
+        onHoldComplete?.Invoke();
+        holdCompleteRoutine = null;
     }
 
     protected abstract void ApplyCorrectEffect();
