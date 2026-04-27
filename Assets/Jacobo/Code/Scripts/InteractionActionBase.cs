@@ -19,8 +19,8 @@ public abstract class InteractionActionBase : MonoBehaviour
     [TextArea(2, 4)] [SerializeField] private string wrongMessage1;
     [TextArea(2, 4)] [SerializeField] private string wrongMessage2;
 
-    [Header("3 imágenes de Opcion de pose")]
-    [SerializeField] public PoseData[] PoseOptions = new PoseData[3];
+    [Header("Opciones de pose (cantidad variable)")]
+    [SerializeField] public PoseData[] PoseOptions = new PoseData[0];
 
     [Header("Eventos extra")]
     [SerializeField] private UnityEvent onCorrect;
@@ -41,6 +41,12 @@ public abstract class InteractionActionBase : MonoBehaviour
         }
 
         uiManager.SetQuestion(questionText);
+
+        if (PoseOptions == null || PoseOptions.Length == 0)
+        {
+            uiManager.ShowPoseImages(null);
+            return;
+        }
 
         // Pass the sprites from PoseData to the UI Manager
         Sprite[] sprites = new Sprite[PoseOptions.Length];
