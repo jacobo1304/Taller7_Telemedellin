@@ -3622,14 +3622,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactions:
-  - interactionType: 3
-    interactionAction: {fileID: 1549080680}
   - interactionType: 0
     interactionAction: {fileID: 225540847}
   - interactionType: 1
     interactionAction: {fileID: 1038473825}
   - interactionType: 2
     interactionAction: {fileID: 828516652}
+  - interactionType: 3
+    interactionAction: {fileID: 1549080680}
   uiManager: {fileID: 1795540745}
   onAnswerCorrect:
     m_PersistentCalls:
@@ -12508,7 +12508,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &780267367
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23303,9 +23303,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cinematics:
-  - id: Titulares
-    director: {fileID: 269470523}
-    virtualCamera: {fileID: 1117461831}
   - id: MainMenu
     director: {fileID: 1608282797}
     virtualCamera: {fileID: 2045834158}
@@ -23326,6 +23323,9 @@ MonoBehaviour:
     virtualCamera: {fileID: 1117461831}
   - id: EXPLuces
     director: {fileID: 1572032244}
+    virtualCamera: {fileID: 1117461831}
+  - id: Titulares
+    director: {fileID: 269470523}
     virtualCamera: {fileID: 1117461831}
   - id: FInal
     director: {fileID: 1213172966}
@@ -23359,7 +23359,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1835777535}
           m_TargetAssemblyTypeName: CinematicManager, Assembly-CSharp
-          m_MethodName: StopCurrent
+          m_MethodName: PlayNext
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -23831,10 +23831,10 @@ MonoBehaviour:
   interactionCameraPriority: 40
   interactionCameraInactivePriority: 0
   interactionOrder:
-  - {fileID: 1549080680}
   - {fileID: 225540847}
   - {fileID: 1038473825}
   - {fileID: 828516652}
+  - {fileID: 1549080680}
   startIndex: 0
   waitForStartInteractionsSignal: 1
   autoAdvanceOnCorrect: 0
@@ -53250,7 +53250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0.26, y: 0, z: 0}
   m_AnchorMin: {x: 0.28011662, y: 0.32127294}
   m_AnchorMax: {x: 0.6901576, y: 1}
-  m_AnchoredPosition: {x: -864.00006, y: -24}
+  m_AnchoredPosition: {x: -864.0001, y: -24}
   m_SizeDelta: {x: -435.2, y: -48.562866}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8571076844118824639
