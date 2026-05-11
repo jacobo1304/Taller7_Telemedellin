@@ -3,44 +3,69 @@ using System.Collections;
 
 public class SoundCrewInteractionAction : InteractionActionBase
 {
+    [Header("Faders Knobs")]
+    [SerializeField] private Transform ambienceKnob;
+    [SerializeField] private Transform voiceKnob;
+
+    [Header("Knob Position Targets por opción (índices 0,1,2)")]
+    [Tooltip("Posiciones objetivo del knob de ambiente para cada opción")]
+    [SerializeField] private Transform[] ambienceKnobOptionSpots = new Transform[3];
+    [Tooltip("Posiciones objetivo del knob de voz para cada opción")]
+    [SerializeField] private Transform[] voiceKnobOptionSpots = new Transform[3];
+
+    [Header("AudioSources")]
+    [SerializeField] private AudioSource voiceAudioSource;
+    [SerializeField] private AudioSource ambienceAudioSource;
+
     [System.Serializable]
     private class AudioOptionProfile
     {
-        [Range(0f, 1f)] public float presenterVolume = 1f;
-        [Range(0f, 1f)] public float musicVolume = 0.2f;
+        [Header("Volumen")]
+        [Range(0f, 1f)] public float voiceVolume = 1f;
         [Range(0f, 1f)] public float ambienceVolume = 0.2f;
+
+        [Header("Distorsión")]
+        public bool voiceDistortion = false;
+        public bool ambienceDistortion = false;
     }
-
-    [Header("Micrófono / escucha 3D")]
-    [Tooltip("Si se asigna, se moverá su Transform. Si no, se moverá microphoneRig.")]
-    [SerializeField] private AudioListener microphoneListener;
-    [SerializeField] private Transform microphoneRig;
-    [Tooltip("Puntos de escucha por opción (índices 0,1,2)")]
-    [SerializeField] private Transform[] listeningOptionSpots = new Transform[3];
-
-    [Header("AudioSources 3D")]
-    [SerializeField] private AudioSource presenterVoiceSource;
-    [SerializeField] private AudioSource eventMusicSource;
-    [SerializeField] private AudioSource ambienceSource;
 
     [Header("Perfiles por opción (índices 0,1,2)")]
     [SerializeField] private AudioOptionProfile[] optionProfiles = new AudioOptionProfile[3]
     {
-        new AudioOptionProfile { presenterVolume = 0f,    musicVolume = 0f,   ambienceVolume = 0f },
-        new AudioOptionProfile { presenterVolume = 0.35f, musicVolume = 1f,   ambienceVolume = 0.7f },
-        new AudioOptionProfile { presenterVolume = 1f,    musicVolume = 0.2f, ambienceVolume = 0.2f }
+        new AudioOptionProfile { voiceVolume = 1f, ambienceVolume = 0.2f, voiceDistortion = false, ambienceDistortion = false },
+        new AudioOptionProfile { voiceVolume = 0.7f, ambienceVolume = 0.4f, voiceDistortion = false, ambienceDistortion = false },
+        new AudioOptionProfile { voiceVolume = 0.4f, ambienceVolume = 0.8f, voiceDistortion = true, ambienceDistortion = false }
     };
 
-    [Header("Transiciones")]
-    [SerializeField] private float positionLerpDuration = 0.35f;
-    [SerializeField] private float fadeDuration = 0.35f;
+    [Header("Interpolación")]
+    [SerializeField] private float knobLerpDuration = 0.35f;
 
-    [Header("Reset (opcional)")]
-    [SerializeField] private bool resetToDefaultOnNoPose = false;
-    [SerializeField] private Transform defaultListeningSpot;
+    [Header("Debug")]
+    [SerializeField] private bool debugLogs = false;
 
     private Coroutine transitionRoutine;
     private int currentPreviewOption = -1;
+    private AudioOptionProfile currentProfile;
+
+    public void StartPlayback()
+    {
+        StartAudioSource(voiceAudioSource);
+        StartAudioSource(ambienceAudioSource);
+    }
+
+    private void StartAudioSource(AudioSource source)
+    {
+        if (source == null || source.clip == null)
+        {
+            return;
+        }
+
+        source.playOnAwake = false;
+        if (!source.isPlaying)
+        {
+            source.Play();
+        }
+    }
 
     public override void PreviewOption(int selectedOptionIndex)
     {
@@ -49,12 +74,7 @@ public class SoundCrewInteractionAction : InteractionActionBase
 
     public override void ResetHoldEffects()
     {
-        if (!resetToDefaultOnNoPose)
-        {
-            return;
-        }
-
-        MoveMicTo(defaultListeningSpot);
+        // Opcionalmente puede restablecer un estado por defecto si se requiere.
     }
 
     protected override void ApplyCorrectEffect()
@@ -86,99 +106,107 @@ public class SoundCrewInteractionAction : InteractionActionBase
         }
 
         currentPreviewOption = clampedOption;
+        currentProfile = optionProfiles[clampedOption];
 
-        AudioOptionProfile targetProfile = optionProfiles[clampedOption];
-        if (targetProfile == null)
-        {
-            return;
-        }
+        Transform targetAmbienceSpot = ambienceKnobOptionSpots != null && clampedOption < ambienceKnobOptionSpots.Length
+            ? ambienceKnobOptionSpots[clampedOption]
+            : null;
 
-        Transform targetSpot = null;
-        if (listeningOptionSpots != null && clampedOption < listeningOptionSpots.Length)
-        {
-            targetSpot = listeningOptionSpots[clampedOption];
-        }
+        Transform targetVoiceSpot = voiceKnobOptionSpots != null && clampedOption < voiceKnobOptionSpots.Length
+            ? voiceKnobOptionSpots[clampedOption]
+            : null;
 
         if (transitionRoutine != null)
         {
             StopCoroutine(transitionRoutine);
         }
 
-        transitionRoutine = StartCoroutine(TransitionRoutine(targetProfile, targetSpot));
+        transitionRoutine = StartCoroutine(TransitionRoutine(targetAmbienceSpot, targetVoiceSpot));
     }
 
-    private IEnumerator TransitionRoutine(AudioOptionProfile profile, Transform targetSpot)
+    private IEnumerator TransitionRoutine(Transform targetAmbienceSpot, Transform targetVoiceSpot)
     {
-        Transform movingTransform = microphoneListener != null ? microphoneListener.transform : microphoneRig;
+        Vector3 startAmbiencePos = ambienceKnob != null ? ambienceKnob.position : Vector3.zero;
+        Vector3 startVoicePos = voiceKnob != null ? voiceKnob.position : Vector3.zero;
 
-        Vector3 startPos = Vector3.zero;
-        Quaternion startRot = Quaternion.identity;
-        if (movingTransform != null)
-        {
-            startPos = movingTransform.position;
-            startRot = movingTransform.rotation;
-        }
+        Vector3 targetAmbiencePos = targetAmbienceSpot != null ? targetAmbienceSpot.position : startAmbiencePos;
+        Vector3 targetVoicePos = targetVoiceSpot != null ? targetVoiceSpot.position : startVoicePos;
 
-        float startPresenter = presenterVoiceSource != null ? presenterVoiceSource.volume : 0f;
-        float startMusic = eventMusicSource != null ? eventMusicSource.volume : 0f;
-        float startAmbience = ambienceSource != null ? ambienceSource.volume : 0f;
-
-        float targetPresenter = Mathf.Clamp01(profile.presenterVolume);
-        float targetMusic = Mathf.Clamp01(profile.musicVolume);
-        float targetAmbience = Mathf.Clamp01(profile.ambienceVolume);
-
-        float duration = Mathf.Max(0.001f, Mathf.Max(positionLerpDuration, fadeDuration));
+        float duration = Mathf.Max(0.001f, knobLerpDuration);
         float t = 0f;
 
         while (t < duration)
         {
             t += Time.deltaTime;
-            float kPos = positionLerpDuration <= 0f ? 1f : Mathf.Clamp01(t / positionLerpDuration);
-            float kVol = fadeDuration <= 0f ? 1f : Mathf.Clamp01(t / fadeDuration);
+            float kPos = knobLerpDuration <= 0f ? 1f : Mathf.Clamp01(t / knobLerpDuration);
 
-            if (movingTransform != null && targetSpot != null)
+            if (ambienceKnob != null)
             {
-                movingTransform.position = Vector3.Lerp(startPos, targetSpot.position, kPos);
-                movingTransform.rotation = Quaternion.Slerp(startRot, targetSpot.rotation, kPos);
+                ambienceKnob.position = Vector3.Lerp(startAmbiencePos, targetAmbiencePos, kPos);
             }
 
-            if (presenterVoiceSource != null) presenterVoiceSource.volume = Mathf.Lerp(startPresenter, targetPresenter, kVol);
-            if (eventMusicSource != null) eventMusicSource.volume = Mathf.Lerp(startMusic, targetMusic, kVol);
-            if (ambienceSource != null) ambienceSource.volume = Mathf.Lerp(startAmbience, targetAmbience, kVol);
+            if (voiceKnob != null)
+            {
+                voiceKnob.position = Vector3.Lerp(startVoicePos, targetVoicePos, kPos);
+            }
 
+            ApplyProfileVolumes();
             yield return null;
         }
 
-        if (movingTransform != null && targetSpot != null)
+        if (ambienceKnob != null)
         {
-            movingTransform.position = targetSpot.position;
-            movingTransform.rotation = targetSpot.rotation;
+            ambienceKnob.position = targetAmbiencePos;
         }
 
-        if (presenterVoiceSource != null) presenterVoiceSource.volume = targetPresenter;
-        if (eventMusicSource != null) eventMusicSource.volume = targetMusic;
-        if (ambienceSource != null) ambienceSource.volume = targetAmbience;
+        if (voiceKnob != null)
+        {
+            voiceKnob.position = targetVoicePos;
+        }
 
+        ApplyProfileVolumes();
         transitionRoutine = null;
     }
 
-    private void MoveMicTo(Transform targetSpot)
+    private void ApplyProfileVolumes()
     {
-        Transform movingTransform = microphoneListener != null ? microphoneListener.transform : microphoneRig;
-        if (movingTransform == null || targetSpot == null)
+        if (currentProfile == null)
         {
             return;
         }
 
-        if (transitionRoutine != null)
+        if (voiceAudioSource != null)
         {
-            StopCoroutine(transitionRoutine);
-            transitionRoutine = null;
+            voiceAudioSource.volume = Mathf.Clamp01(currentProfile.voiceVolume);
+            SetDistortionState(voiceAudioSource, currentProfile.voiceDistortion);
         }
 
-        movingTransform.position = targetSpot.position;
-        movingTransform.rotation = targetSpot.rotation;
+        if (ambienceAudioSource != null)
+        {
+            ambienceAudioSource.volume = Mathf.Clamp01(currentProfile.ambienceVolume);
+            SetDistortionState(ambienceAudioSource, currentProfile.ambienceDistortion);
+        }
 
-        currentPreviewOption = -1;
+        if (debugLogs)
+        {
+            Debug.Log($"{nameof(SoundCrewInteractionAction)}: option={currentPreviewOption} voiceVolume={currentProfile.voiceVolume:F2} ambienceVolume={currentProfile.ambienceVolume:F2} voiceDistortion={currentProfile.voiceDistortion} ambienceDistortion={currentProfile.ambienceDistortion}");
+        }
+    }
+
+    private void SetDistortionState(AudioSource source, bool enabled)
+    {
+        if (source == null)
+        {
+            return;
+        }
+
+        AudioDistortionFilter filter = source.GetComponent<AudioDistortionFilter>();
+        if (filter == null)
+        {
+            return;
+        }
+
+        filter.enabled = enabled;
     }
 }
+

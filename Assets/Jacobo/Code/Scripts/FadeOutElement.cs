@@ -26,7 +26,6 @@ public class FadeOutElement : MonoBehaviour
 
     public void FadeIn()
     {
-        Debug.Log($"Fading in {gameObject.name}");
         FadeTo(1f, defaultDuration, true);
     }
 
