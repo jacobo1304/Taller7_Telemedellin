@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PoseData
   poseName: A-Pose
   poseImage: {fileID: 21300000, guid: 746229f9d9bb3234b97f7e361e1d78a7, type: 3}
-  marginDegrees: 30
+  marginDegrees: 25
   conditions:
   - jointType: 2
     customJointA: 11
