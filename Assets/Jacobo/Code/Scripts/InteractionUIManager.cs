@@ -106,9 +106,9 @@ public class InteractionUIManager : MonoBehaviour
         feedbackRoutine = StartCoroutine(FeedbackRoutine());
     }
 
-    public float GetFeedbackSequenceDuration()
+    public float GetFeedbackSequenceDuration(float soundDuration = 0f)
     {
-        if (feedbackRoutine == null)
+        if (feedbackRoutine == null && soundDuration <= 0f)
         {
             return 0f;
         }
@@ -116,7 +116,10 @@ public class InteractionUIManager : MonoBehaviour
         float a = Mathf.Max(0f, fadeInDuration);
         float b = Mathf.Max(0f, visibleDuration);
         float c = Mathf.Max(0f, fadeOutDuration);
-        return a + b + c;
+        float textDuration = a + b + c;
+
+        // Retornar el máximo entre la duración del texto y el sonido
+        return Mathf.Max(textDuration, soundDuration);
     }
 
     public void SetHoldProgressForOption(int optionIndex, float normalizedProgress)

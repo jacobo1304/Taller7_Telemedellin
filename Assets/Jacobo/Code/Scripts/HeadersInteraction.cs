@@ -24,6 +24,7 @@ public class HeadersInteraction : InteractionActionBase
 
     private Coroutine textTransitionRoutine;
     private string currentText = "";
+    private bool hasPendingReset = false;
 
     private void Awake()
     {
@@ -48,6 +49,12 @@ public class HeadersInteraction : InteractionActionBase
         {
             headerCanvasGroup.alpha = 1f;
         }
+
+        if (hasPendingReset)
+        {
+            hasPendingReset = false;
+            ResetHoldEffects();
+        }
     }
 
     private void OnDisable()
@@ -58,6 +65,8 @@ public class HeadersInteraction : InteractionActionBase
             textTransitionRoutine = null;
         }
 
+        hasPendingReset = false;
+
         if (hidePanelOnDisable)
         {
             SetPanelVisible(false);
@@ -66,6 +75,12 @@ public class HeadersInteraction : InteractionActionBase
 
     public override void ResetHoldEffects()
     {
+        if (!isActiveAndEnabled || !gameObject.activeInHierarchy)
+        {
+            hasPendingReset = true;
+            return;
+        }
+
         ScheduleTextTransition(noPoseHeaderText, fadeInAfterChange: false);
     }
 
