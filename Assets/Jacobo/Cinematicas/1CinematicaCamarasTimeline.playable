@@ -500,7 +500,7 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: Camara - ContextoBarrio
   - m_Version: 1
-    m_Start: 16.90122448979592
+    m_Start: 18.066666666666666
     m_ClipIn: 0
     m_Asset: {fileID: 109630843436564308}
     m_Duration: 26.775510204081634
