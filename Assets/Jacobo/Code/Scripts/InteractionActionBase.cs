@@ -73,7 +73,8 @@ public abstract class InteractionActionBase : MonoBehaviour
             ApplyCorrectEffect();
             onCorrect?.Invoke();
             ShowFeedbackIfAny(uiManager, correctMessage);
-            ScheduleHoldComplete(uiManager, correctMessage);
+            float soundDuration = SoundManager.Instance != null ? SoundManager.Instance.PlayPositiveFeedback() : 0f;
+            ScheduleHoldComplete(uiManager, correctMessage, soundDuration);
             return true;
         }
 
@@ -82,7 +83,8 @@ public abstract class InteractionActionBase : MonoBehaviour
             ApplyWrongEffect1();
             onWrong1?.Invoke();
             ShowFeedbackIfAny(uiManager, wrongMessage1);
-            ScheduleHoldComplete(uiManager, wrongMessage1);
+            float soundDuration = SoundManager.Instance != null ? SoundManager.Instance.PlayNegativeFeedback() : 0f;
+            ScheduleHoldComplete(uiManager, wrongMessage1, soundDuration);
             return false;
         }
 
@@ -91,14 +93,16 @@ public abstract class InteractionActionBase : MonoBehaviour
             ApplyWrongEffect2();
             onWrong2?.Invoke();
             ShowFeedbackIfAny(uiManager, wrongMessage2);
-            ScheduleHoldComplete(uiManager, wrongMessage2);
+            float soundDuration = SoundManager.Instance != null ? SoundManager.Instance.PlayNegativeFeedback() : 0f;
+            ScheduleHoldComplete(uiManager, wrongMessage2, soundDuration);
             return false;
         }
 
         ApplyWrongEffect2();
         onWrong2?.Invoke();
         ShowFeedbackIfAny(uiManager, wrongMessage2);
-        ScheduleHoldComplete(uiManager, wrongMessage2);
+        float soundDurationDefault = SoundManager.Instance != null ? SoundManager.Instance.PlayNegativeFeedback() : 0f;
+        ScheduleHoldComplete(uiManager, wrongMessage2, soundDurationDefault);
         return false;
     }
 
@@ -180,7 +184,7 @@ public abstract class InteractionActionBase : MonoBehaviour
         // Override in derived interactions if needed.
     }
 
-    private void ScheduleHoldComplete(InteractionUIManager uiManager, string feedbackMessage)
+    private void ScheduleHoldComplete(InteractionUIManager uiManager, string feedbackMessage, float soundDuration = 0f)
     {
         if (holdCompleteRoutine != null)
         {
@@ -190,7 +194,11 @@ public abstract class InteractionActionBase : MonoBehaviour
         float waitTime = 0f;
         if (uiManager != null && !string.IsNullOrWhiteSpace(feedbackMessage))
         {
-            waitTime = uiManager.GetFeedbackSequenceDuration();
+            waitTime = uiManager.GetFeedbackSequenceDuration(soundDuration);
+        }
+        else if (soundDuration > 0f)
+        {
+            waitTime = soundDuration;
         }
 
         holdCompleteRoutine = StartCoroutine(InvokeHoldCompleteAfterDelay(waitTime));
