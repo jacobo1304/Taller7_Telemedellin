@@ -84,6 +84,35 @@ public class HeadersInteraction : InteractionActionBase
         ScheduleTextTransition(noPoseHeaderText, fadeInAfterChange: false);
     }
 
+    public string GetTextForOption(int optionIndex)
+    {
+        int resolvedCorrectIndex = ResolveCorrectOptionIndex();
+        int resolvedWrong1Index = WrongOption1Index;
+        int resolvedWrong2Index = WrongOption2Index;
+
+        if (optionIndex == resolvedCorrectIndex)
+        {
+            return correctHeaderText ?? string.Empty;
+        }
+
+        if (optionIndex == resolvedWrong1Index)
+        {
+            return wrongHeader1Text ?? string.Empty;
+        }
+
+        if (optionIndex == resolvedWrong2Index)
+        {
+            return wrongHeader2Text ?? string.Empty;
+        }
+
+        return noPoseHeaderText ?? string.Empty;
+    }
+
+    public string GetStoredSelectedHeaderText()
+    {
+        return HasStoredSelection ? GetTextForOption(StoredSelectedOptionIndex) : (noPoseHeaderText ?? string.Empty);
+    }
+
     public override void PreviewOption(int selectedOptionIndex)
     {
         int resolvedCorrectIndex = ResolveCorrectOptionIndex();

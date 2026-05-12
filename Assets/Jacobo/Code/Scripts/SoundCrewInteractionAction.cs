@@ -52,6 +52,18 @@ public class SoundCrewInteractionAction : InteractionActionBase
         StartAudioSource(voiceAudioSource);
         StartAudioSource(ambienceAudioSource);
     }
+    public void StopPlayback()
+    {
+        if (voiceAudioSource != null && voiceAudioSource.isPlaying)
+        {
+            voiceAudioSource.Stop();
+        }
+
+        if (ambienceAudioSource != null && ambienceAudioSource.isPlaying)
+        {
+            ambienceAudioSource.Stop();
+        }
+    }
 
     private void StartAudioSource(AudioSource source)
     {
@@ -77,6 +89,12 @@ public class SoundCrewInteractionAction : InteractionActionBase
         // Opcionalmente puede restablecer un estado por defecto si se requiere.
     }
 
+    public override void RestoreStoredSelection()
+    {
+        StartPlayback();
+        ForceApplyOptionState(StoredSelectedOptionIndex);
+    }
+
     protected override void ApplyCorrectEffect()
     {
         ApplyOptionState(CorrectOptionIndex);
@@ -94,13 +112,23 @@ public class SoundCrewInteractionAction : InteractionActionBase
 
     private void ApplyOptionState(int optionIndex)
     {
+        ApplyOptionState(optionIndex, false);
+    }
+
+    private void ForceApplyOptionState(int optionIndex)
+    {
+        ApplyOptionState(optionIndex, true);
+    }
+
+    private void ApplyOptionState(int optionIndex, bool force)
+    {
         if (optionProfiles == null || optionProfiles.Length == 0)
         {
             return;
         }
 
         int clampedOption = Mathf.Clamp(optionIndex, 0, optionProfiles.Length - 1);
-        if (clampedOption == currentPreviewOption)
+        if (!force && clampedOption == currentPreviewOption)
         {
             return;
         }
