@@ -7,10 +7,8 @@ public class SoundCrewInteractionAction : InteractionActionBase
     [SerializeField] private Transform ambienceKnob;
     [SerializeField] private Transform voiceKnob;
 
-    [Header("Knob Position Targets por opción (índices 0,1,2)")]
-    [Tooltip("Posiciones objetivo del knob de ambiente para cada opción")]
+    [Header("Knob Position Targets por opción")]
     [SerializeField] private Transform[] ambienceKnobOptionSpots = new Transform[3];
-    [Tooltip("Posiciones objetivo del knob de voz para cada opción")]
     [SerializeField] private Transform[] voiceKnobOptionSpots = new Transform[3];
 
     [Header("AudioSources")]
@@ -20,21 +18,19 @@ public class SoundCrewInteractionAction : InteractionActionBase
     [System.Serializable]
     private class AudioOptionProfile
     {
-        [Header("Volumen")]
         [Range(0f, 1f)] public float voiceVolume = 1f;
         [Range(0f, 1f)] public float ambienceVolume = 0.2f;
 
-        [Header("Distorsión")]
         public bool voiceDistortion = false;
         public bool ambienceDistortion = false;
     }
 
-    [Header("Perfiles por opción (índices 0,1,2)")]
+    [Header("Perfiles por opción")]
     [SerializeField] private AudioOptionProfile[] optionProfiles = new AudioOptionProfile[3]
     {
-        new AudioOptionProfile { voiceVolume = 1f, ambienceVolume = 0.2f, voiceDistortion = false, ambienceDistortion = false },
-        new AudioOptionProfile { voiceVolume = 0.7f, ambienceVolume = 0.4f, voiceDistortion = false, ambienceDistortion = false },
-        new AudioOptionProfile { voiceVolume = 0.4f, ambienceVolume = 0.8f, voiceDistortion = true, ambienceDistortion = false }
+        new AudioOptionProfile(),
+        new AudioOptionProfile(),
+        new AudioOptionProfile()
     };
 
     [Header("Interpolación")]
@@ -52,27 +48,23 @@ public class SoundCrewInteractionAction : InteractionActionBase
         StartAudioSource(voiceAudioSource);
         StartAudioSource(ambienceAudioSource);
     }
+
     public void StopPlayback()
     {
-        if (voiceAudioSource != null && voiceAudioSource.isPlaying)
-        {
+        if (voiceAudioSource != null)
             voiceAudioSource.Stop();
-        }
 
-        if (ambienceAudioSource != null && ambienceAudioSource.isPlaying)
-        {
+        if (ambienceAudioSource != null)
             ambienceAudioSource.Stop();
-        }
     }
 
     private void StartAudioSource(AudioSource source)
     {
         if (source == null || source.clip == null)
-        {
             return;
-        }
 
         source.playOnAwake = false;
+
         if (!source.isPlaying)
         {
             source.Play();
@@ -86,13 +78,27 @@ public class SoundCrewInteractionAction : InteractionActionBase
 
     public override void ResetHoldEffects()
     {
-        // Opcionalmente puede restablecer un estado por defecto si se requiere.
     }
 
     public override void RestoreStoredSelection()
     {
+        if (!HasStoredSelection)
+        {
+            Debug.LogWarning("No hay selección guardada de sonido.");
+            return;
+        }
+
         StartPlayback();
-        ForceApplyOptionState(StoredSelectedOptionIndex);
+
+        // Si el objeto está apagado, aplicar instantáneamente
+        bool instantApply =
+            !gameObject.activeInHierarchy ||
+            !isActiveAndEnabled;
+
+        ForceApplyOptionState(
+            StoredSelectedOptionIndex,
+            instantApply
+        );
     }
 
     protected override void ApplyCorrectEffect()
@@ -112,129 +118,220 @@ public class SoundCrewInteractionAction : InteractionActionBase
 
     private void ApplyOptionState(int optionIndex)
     {
-        ApplyOptionState(optionIndex, false);
+        ApplyOptionState(optionIndex, false, false);
     }
 
-    private void ForceApplyOptionState(int optionIndex)
+    private void ForceApplyOptionState(
+        int optionIndex,
+        bool instant = false
+    )
     {
-        ApplyOptionState(optionIndex, true);
+        ApplyOptionState(optionIndex, true, instant);
     }
 
-    private void ApplyOptionState(int optionIndex, bool force)
+    private void ApplyOptionState(
+        int optionIndex,
+        bool force,
+        bool instant
+    )
     {
-        if (optionProfiles == null || optionProfiles.Length == 0)
+        if (optionProfiles == null ||
+            optionProfiles.Length == 0)
         {
             return;
         }
 
-        int clampedOption = Mathf.Clamp(optionIndex, 0, optionProfiles.Length - 1);
-        if (!force && clampedOption == currentPreviewOption)
+        int clampedOption =
+            Mathf.Clamp(
+                optionIndex,
+                0,
+                optionProfiles.Length - 1
+            );
+
+        if (!force &&
+            clampedOption == currentPreviewOption)
         {
             return;
         }
 
         currentPreviewOption = clampedOption;
-        currentProfile = optionProfiles[clampedOption];
+        currentProfile =
+            optionProfiles[clampedOption];
 
-        Transform targetAmbienceSpot = ambienceKnobOptionSpots != null && clampedOption < ambienceKnobOptionSpots.Length
+        Transform targetAmbienceSpot =
+            ambienceKnobOptionSpots != null &&
+            clampedOption < ambienceKnobOptionSpots.Length
             ? ambienceKnobOptionSpots[clampedOption]
             : null;
 
-        Transform targetVoiceSpot = voiceKnobOptionSpots != null && clampedOption < voiceKnobOptionSpots.Length
+        Transform targetVoiceSpot =
+            voiceKnobOptionSpots != null &&
+            clampedOption < voiceKnobOptionSpots.Length
             ? voiceKnobOptionSpots[clampedOption]
             : null;
+
+        // Si está inactivo o queremos instantáneo
+        if (instant || !gameObject.activeInHierarchy)
+        {
+            ApplyInstantState(
+                targetAmbienceSpot,
+                targetVoiceSpot
+            );
+            return;
+        }
 
         if (transitionRoutine != null)
         {
             StopCoroutine(transitionRoutine);
         }
 
-        transitionRoutine = StartCoroutine(TransitionRoutine(targetAmbienceSpot, targetVoiceSpot));
+        transitionRoutine =
+            StartCoroutine(
+                TransitionRoutine(
+                    targetAmbienceSpot,
+                    targetVoiceSpot
+                )
+            );
     }
 
-    private IEnumerator TransitionRoutine(Transform targetAmbienceSpot, Transform targetVoiceSpot)
+    private void ApplyInstantState(
+        Transform targetAmbienceSpot,
+        Transform targetVoiceSpot
+    )
     {
-        Vector3 startAmbiencePos = ambienceKnob != null ? ambienceKnob.position : Vector3.zero;
-        Vector3 startVoicePos = voiceKnob != null ? voiceKnob.position : Vector3.zero;
+        if (ambienceKnob != null &&
+            targetAmbienceSpot != null)
+        {
+            ambienceKnob.position =
+                targetAmbienceSpot.position;
+        }
 
-        Vector3 targetAmbiencePos = targetAmbienceSpot != null ? targetAmbienceSpot.position : startAmbiencePos;
-        Vector3 targetVoicePos = targetVoiceSpot != null ? targetVoiceSpot.position : startVoicePos;
+        if (voiceKnob != null &&
+            targetVoiceSpot != null)
+        {
+            voiceKnob.position =
+                targetVoiceSpot.position;
+        }
 
-        float duration = Mathf.Max(0.001f, knobLerpDuration);
+        ApplyProfileVolumes();
+
+        if (debugLogs)
+        {
+            Debug.Log(
+                "Sound aplicado instantáneamente."
+            );
+        }
+    }
+
+    private IEnumerator TransitionRoutine(
+        Transform targetAmbienceSpot,
+        Transform targetVoiceSpot
+    )
+    {
+        Vector3 startAmbiencePos =
+            ambienceKnob != null
+            ? ambienceKnob.position
+            : Vector3.zero;
+
+        Vector3 startVoicePos =
+            voiceKnob != null
+            ? voiceKnob.position
+            : Vector3.zero;
+
+        Vector3 targetAmbiencePos =
+            targetAmbienceSpot != null
+            ? targetAmbienceSpot.position
+            : startAmbiencePos;
+
+        Vector3 targetVoicePos =
+            targetVoiceSpot != null
+            ? targetVoiceSpot.position
+            : startVoicePos;
+
+        float duration =
+            Mathf.Max(0.001f, knobLerpDuration);
+
         float t = 0f;
 
         while (t < duration)
         {
             t += Time.deltaTime;
-            float kPos = knobLerpDuration <= 0f ? 1f : Mathf.Clamp01(t / knobLerpDuration);
+
+            float kPos =
+                Mathf.Clamp01(t / duration);
 
             if (ambienceKnob != null)
             {
-                ambienceKnob.position = Vector3.Lerp(startAmbiencePos, targetAmbiencePos, kPos);
+                ambienceKnob.position =
+                    Vector3.Lerp(
+                        startAmbiencePos,
+                        targetAmbiencePos,
+                        kPos
+                    );
             }
 
             if (voiceKnob != null)
             {
-                voiceKnob.position = Vector3.Lerp(startVoicePos, targetVoicePos, kPos);
+                voiceKnob.position =
+                    Vector3.Lerp(
+                        startVoicePos,
+                        targetVoicePos,
+                        kPos
+                    );
             }
 
             ApplyProfileVolumes();
+
             yield return null;
         }
 
-        if (ambienceKnob != null)
-        {
-            ambienceKnob.position = targetAmbiencePos;
-        }
-
-        if (voiceKnob != null)
-        {
-            voiceKnob.position = targetVoicePos;
-        }
-
         ApplyProfileVolumes();
+
         transitionRoutine = null;
     }
 
     private void ApplyProfileVolumes()
     {
         if (currentProfile == null)
-        {
             return;
-        }
 
         if (voiceAudioSource != null)
         {
-            voiceAudioSource.volume = Mathf.Clamp01(currentProfile.voiceVolume);
-            SetDistortionState(voiceAudioSource, currentProfile.voiceDistortion);
+            voiceAudioSource.volume =
+                currentProfile.voiceVolume;
+
+            SetDistortionState(
+                voiceAudioSource,
+                currentProfile.voiceDistortion
+            );
         }
 
         if (ambienceAudioSource != null)
         {
-            ambienceAudioSource.volume = Mathf.Clamp01(currentProfile.ambienceVolume);
-            SetDistortionState(ambienceAudioSource, currentProfile.ambienceDistortion);
-        }
+            ambienceAudioSource.volume =
+                currentProfile.ambienceVolume;
 
-        if (debugLogs)
-        {
-            Debug.Log($"{nameof(SoundCrewInteractionAction)}: option={currentPreviewOption} voiceVolume={currentProfile.voiceVolume:F2} ambienceVolume={currentProfile.ambienceVolume:F2} voiceDistortion={currentProfile.voiceDistortion} ambienceDistortion={currentProfile.ambienceDistortion}");
+            SetDistortionState(
+                ambienceAudioSource,
+                currentProfile.ambienceDistortion
+            );
         }
     }
 
-    private void SetDistortionState(AudioSource source, bool enabled)
+    private void SetDistortionState(
+        AudioSource source,
+        bool enabled
+    )
     {
         if (source == null)
-        {
             return;
-        }
 
-        AudioDistortionFilter filter = source.GetComponent<AudioDistortionFilter>();
-        if (filter == null)
+        AudioDistortionFilter filter =
+            source.GetComponent<AudioDistortionFilter>();
+
+        if (filter != null)
         {
-            return;
+            filter.enabled = enabled;
         }
-
-        filter.enabled = enabled;
     }
 }
-

@@ -29,15 +29,15 @@ public class TimerManager : MonoBehaviour
         if (questionPanel == null)
             return;
 
-        bool panelIsActive = questionPanel.activeSelf;
+        bool panelIsActive =
+            questionPanel.activeSelf;
 
-        // Detecta cuando el panel se activa
-        if (panelIsActive && !panelWasActive)
+        if (panelIsActive &&
+            !panelWasActive)
         {
             RestartTimer();
         }
 
-        // Detecta cuando el panel se desactiva
         if (!panelIsActive)
         {
             timerRunning = false;
@@ -45,14 +45,13 @@ public class TimerManager : MonoBehaviour
 
         panelWasActive = panelIsActive;
 
-        // Si el timer no está corriendo, salir
         if (!timerRunning)
             return;
 
         timer -= Time.deltaTime;
 
-        // Se acabó el tiempo
-        if (timer <= 0f && !answerSubmitted)
+        if (timer <= 0f &&
+            !answerSubmitted)
         {
             timer = 0f;
             timerRunning = false;
@@ -71,63 +70,70 @@ public class TimerManager : MonoBehaviour
 
         UpdateTimerText();
 
-        Debug.Log("Timer reiniciado");
+        Debug.Log(
+            "Timer reiniciado"
+        );
     }
 
     void SubmitRandomAnswer()
     {
-        // Tus interacciones tienen 3 respuestas
-        int randomOption = Random.Range(0, 3);
-
-        // Busca SOLO el InteractionActionBase activo
-        InteractionActionBase[] interactions =
-            FindObjectsByType<InteractionActionBase>(
-                FindObjectsInactive.Exclude,
-                FindObjectsSortMode.None
+        if (answerHandler == null)
+        {
+            Debug.LogWarning(
+                "AnswerHandler no asignado."
             );
-
-        InteractionActionBase activeInteraction = null;
-
-        foreach (var interaction in interactions)
-        {
-            if (interaction.isActiveAndEnabled &&
-                interaction.gameObject.activeInHierarchy)
-            {
-                activeInteraction = interaction;
-                break;
-            }
-        }
-
-        if (activeInteraction == null)
-        {
-            Debug.LogWarning("No se encontró ninguna interacción activa.");
             return;
         }
 
-        InteractionType activeType = activeInteraction.InteractionType;
+        if (!answerHandler
+            .HasCurrentInteraction)
+        {
+            Debug.LogWarning(
+                "No hay interacción actual."
+            );
+            return;
+        }
+
+        int randomOption =
+            Random.Range(0, 3);
+
+        InteractionType currentType =
+            answerHandler
+                .CurrentInteractionType;
 
         Debug.Log(
-            $"Tiempo agotado. Interacción activa: {activeType} | " +
+            $"Tiempo agotado | " +
+            $"Interacción: {currentType} | " +
             $"Respuesta automática: {randomOption}"
         );
 
-        answerHandler.SubmitAnswer(activeType, randomOption);
+        answerHandler.SubmitAnswer(
+            currentType,
+            randomOption
+        );
 
         answerSubmitted = true;
     }
 
     void UpdateTimerText()
     {
-        int minutes = Mathf.FloorToInt(timer / 60);
-        int seconds = Mathf.CeilToInt(timer % 60);
+        int minutes =
+            Mathf.FloorToInt(timer / 60);
 
-        // Evita que aparezca 00:60
+        int seconds =
+            Mathf.CeilToInt(timer % 60);
+
         if (seconds == 60)
         {
             minutes++;
             seconds = 0;
         }
 
-        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        timerText.text =
+            string.Format(
+                "{0:00}:{1:00}",
+                minutes,
+                seconds
+            );
     }
 }

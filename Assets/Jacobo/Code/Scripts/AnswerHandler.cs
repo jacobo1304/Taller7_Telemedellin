@@ -27,7 +27,32 @@ public class AnswerHandler : MonoBehaviour
     [SerializeField] private bool debugLogs = true;
     [SerializeField] private bool inputLocked = false;
 
-    private readonly Dictionary<InteractionType, InteractionActionBase> actionByInteractionType = new Dictionary<InteractionType, InteractionActionBase>();
+    private readonly Dictionary<InteractionType, InteractionActionBase>
+        actionByInteractionType =
+            new Dictionary<InteractionType, InteractionActionBase>();
+
+    // NUEVO: interacción actual
+    private InteractionType currentInteractionType;
+    private bool hasCurrentInteraction = false;
+
+    public bool HasCurrentInteraction => hasCurrentInteraction;
+    public InteractionType CurrentInteractionType => currentInteractionType;
+
+    public void SetCurrentInteraction(
+        InteractionType interactionType
+    )
+    {
+        currentInteractionType = interactionType;
+        hasCurrentInteraction = true;
+
+        if (debugLogs)
+        {
+            Debug.Log(
+                $"Interacción actual: {interactionType}",
+                this
+            );
+        }
+    }
 
     public void SetInputLocked(bool locked)
     {
@@ -35,7 +60,10 @@ public class AnswerHandler : MonoBehaviour
 
         if (debugLogs)
         {
-            Debug.Log($"{nameof(AnswerHandler)}: inputLocked={(inputLocked ? "TRUE" : "FALSE")}", this);
+            Debug.Log(
+                $"{nameof(AnswerHandler)}: inputLocked={(inputLocked ? "TRUE" : "FALSE")}",
+                this
+            );
         }
     }
 
@@ -45,7 +73,8 @@ public class AnswerHandler : MonoBehaviour
 
         if (uiManager == null)
         {
-            uiManager = FindFirstObjectByType<InteractionUIManager>();
+            uiManager =
+                FindFirstObjectByType<InteractionUIManager>();
         }
     }
 
@@ -56,133 +85,232 @@ public class AnswerHandler : MonoBehaviour
         for (int i = 0; i < interactions.Count; i++)
         {
             var item = interactions[i];
-            if (item == null || item.interactionAction == null)
+
+            if (item == null ||
+                item.interactionAction == null)
             {
                 if (debugLogs)
                 {
-                    Debug.LogWarning($"{nameof(AnswerHandler)}: Interaction binding inválido en índice {i}.", this);
+                    Debug.LogWarning(
+                        $"{nameof(AnswerHandler)}: Interaction binding inválido en índice {i}.",
+                        this
+                    );
                 }
+
                 continue;
             }
 
-            InteractionType key = item.interactionType;
+            InteractionType key =
+                item.interactionType;
+
             if (actionByInteractionType.ContainsKey(key))
             {
                 if (debugLogs)
                 {
-                    Debug.LogWarning($"{nameof(AnswerHandler)}: interactionType duplicado '{key}'. Se conserva el primero.", this);
+                    Debug.LogWarning(
+                        $"{nameof(AnswerHandler)}: interactionType duplicado '{key}'. Se conserva el primero.",
+                        this
+                    );
                 }
+
                 continue;
             }
 
-            actionByInteractionType.Add(key, item.interactionAction);
+            actionByInteractionType.Add(
+                key,
+                item.interactionAction
+            );
         }
     }
 
-    // Nuevo flujo: recibe cuál opción (0,1,2) eligió el usuario.
-    public void SubmitAnswer(InteractionType interactionType, int selectedOptionIndex)
+    public void SubmitAnswer(
+        InteractionType interactionType,
+        int selectedOptionIndex
+    )
     {
         if (inputLocked)
         {
             if (debugLogs)
             {
-                Debug.Log($"{nameof(AnswerHandler)}: Input bloqueado. Ignorando respuesta para '{interactionType}' opción {selectedOptionIndex}.", this);
+                Debug.Log(
+                    $"{nameof(AnswerHandler)}: Input bloqueado. Ignorando respuesta para '{interactionType}' opción {selectedOptionIndex}.",
+                    this
+                );
             }
+
             return;
         }
 
-        if (!actionByInteractionType.TryGetValue(interactionType, out var action))
+        if (!actionByInteractionType.TryGetValue(
+            interactionType,
+            out var action))
         {
             if (debugLogs)
             {
-                Debug.LogWarning($"{nameof(AnswerHandler)}: No se encontró interacción para '{interactionType}'.", this);
+                Debug.LogWarning(
+                    $"{nameof(AnswerHandler)}: No se encontró interacción para '{interactionType}'.",
+                    this
+                );
             }
+
             return;
         }
 
-        bool isCorrect = action.HandleAnswer(selectedOptionIndex, uiManager);
+        bool isCorrect =
+            action.HandleAnswer(
+                selectedOptionIndex,
+                uiManager
+            );
 
         if (isCorrect)
         {
             if (debugLogs)
             {
-                Debug.Log($"Respuesta correcta para la pregunta de tipo {interactionType} seleccionaste la opcion {selectedOptionIndex}.", this);
+                Debug.Log(
+                    $"Respuesta correcta para la pregunta de tipo {interactionType} seleccionaste la opcion {selectedOptionIndex}.",
+                    this
+                );
             }
-            onAnswerCorrect?.Invoke(interactionType);
+
+            onAnswerCorrect?.Invoke(
+                interactionType
+            );
         }
         else
         {
-            onAnswerWrong?.Invoke(interactionType);
+            onAnswerWrong?.Invoke(
+                interactionType
+            );
         }
 
         if (debugLogs)
         {
-            Debug.Log($"{nameof(AnswerHandler)}: '{interactionType}' opción {selectedOptionIndex} => {(isCorrect ? "CORRECTA" : "INCORRECTA")}", this);
+            Debug.Log(
+                $"{nameof(AnswerHandler)}: '{interactionType}' opción {selectedOptionIndex} => {(isCorrect ? "CORRECTA" : "INCORRECTA")}",
+                this
+            );
         }
     }
 
-    // Compatibilidad con el detector de poses existente (bool).
-    public void SubmitAnswer(InteractionType interactionType, bool isCorrect)
+    public void SubmitAnswer(
+        InteractionType interactionType,
+        bool isCorrect
+    )
     {
-        if (!actionByInteractionType.TryGetValue(interactionType, out var action))
+        if (!actionByInteractionType.TryGetValue(
+            interactionType,
+            out var action))
         {
             if (debugLogs)
             {
-                Debug.LogWarning($"{nameof(AnswerHandler)}: No se encontró interacción para '{interactionType}'.", this);
+                Debug.LogWarning(
+                    $"{nameof(AnswerHandler)}: No se encontró interacción para '{interactionType}'.",
+                    this
+                );
             }
 
-            // Si no hay acción enrutable, al menos se reportan los eventos globales.
-            if (isCorrect) onAnswerCorrect?.Invoke(interactionType);
-            else onAnswerWrong?.Invoke(interactionType);
+            if (isCorrect)
+            {
+                onAnswerCorrect?.Invoke(
+                    interactionType
+                );
+            }
+            else
+            {
+                onAnswerWrong?.Invoke(
+                    interactionType
+                );
+            }
+
             return;
         }
 
-        int fallbackOption = isCorrect ? action.CorrectOptionIndex : action.WrongOption1Index;
-        SubmitAnswer(interactionType, fallbackOption);
+        int fallbackOption =
+            isCorrect
+                ? action.CorrectOptionIndex
+                : action.WrongOption1Index;
+
+        SubmitAnswer(
+            interactionType,
+            fallbackOption
+        );
     }
 
-    // Compatibilidad para llamados antiguos por string.
-    public void SubmitAnswer(string interactionTypeName, int selectedOptionIndex)
+    public void SubmitAnswer(
+        string interactionTypeName,
+        int selectedOptionIndex
+    )
     {
-        if (!Enum.TryParse(interactionTypeName, true, out InteractionType parsedType))
+        if (!Enum.TryParse(
+            interactionTypeName,
+            true,
+            out InteractionType parsedType))
         {
             if (debugLogs)
             {
-                Debug.LogWarning($"{nameof(AnswerHandler)}: interactionType inválido '{interactionTypeName}'.", this);
+                Debug.LogWarning(
+                    $"{nameof(AnswerHandler)}: interactionType inválido '{interactionTypeName}'.",
+                    this
+                );
             }
+
             return;
         }
 
-        SubmitAnswer(parsedType, selectedOptionIndex);
+        SubmitAnswer(
+            parsedType,
+            selectedOptionIndex
+        );
     }
 
-    public void SubmitAnswer(string interactionTypeName, bool isCorrect)
+    public void SubmitAnswer(
+        string interactionTypeName,
+        bool isCorrect
+    )
     {
-        if (!Enum.TryParse(interactionTypeName, true, out InteractionType parsedType))
+        if (!Enum.TryParse(
+            interactionTypeName,
+            true,
+            out InteractionType parsedType))
         {
             if (debugLogs)
             {
-                Debug.LogWarning($"{nameof(AnswerHandler)}: interactionType inválido '{interactionTypeName}'.", this);
+                Debug.LogWarning(
+                    $"{nameof(AnswerHandler)}: interactionType inválido '{interactionTypeName}'.",
+                    this
+                );
             }
+
             return;
         }
 
         SubmitAnswer(parsedType, isCorrect);
     }
 
-    public void PreviewSelection(InteractionType interactionType, int selectedOptionIndex)
+    public void PreviewSelection(
+        InteractionType interactionType,
+        int selectedOptionIndex
+    )
     {
-        if (!actionByInteractionType.TryGetValue(interactionType, out var action))
+        if (!actionByInteractionType.TryGetValue(
+            interactionType,
+            out var action))
         {
             return;
         }
 
-        action.PreviewOption(selectedOptionIndex);
+        action.PreviewOption(
+            selectedOptionIndex
+        );
     }
 
-    public void ClearPreview(InteractionType interactionType)
+    public void ClearPreview(
+        InteractionType interactionType
+    )
     {
-        if (!actionByInteractionType.TryGetValue(interactionType, out var action))
+        if (!actionByInteractionType.TryGetValue(
+            interactionType,
+            out var action))
         {
             return;
         }
@@ -192,7 +320,8 @@ public class AnswerHandler : MonoBehaviour
 
     public void ClearAllPreviews()
     {
-        foreach (var pair in actionByInteractionType)
+        foreach (var pair
+            in actionByInteractionType)
         {
             pair.Value?.ResetHoldEffects();
         }
