@@ -8,10 +8,15 @@ public class FinalSceneCinematic : MonoBehaviour
     [SerializeField] private LightsCrewInteractionAction lightsInteraction;
     [SerializeField] private SoundCrewInteractionAction soundInteraction;
     [SerializeField] private HeadersInteraction headersInteraction;
+    [SerializeField] private bool enableSoundInFinalScene = true; // CAMBIO: Habilitado por defecto para CinematicaEscenaFinal
 
     [Header("Final Header Panel")]
     [SerializeField] private GameObject finalHeaderPanel;
     [SerializeField] private TMP_Text finalHeaderText;
+    [SerializeField] private bool showHeaderPanelInCinematic = false;
+
+    [Header("Panels to Deactivate on Scene Start")] // CAMBIO: Nueva sección
+    [SerializeField] private GameObject panelToDeactivate; // CAMBIO: Panel que se desactivará al iniciar
 
     [Header("Camera Priority")]
     [SerializeField] private int finalCameraPriority = 1000;
@@ -34,6 +39,22 @@ public class FinalSceneCinematic : MonoBehaviour
         if (finalHeaderText != null)
         {
             finalHeaderText.text = string.Empty;
+        }
+
+        if (panelToDeactivate != null)
+        {
+            panelToDeactivate.SetActive(false);
+        }
+
+        if (headersInteraction != null)
+        {
+            headersInteraction.DisablePanelActivation();
+        }
+
+        // CAMBIO: SIEMPRE detiene el audio anterior al iniciar una nueva cinemática
+        if (soundInteraction != null)
+        {
+            soundInteraction.StopPlayback();
         }
     }
 
@@ -98,6 +119,12 @@ public class FinalSceneCinematic : MonoBehaviour
 
     private void ApplySoundSelection()
     {
+        // CAMBIO: Solo aplica sonido si está habilitado en la escena final
+        if (!enableSoundInFinalScene)
+        {
+            return;
+        }
+
         if (soundInteraction == null)
         {
             return;
@@ -113,7 +140,8 @@ public class FinalSceneCinematic : MonoBehaviour
 
     private void ApplyFinalHeaders()
     {
-        if (finalHeaderPanel != null)
+        // CAMBIO: Solo activa el panel si el flag está habilitado (por defecto desactivado)
+        if (finalHeaderPanel != null && showHeaderPanelInCinematic)
         {
             finalHeaderPanel.SetActive(true);
         }

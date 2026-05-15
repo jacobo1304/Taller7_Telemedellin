@@ -7,6 +7,7 @@ public class HeadersInteraction : InteractionActionBase
     [Header("Panel")]
     [SerializeField] private GameObject headerPanel;
     [SerializeField] private bool hidePanelOnDisable = true;
+    [SerializeField] private bool allowPanelActivation = true; // CAMBIO: Flag para permitir/bloquear activación del panel
 
     [Header("Texto Headers")]
     [SerializeField] private TMP_Text headerText;
@@ -23,6 +24,8 @@ public class HeadersInteraction : InteractionActionBase
     [SerializeField, Min(0f)] private float fadeInDuration = 0.3f;
 
     private Coroutine textTransitionRoutine;
+    private Coroutine hidePanelRoutine;
+
     private string currentText = "";
     private bool hasPendingReset = false;
 
@@ -30,7 +33,9 @@ public class HeadersInteraction : InteractionActionBase
     {
         if (headerPanel == null && headerText != null)
         {
-            headerPanel = headerText.transform.parent != null ? headerText.transform.parent.gameObject : null;
+            headerPanel = headerText.transform.parent != null
+                ? headerText.transform.parent.gameObject
+                : null;
         }
 
         if (headerCanvasGroup != null)
@@ -43,8 +48,6 @@ public class HeadersInteraction : InteractionActionBase
 
     private void OnEnable()
     {
-        SetPanelVisible(true);
-
         if (headerCanvasGroup != null)
         {
             headerCanvasGroup.alpha = 1f;
@@ -65,6 +68,12 @@ public class HeadersInteraction : InteractionActionBase
             textTransitionRoutine = null;
         }
 
+        if (hidePanelRoutine != null)
+        {
+            StopCoroutine(hidePanelRoutine);
+            hidePanelRoutine = null;
+        }
+
         hasPendingReset = false;
 
         if (hidePanelOnDisable)
@@ -81,7 +90,8 @@ public class HeadersInteraction : InteractionActionBase
             return;
         }
 
-        ScheduleTextTransition(noPoseHeaderText, fadeInAfterChange: false);
+        // CAMBIO: Pasar true para indicar que se debe desactivar el panel después del fade
+        ScheduleTextTransition(noPoseHeaderText, fadeInAfterChange: false, shouldHidePanelAfter: true);
     }
 
     public string GetTextForOption(int optionIndex)
@@ -110,7 +120,19 @@ public class HeadersInteraction : InteractionActionBase
 
     public string GetStoredSelectedHeaderText()
     {
-        return HasStoredSelection ? GetTextForOption(StoredSelectedOptionIndex) : (noPoseHeaderText ?? string.Empty);
+        return HasStoredSelection
+            ? GetTextForOption(StoredSelectedOptionIndex)
+            : (noPoseHeaderText ?? string.Empty);
+    }
+
+    // CAMBIO: Nuevo método público para bloquear la activación del panel en escenas específicas
+    public void DisablePanelActivation()
+    {
+        allowPanelActivation = false;
+        if (headerPanel != null)
+        {
+            headerPanel.SetActive(false);
+        }
     }
 
     public override void PreviewOption(int selectedOptionIndex)
@@ -134,34 +156,48 @@ public class HeadersInteraction : InteractionActionBase
             targetText = wrongHeader2Text;
         }
 
-        // For preview we want the text to update immediately at start of hold:
         ScheduleTextTransitionPreview(targetText);
     }
 
     protected override void ApplyCorrectEffect()
     {
-        string targetText = correctHeaderText;
-        ScheduleTextTransition(targetText, fadeInAfterChange: true);
+        ScheduleTextTransition(correctHeaderText, true);
     }
 
     protected override void ApplyWrongEffect1()
     {
-        string targetText = wrongHeader1Text;
-        ScheduleTextTransition(targetText, fadeInAfterChange: true);
+        ScheduleTextTransition(wrongHeader1Text, true);
     }
 
     protected override void ApplyWrongEffect2()
     {
-        string targetText = wrongHeader2Text;
-        ScheduleTextTransition(targetText, fadeInAfterChange: true);
+        ScheduleTextTransition(wrongHeader2Text, true);
     }
 
-    private void ScheduleTextTransition(string newText, bool fadeInAfterChange)
+    private void ScheduleTextTransition(string newText, bool fadeInAfterChange, bool shouldHidePanelAfter = false)
     {
         string resolvedText = newText ?? string.Empty;
+
         if (resolvedText == currentText)
         {
+            // CAMBIO: Si el texto es igual pero se debe ocultarse el panel, forzar ocultamiento
+            if (shouldHidePanelAfter && hidePanelOnDisable)
+            {
+                if (hidePanelRoutine != null)
+                {
+                    StopCoroutine(hidePanelRoutine);
+                    hidePanelRoutine = null;
+                }
+                hidePanelRoutine = StartCoroutine(HidePanelAfterFade());
+            }
             return;
+        }
+
+        // Si iba a ocultarse, cancelar ocultado
+        if (hidePanelRoutine != null)
+        {
+            StopCoroutine(hidePanelRoutine);
+            hidePanelRoutine = null;
         }
 
         SetPanelVisible(true);
@@ -171,15 +207,25 @@ public class HeadersInteraction : InteractionActionBase
             StopCoroutine(textTransitionRoutine);
         }
 
-        textTransitionRoutine = StartCoroutine(TextTransitionRoutine(resolvedText, fadeInAfterChange));
+        // CAMBIO: Pasar shouldHidePanelAfter a la corrutina
+        textTransitionRoutine =
+            StartCoroutine(TextTransitionRoutine(resolvedText, fadeInAfterChange, shouldHidePanelAfter));
     }
 
     private void ScheduleTextTransitionPreview(string newText)
     {
         string resolvedText = newText ?? string.Empty;
+
         if (resolvedText == currentText)
         {
             return;
+        }
+
+        // Si iba a ocultarse, cancelar ocultado
+        if (hidePanelRoutine != null)
+        {
+            StopCoroutine(hidePanelRoutine);
+            hidePanelRoutine = null;
         }
 
         SetPanelVisible(true);
@@ -190,7 +236,6 @@ public class HeadersInteraction : InteractionActionBase
             textTransitionRoutine = null;
         }
 
-        // Immediately set the text and fade in from 0 so user sees it during the hold.
         if (headerText != null)
         {
             headerText.text = resolvedText;
@@ -200,21 +245,28 @@ public class HeadersInteraction : InteractionActionBase
         if (headerCanvasGroup != null)
         {
             headerCanvasGroup.alpha = 0f;
-            textTransitionRoutine = StartCoroutine(FadeInOnlyRoutine(fadeInDuration));
+            textTransitionRoutine =
+                StartCoroutine(FadeInOnlyRoutine(fadeInDuration));
         }
     }
 
     private IEnumerator FadeInOnlyRoutine(float duration)
     {
         float t = 0f;
+
         while (t < duration)
         {
             t += Time.deltaTime;
-            float alpha = duration <= 0f ? 1f : Mathf.Clamp01(t / duration);
+
+            float alpha = duration <= 0f
+                ? 1f
+                : Mathf.Clamp01(t / duration);
+
             if (headerCanvasGroup != null)
             {
                 headerCanvasGroup.alpha = alpha;
             }
+
             yield return null;
         }
 
@@ -226,20 +278,29 @@ public class HeadersInteraction : InteractionActionBase
         textTransitionRoutine = null;
     }
 
-    private IEnumerator TextTransitionRoutine(string newText, bool fadeInAfterChange)
+    private IEnumerator TextTransitionRoutine(
+        string newText,
+        bool fadeInAfterChange,
+        bool shouldHidePanelAfter = false)  // CAMBIO: Nuevo parámetro para desactivar después
     {
         SetPanelVisible(true);
 
         // Fade out
         float t = 0f;
+
         while (t < fadeOutDuration)
         {
             t += Time.deltaTime;
-            float alpha = fadeOutDuration <= 0f ? 0f : 1f - Mathf.Clamp01(t / fadeOutDuration);
+
+            float alpha = fadeOutDuration <= 0f
+                ? 0f
+                : 1f - Mathf.Clamp01(t / fadeOutDuration);
+
             if (headerCanvasGroup != null)
             {
                 headerCanvasGroup.alpha = alpha;
             }
+
             yield return null;
         }
 
@@ -248,7 +309,7 @@ public class HeadersInteraction : InteractionActionBase
             headerCanvasGroup.alpha = 0f;
         }
 
-        // Change text
+        // Cambiar texto
         if (headerText != null)
         {
             headerText.text = newText;
@@ -257,35 +318,37 @@ public class HeadersInteraction : InteractionActionBase
 
         if (!fadeInAfterChange)
         {
-            if (headerCanvasGroup != null)
-            {
-                headerCanvasGroup.alpha = 0f;
-            }
-
-            // If the new text is empty (no-pose), keep the panel active but clear the text.
-            if (string.IsNullOrEmpty(newText))
-            {
-                if (headerText != null)
-                {
-                    headerText.text = string.Empty;
-                    currentText = string.Empty;
-                }
-            }
-
             textTransitionRoutine = null;
+            
+            // CAMBIO: Si debe desactivarse después del fade, iniciar corrutina de ocultamiento
+            if (shouldHidePanelAfter && hidePanelOnDisable)
+            {
+                if (hidePanelRoutine != null)
+                {
+                    StopCoroutine(hidePanelRoutine);
+                }
+                hidePanelRoutine = StartCoroutine(HidePanelAfterFade());
+            }
+            
             yield break;
         }
 
         // Fade in
         t = 0f;
+
         while (t < fadeInDuration)
         {
             t += Time.deltaTime;
-            float alpha = fadeInDuration <= 0f ? 1f : Mathf.Clamp01(t / fadeInDuration);
+
+            float alpha = fadeInDuration <= 0f
+                ? 1f
+                : Mathf.Clamp01(t / fadeInDuration);
+
             if (headerCanvasGroup != null)
             {
                 headerCanvasGroup.alpha = alpha;
             }
+
             yield return null;
         }
 
@@ -297,8 +360,45 @@ public class HeadersInteraction : InteractionActionBase
         textTransitionRoutine = null;
     }
 
+    // CAMBIO: Nueva corrutina que desactiva el panel INMEDIATAMENTE sin esperar extra
+    // Esto evita race conditions cuando se hacen interacciones rápidas
+    private IEnumerator HidePanelAfterFade()
+    {
+        // Solo limpiamos el texto y desactivamos el panel
+        if (headerText != null)
+        {
+            headerText.text = string.Empty;
+            currentText = string.Empty;
+        }
+
+        SetPanelVisible(false);
+        hidePanelRoutine = null;
+        yield break;
+    }
+
+    private IEnumerator HidePanelDelayed()
+    {
+        yield return new WaitForSeconds(fadeOutDuration);
+
+        if (headerText != null)
+        {
+            headerText.text = string.Empty;
+            currentText = string.Empty;
+        }
+
+        SetPanelVisible(false);
+
+        hidePanelRoutine = null;
+    }
+
     private void SetPanelVisible(bool visible)
     {
+        // CAMBIO: Si se intenta activar pero está bloqueado, ignorar
+        if (visible && !allowPanelActivation)
+        {
+            return;
+        }
+
         if (headerPanel != null)
         {
             headerPanel.SetActive(visible);
