@@ -81,7 +81,38 @@ public class CameraCrewInteractionAction : InteractionActionBase
         SetOnlyActiveCamera(selectedCamera);
     }
 
+    public MonoBehaviour GetCameraOption(int optionIndex)
+    {
+        if (cameraOptionVirtualCameras == null || optionIndex < 0 || optionIndex >= cameraOptionVirtualCameras.Length)
+        {
+            return null;
+        }
+
+        return cameraOptionVirtualCameras[optionIndex];
+    }
+
+    public MonoBehaviour GetStoredSelectedCamera()
+    {
+        return GetCameraOption(StoredSelectedOptionIndex);
+    }
+
+    public void RestoreStoredSelectionWithPriority(int highPriority)
+    {
+        MonoBehaviour selectedCamera = GetStoredSelectedCamera();
+        if (selectedCamera == null)
+        {
+            return;
+        }
+
+        ApplyCameraPriorities(selectedCamera, highPriority, inactivePriority);
+    }
+
     private void SetOnlyActiveCamera(MonoBehaviour selectedCamera)
+    {
+        ApplyCameraPriorities(selectedCamera, activePriority, inactivePriority);
+    }
+
+    private void ApplyCameraPriorities(MonoBehaviour selectedCamera, int selectedPriority, int nonSelectedPriority)
     {
         if (selectedCamera == null)
         {
@@ -90,7 +121,7 @@ public class CameraCrewInteractionAction : InteractionActionBase
 
         if (defaultVirtualCamera != null)
         {
-            SetCameraPriority(defaultVirtualCamera, selectedCamera == defaultVirtualCamera ? activePriority : inactivePriority);
+            SetCameraPriority(defaultVirtualCamera, selectedCamera == defaultVirtualCamera ? selectedPriority : nonSelectedPriority);
         }
 
         for (int i = 0; i < cameraOptionVirtualCameras.Length; i++)
@@ -101,7 +132,7 @@ public class CameraCrewInteractionAction : InteractionActionBase
                 continue;
             }
 
-            int targetPriority = cam == selectedCamera ? activePriority : inactivePriority;
+            int targetPriority = cam == selectedCamera ? selectedPriority : nonSelectedPriority;
             SetCameraPriority(cam, targetPriority);
         }
     }

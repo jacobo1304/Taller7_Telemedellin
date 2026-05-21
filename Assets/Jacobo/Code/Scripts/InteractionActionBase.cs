@@ -29,11 +29,14 @@ public abstract class InteractionActionBase : MonoBehaviour
     [SerializeField] private UnityEvent onHoldComplete;
 
     private Coroutine holdCompleteRoutine;
+    private int lastSelectedOptionIndex = -1;
 
     public InteractionType InteractionType => interactionType;
     public int CorrectOptionIndex => ResolveCorrectOptionIndex();
     public int WrongOption1Index => GetWrongOptionIndex(1);
     public int WrongOption2Index => GetWrongOptionIndex(2);
+    public int StoredSelectedOptionIndex => lastSelectedOptionIndex;
+    public bool HasStoredSelection => lastSelectedOptionIndex >= 0;
     protected int PoseOptionsCount => PoseOptions == null ? 0 : PoseOptions.Length;
 
     public void PresentToUI(InteractionUIManager uiManager)
@@ -63,6 +66,7 @@ public abstract class InteractionActionBase : MonoBehaviour
     public bool HandleAnswer(int selectedOptionIndex, InteractionUIManager uiManager)
     {
         PresentToUI(uiManager);
+        lastSelectedOptionIndex = selectedOptionIndex;
 
         int resolvedCorrectIndex = ResolveCorrectOptionIndex();
         int resolvedWrong1Index = WrongOption1Index;
@@ -182,6 +186,38 @@ public abstract class InteractionActionBase : MonoBehaviour
     public virtual void ResetHoldEffects()
     {
         // Override in derived interactions if needed.
+    }
+
+    public virtual void RestoreStoredSelection()
+    {
+        if (!HasStoredSelection)
+        {
+            return;
+        }
+
+        int resolvedCorrectIndex = ResolveCorrectOptionIndex();
+        int resolvedWrong1Index = WrongOption1Index;
+        int resolvedWrong2Index = WrongOption2Index;
+
+        if (lastSelectedOptionIndex == resolvedCorrectIndex)
+        {
+            ApplyCorrectEffect();
+            return;
+        }
+
+        if (lastSelectedOptionIndex == resolvedWrong1Index)
+        {
+            ApplyWrongEffect1();
+            return;
+        }
+
+        if (lastSelectedOptionIndex == resolvedWrong2Index)
+        {
+            ApplyWrongEffect2();
+            return;
+        }
+
+        ApplyWrongEffect2();
     }
 
     private void ScheduleHoldComplete(InteractionUIManager uiManager, string feedbackMessage, float soundDuration = 0f)
