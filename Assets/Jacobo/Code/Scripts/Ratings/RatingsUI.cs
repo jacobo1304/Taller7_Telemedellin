@@ -15,6 +15,9 @@ public class RatingsUI : MonoBehaviour
     [Header("Text")]
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text playerRatingText;
+    [SerializeField] private RectTransform playerRatingTextTransform;
+    [SerializeField] private float playerTextMinY = 0f;
+    [SerializeField] private float playerTextMaxY = 10000f;
 
     [Header("Animation")]
     [SerializeField] private float animateDuration = 2.5f;
@@ -115,6 +118,39 @@ public class RatingsUI : MonoBehaviour
         {
             playerRatingText.text = value.ToString();
         }
+
+        UpdatePlayerTextPosition(value);
+    }
+
+    public void SetToZeroState()
+    {
+        int[] zeros = new int[3];
+        SetBars(0, zeros);
+        SetPlayerNumber(0);
+
+        if (titleText != null)
+        {
+            titleText.text = string.Empty;
+        }
+    }
+
+    private void UpdatePlayerTextPosition(int value)
+    {
+        if (playerRatingTextTransform == null && playerRatingText != null)
+        {
+            playerRatingTextTransform = playerRatingText.rectTransform;
+        }
+
+        if (playerRatingTextTransform == null)
+        {
+            return;
+        }
+
+        float t = Mathf.Clamp01(value / 10000f);
+        float y = Mathf.Lerp(playerTextMinY, playerTextMaxY, t);
+        Vector2 pos = playerRatingTextTransform.anchoredPosition;
+        pos.y = y;
+        playerRatingTextTransform.anchoredPosition = pos;
     }
 
     private void SetTitle(RatingState state)

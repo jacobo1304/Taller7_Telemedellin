@@ -13,6 +13,7 @@ public class RatingsManager : MonoBehaviour
 
     [Header("Timing")]
     [SerializeField] private float postAnimationDelay = 2f;
+    [SerializeField] private float showFromZeroDelay = 0.75f;
 
     [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
@@ -27,6 +28,16 @@ public class RatingsManager : MonoBehaviour
         }
 
         flowRoutine = StartCoroutine(HandleAnswerFlow(isCorrect));
+    }
+
+    public void ShowCurrentFromZero()
+    {
+        if (flowRoutine != null)
+        {
+            StopCoroutine(flowRoutine);
+        }
+
+        flowRoutine = StartCoroutine(HandleShowCurrentFromZero());
     }
 
     private IEnumerator HandleAnswerFlow(bool isCorrect)
@@ -93,6 +104,36 @@ public class RatingsManager : MonoBehaviour
         {
             cinematicManager.PlayNext();
         }
+
+        flowRoutine = null;
+    }
+
+    private IEnumerator HandleShowCurrentFromZero()
+    {
+        if (ratingsCalculator == null || ratingsUI == null)
+        {
+            if (debugLogs)
+            {
+                Debug.LogWarning($"{nameof(RatingsManager)}: Missing RatingsCalculator or RatingsUI.");
+            }
+            flowRoutine = null;
+            yield break;
+        }
+
+        if (ratingsPanelRoot != null)
+        {
+            ratingsPanelRoot.SetActive(true);
+        }
+
+        ratingsUI.SetToZeroState();
+
+        if (showFromZeroDelay > 0f)
+        {
+            yield return new WaitForSeconds(showFromZeroDelay);
+        }
+
+        RatingResult result = ratingsCalculator.GetCurrentResult();
+        yield return StartCoroutine(ratingsUI.AnimateFromZeroToCurrent(result, audioLibrary));
 
         flowRoutine = null;
     }

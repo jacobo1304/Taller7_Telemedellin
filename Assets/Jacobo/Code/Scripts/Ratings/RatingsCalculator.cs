@@ -17,6 +17,18 @@ public class RatingsCalculator : MonoBehaviour
     public int PlayerRating => playerRating;
     public int[] CompetitorRatings => competitorRatings;
 
+    public RatingResult GetCurrentResult()
+    {
+        EnsureCompetitorArray();
+
+        int[] competitorSnapshot = new int[competitorRatings.Length];
+        System.Array.Copy(competitorRatings, competitorSnapshot, competitorRatings.Length);
+        RatingState playerState = ResolveState(playerRating);
+        bool hitCap = playerRating == MinRating || playerRating == MaxRating;
+
+        return new RatingResult(playerRating, competitorSnapshot, playerState, hitCap);
+    }
+
     private void OnValidate()
     {
         EnsureCompetitorArray();
