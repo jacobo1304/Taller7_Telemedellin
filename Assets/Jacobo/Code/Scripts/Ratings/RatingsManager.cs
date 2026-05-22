@@ -8,12 +8,14 @@ public class RatingsManager : MonoBehaviour
     [SerializeField] private RatingsUI ratingsUI;
     [SerializeField] private AudioLibrary audioLibrary;
     [SerializeField] private SoundManager soundManager;
+    [SerializeField] private AnswerHandler answerHandler;
     [SerializeField] private CinematicManager cinematicManager;
     [SerializeField] private GameObject ratingsPanelRoot;
 
     [Header("Timing")]
     [SerializeField] private float postAnimationDelay = 2f;
     [SerializeField] private float showFromZeroDelay = 0.75f;
+    [SerializeField] private float postRatingAudioDelay = 0.5f;
 
     [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
@@ -38,6 +40,16 @@ public class RatingsManager : MonoBehaviour
         }
 
         flowRoutine = StartCoroutine(HandleShowCurrentFromZero());
+    }
+
+    public void OnHoldCompletePlayRatingsFlow()
+    {
+        if (flowRoutine != null)
+        {
+            StopCoroutine(flowRoutine);
+        }
+
+        flowRoutine = StartCoroutine(HandleHoldCompleteFlow());
     }
 
     private IEnumerator HandleAnswerFlow(bool isCorrect)
@@ -134,6 +146,97 @@ public class RatingsManager : MonoBehaviour
 
         RatingResult result = ratingsCalculator.GetCurrentResult();
         yield return StartCoroutine(ratingsUI.AnimateFromZeroToCurrent(result, audioLibrary));
+
+        flowRoutine = null;
+    }
+
+    private IEnumerator HandleHoldCompleteFlow()
+    {
+        if (ratingsCalculator == null)
+        {
+            if (debugLogs)
+            {
+                Debug.LogWarning($"{nameof(RatingsManager)}: Missing RatingsCalculator.");
+            }
+            flowRoutine = null;
+            yield break;
+        }
+
+        AnswerHandler.AnswerOutcome outcome = AnswerHandler.AnswerOutcome.Wrong;
+        if (answerHandler != null)
+        {
+            outcome = answerHandler.LastOutcome;
+        }
+
+        SoundManager resolvedSoundManager = soundManager != null ? soundManager : SoundManager.Instance;
+        if (resolvedSoundManager != null)
+        {
+            if (outcome == AnswerHandler.AnswerOutcome.Correct)
+            {
+                resolvedSoundManager.PlayPositiveFeedback();
+            }
+            else if (outcome == AnswerHandler.AnswerOutcome.NoAnswer)
+            {
+                resolvedSoundManager.PlayNoPoseFeedback();
+            }
+            else
+            {
+                resolvedSoundManager.PlayNegativeFeedback();
+            }
+        }
+
+        bool isCorrect = outcome == AnswerHandler.AnswerOutcome.Correct;
+        RatingResult result = ratingsCalculator.ApplyAnswerResult(isCorrect);
+
+        if (ratingsPanelRoot != null)
+        {
+            ratingsPanelRoot.SetActive(true);
+        }
+
+        if (ratingsUI != null)
+        {
+            yield return StartCoroutine(ratingsUI.AnimateRatings(result, audioLibrary));
+        }
+
+        float ratingAudioDuration = 0f;
+        if (audioLibrary != null)
+        {
+            if (result.HitCap)
+            {
+                if (result.PlayerRating <= 0)
+                {
+                    ratingAudioDuration = audioLibrary.PlayStayAtBottomWithDuration();
+                }
+                else
+                {
+                    ratingAudioDuration = audioLibrary.PlayStayAtTopWithDuration();
+                }
+            }
+            else
+            {
+                ratingAudioDuration = audioLibrary.PlayStateWithDuration(result.PlayerState);
+            }
+        }
+
+        if (ratingAudioDuration > 0f)
+        {
+            yield return new WaitForSeconds(ratingAudioDuration);
+        }
+
+        if (postRatingAudioDelay > 0f)
+        {
+            yield return new WaitForSeconds(postRatingAudioDelay);
+        }
+
+        if (ratingsPanelRoot != null)
+        {
+            ratingsPanelRoot.SetActive(false);
+        }
+
+        if (cinematicManager != null)
+        {
+            cinematicManager.PlayNext();
+        }
 
         flowRoutine = null;
     }

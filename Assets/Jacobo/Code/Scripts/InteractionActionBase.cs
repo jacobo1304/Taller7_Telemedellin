@@ -18,6 +18,7 @@ public abstract class InteractionActionBase : MonoBehaviour
     [TextArea(2, 4)] [SerializeField] private string correctMessage;
     [TextArea(2, 4)] [SerializeField] private string wrongMessage1;
     [TextArea(2, 4)] [SerializeField] private string wrongMessage2;
+    [TextArea(2, 4)] [SerializeField] private string defaultMessage;
 
     [Header("Opciones de pose (cantidad variable)")]
     [SerializeField] public PoseData[] PoseOptions = new PoseData[0];
@@ -107,6 +108,19 @@ public abstract class InteractionActionBase : MonoBehaviour
         ShowFeedbackIfAny(uiManager, wrongMessage2);
         float soundDurationDefault = SoundManager.Instance != null ? SoundManager.Instance.PlayNegativeFeedback() : 0f;
         ScheduleHoldComplete(uiManager, wrongMessage2, soundDurationDefault);
+        return false;
+    }
+
+    public bool HandleDefaultAnswer(InteractionUIManager uiManager)
+    {
+        PresentToUI(uiManager);
+        lastSelectedOptionIndex = -1;
+
+        ApplyDefaultEffect();
+        ShowFeedbackIfAny(uiManager, defaultMessage);
+
+        float soundDuration = SoundManager.Instance != null ? SoundManager.Instance.PlayNoPoseFeedback() : 0f;
+        ScheduleHoldComplete(uiManager, defaultMessage, soundDuration);
         return false;
     }
 
@@ -254,4 +268,5 @@ public abstract class InteractionActionBase : MonoBehaviour
     protected abstract void ApplyCorrectEffect();
     protected abstract void ApplyWrongEffect1();
     protected abstract void ApplyWrongEffect2();
+    protected virtual void ApplyDefaultEffect() { }
 }

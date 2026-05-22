@@ -7,6 +7,7 @@ public class SoundManager : MonoBehaviour
     [Header("Feedback SFX")]
     [SerializeField] private AudioClip[] positiveClips = new AudioClip[0];
     [SerializeField] private AudioClip[] negativeClips = new AudioClip[0];
+    [SerializeField] private AudioClip[] noPoseClips = new AudioClip[0];
 
     [Header("Audio Source")]
     [SerializeField] private AudioSource audioSource;
@@ -90,6 +91,25 @@ public class SoundManager : MonoBehaviour
 
         AudioClip clip = negativeClips[Random.Range(0, negativeClips.Length)];
         return PlayAudioClip(clip, "Negative Feedback");
+    }
+
+    /// <summary>
+    /// Reproduce un sonido de feedback cuando no hay pose (timeout/default).
+    /// </summary>
+    /// <returns>Duración del clip en segundos. Retorna 0 si no hay clips disponibles.</returns>
+    public float PlayNoPoseFeedback()
+    {
+        if (noPoseClips == null || noPoseClips.Length == 0)
+        {
+            if (debugLogs)
+            {
+                Debug.LogWarning($"{nameof(SoundManager)}: No hay clips de feedback no-pose configurados.", this);
+            }
+            return 0f;
+        }
+
+        AudioClip clip = noPoseClips[Random.Range(0, noPoseClips.Length)];
+        return PlayAudioClip(clip, "No Pose Feedback");
     }
 
     /// <summary>

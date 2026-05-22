@@ -36,6 +36,11 @@ public class SoundCrewInteractionAction : InteractionActionBase
         new AudioOptionProfile()
     };
 
+    [Header("Default Timeout")]
+    [SerializeField] private AudioOptionProfile defaultProfile = new AudioOptionProfile();
+    [SerializeField] private Transform defaultAmbienceKnobSpot;
+    [SerializeField] private Transform defaultVoiceKnobSpot;
+
     [Header("Interpolación")]
     [SerializeField] private float knobLerpDuration = 0.35f;
 
@@ -143,6 +148,48 @@ public class SoundCrewInteractionAction : InteractionActionBase
     protected override void ApplyWrongEffect2()
     {
         ApplyOptionState(WrongOption2Index);
+    }
+
+    protected override void ApplyDefaultEffect()
+    {
+        ApplyDefaultState();
+    }
+
+    private void ApplyDefaultState()
+    {
+        if (defaultProfile == null)
+        {
+            return;
+        }
+
+        currentPreviewOption = -1;
+        currentProfile = defaultProfile;
+
+        bool instantApply =
+            !gameObject.activeInHierarchy ||
+            !isActiveAndEnabled;
+
+        if (instantApply)
+        {
+            ApplyInstantState(
+                defaultAmbienceKnobSpot,
+                defaultVoiceKnobSpot
+            );
+            return;
+        }
+
+        if (transitionRoutine != null)
+        {
+            StopCoroutine(transitionRoutine);
+        }
+
+        transitionRoutine =
+            StartCoroutine(
+                TransitionRoutine(
+                    defaultAmbienceKnobSpot,
+                    defaultVoiceKnobSpot
+                )
+            );
     }
 
     private void ApplyOptionState(int optionIndex)

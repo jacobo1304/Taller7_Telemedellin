@@ -5903,6 +5903,7 @@ MonoBehaviour:
   correctMessage: Escogiste el plano medio, perfecto para la entrevista
   wrongMessage1: Muy mal, este plano americano se usa mas en peliculas
   wrongMessage2: "Este primer plano est\xE1 muy cerca, muy artistico, poco informativo."
+  defaultMessage: 
   PoseOptions:
   - {fileID: 11400000, guid: 354e42246874d034e96449e492e1d77a, type: 2}
   - {fileID: 11400000, guid: d043af0cd326b3446b9da59c04f105f3, type: 2}
@@ -5919,9 +5920,9 @@ MonoBehaviour:
   onHoldComplete:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1835777535}
-        m_TargetAssemblyTypeName: CinematicManager, Assembly-CSharp
-        m_MethodName: PlayNext
+      - m_Target: {fileID: 576333457}
+        m_TargetAssemblyTypeName: RatingsManager, Assembly-CSharp
+        m_MethodName: OnHoldCompletePlayRatingsFlow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9421,6 +9422,7 @@ MonoBehaviour:
   correctMessage: "Excelente! El balance perfecto.\t"
   wrongMessage1: "Demasiado volumen en la voz, se satur\xF3."
   wrongMessage2: Mucho ruido de ambiente, la voz no se escucha.
+  defaultMessage: 
   PoseOptions:
   - {fileID: 11400000, guid: 10f1f2762cbcc5e46bf68f36d35abd60, type: 2}
   - {fileID: 11400000, guid: 354e42246874d034e96449e492e1d77a, type: 2}
@@ -9449,9 +9451,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1835777535}
-        m_TargetAssemblyTypeName: CinematicManager, Assembly-CSharp
-        m_MethodName: PlayNext
+      - m_Target: {fileID: 576333457}
+        m_TargetAssemblyTypeName: RatingsManager, Assembly-CSharp
+        m_MethodName: OnHoldCompletePlayRatingsFlow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9485,18 +9487,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 398877052}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   ambienceKnob: {fileID: 398877051}
   voiceKnob: {fileID: 398877049}
   ambienceKnobOptionSpots:
@@ -9509,7 +9499,7 @@ MonoBehaviour:
   - {fileID: 835485250}
   voiceAudioSource: {fileID: 22653294}
   ambienceAudioSource: {fileID: 708809303}
-  audioMeterUI: {fileID: 0}
+  audioMeterUI: {fileID: 779003711}
   optionProfiles:
   - voiceVolume: 0.181
     ambienceVolume: 0.993
@@ -9523,6 +9513,13 @@ MonoBehaviour:
     ambienceVolume: 0.253
     voiceDistortion: 1
     ambienceDistortion: 0
+  defaultProfile:
+    voiceVolume: 1
+    ambienceVolume: 0.2
+    voiceDistortion: 0
+    ambienceDistortion: 0
+  defaultAmbienceKnobSpot: {fileID: 0}
+  defaultVoiceKnobSpot: {fileID: 0}
   knobLerpDuration: 0.3
   debugLogs: 0
 --- !u!4 &363136164
@@ -11388,6 +11385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 484739234}
   - component: {fileID: 484739235}
+  - component: {fileID: 484739236}
   m_Layer: 0
   m_Name: TimerManager
   m_TagString: Untagged
@@ -11424,10 +11422,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerText: {fileID: 1752454677}
   questionPanel: {fileID: 2064863713}
-  startTime: 30
+  startTime: 45
   answerHandler: {fileID: 235863370}
-  defaultAnswers: []
   feedbackController: {fileID: 0}
+--- !u!114 &484739236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484739233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6674c5cdff4c0740baf73f355a9e3dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questionMusicSource: {fileID: 783523581}
+  minPitch: 1
+  maxPitch: 1.5
+  clockAnimator: {fileID: 0}
+  clockTriggerName: ClockStart
+  clockTriggerSeconds: 10
+  cueAudioSource: {fileID: 0}
+  cues:
+  - secondsRemaining: 0
+    clips: []
+    volume: 0.662
+  debugLogs: 0
 --- !u!1001 &493520236
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12501,10 +12522,12 @@ MonoBehaviour:
   ratingsUI: {fileID: 576333456}
   audioLibrary: {fileID: 779003712}
   soundManager: {fileID: 779003709}
+  answerHandler: {fileID: 235863370}
   cinematicManager: {fileID: 1835777535}
   ratingsPanelRoot: {fileID: 1509457498}
   postAnimationDelay: 2
   showFromZeroDelay: 2
+  postRatingAudioDelay: 0.5
   debugLogs: 0
 --- !u!114 &576333458
 MonoBehaviour:
@@ -17858,6 +17881,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6e8e48a96570afc40b4f40feb5d46b7a, type: 3}
   - {fileID: 8300000, guid: 7274585096af2804997e4c73044ad2dd, type: 3}
   - {fileID: 8300000, guid: d9913e1bf1e26974c818606b61a7b951, type: 3}
+  noPoseClips: []
   audioSource: {fileID: 0}
   sfxVolume: 0.91
   debugLogs: 0
@@ -17895,7 +17919,7 @@ MonoBehaviour:
   maxDb: 0
   clipThresholdDb: -8
   clipSampleThreshold: 0.98
-  riseSpeed: 20
+  riseSpeed: 15
   fallSpeed: 8
   clipHoldTime: 0.2
   distortionTriggersClip: 1
@@ -18274,6 +18298,8 @@ PlayableDirector:
     value: {fileID: 398877052}
   - key: {fileID: -8864043013159761243, guid: 59bb0f73436adf6449ab225c0c54ea46, type: 2}
     value: {fileID: 363136162}
+  - key: {fileID: 7058373700140458688, guid: 59bb0f73436adf6449ab225c0c54ea46, type: 2}
+    value: {fileID: 2137537821}
   m_ExposedReferences:
     m_References:
     - 9b26d14e805b09045b229b8667f5a607: {fileID: 2108505507}
@@ -18680,6 +18706,7 @@ MonoBehaviour:
   correctMessage: "Bien hecho las luces se cuadraron\t"
   wrongMessage1: "Incorrecto, las luces est\xE1n muy fuertes.\t\t"
   wrongMessage2: Incorrecto, Las luce no van por alla
+  defaultMessage: 
   PoseOptions:
   - {fileID: 11400000, guid: d043af0cd326b3446b9da59c04f105f3, type: 2}
   - {fileID: 11400000, guid: 354e42246874d034e96449e492e1d77a, type: 2}
@@ -18696,9 +18723,9 @@ MonoBehaviour:
   onHoldComplete:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1835777535}
-        m_TargetAssemblyTypeName: CinematicManager, Assembly-CSharp
-        m_MethodName: PlayNext
+      - m_Target: {fileID: 576333457}
+        m_TargetAssemblyTypeName: RatingsManager, Assembly-CSharp
+        m_MethodName: OnHoldCompletePlayRatingsFlow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18738,6 +18765,8 @@ MonoBehaviour:
   IntensityCorrect: 3.38
   IntensityIncorrect1: 22.21
   IntensityIncorrect2: 12
+  LuzDefault: {fileID: 0}
+  IntensityDefault: 1
 --- !u!4 &828516653
 Transform:
   m_ObjectHideFlags: 0
@@ -20385,8 +20414,8 @@ MonoBehaviour:
   soundInteraction: {fileID: 363136163}
   headersInteraction: {fileID: 1549080680}
   enableSoundInFinalScene: 1
-  audioMeterUI: {fileID: 0}
-  finalVoiceClip: {fileID: 0}
+  audioMeterUI: {fileID: 779003711}
+  finalVoiceClip: {fileID: 8300000, guid: fa4a6653673040e4baecc173fb4cadf9, type: 3}
   finalAmbienceClip: {fileID: 8300000, guid: a1d8c8be0cb90314ea8e67059c08abb5, type: 3}
   finalHeaderPanel: {fileID: 100199436}
   finalHeaderText: {fileID: 1430305341}
@@ -26413,6 +26442,7 @@ MonoBehaviour:
   correctMessage: Excelente, ese es el mejor titular.
   wrongMessage1: Este titular es muy generico y no es claro.
   wrongMessage2: Este titular no va al grano.
+  defaultMessage: 
   PoseOptions:
   - {fileID: 11400000, guid: d043af0cd326b3446b9da59c04f105f3, type: 2}
   - {fileID: 11400000, guid: 354e42246874d034e96449e492e1d77a, type: 2}
@@ -26429,9 +26459,9 @@ MonoBehaviour:
   onHoldComplete:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1835777535}
-        m_TargetAssemblyTypeName: CinematicManager, Assembly-CSharp
-        m_MethodName: PlayNext
+      - m_Target: {fileID: 576333457}
+        m_TargetAssemblyTypeName: RatingsManager, Assembly-CSharp
+        m_MethodName: OnHoldCompletePlayRatingsFlow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26485,6 +26515,7 @@ MonoBehaviour:
   correctHeaderText: "Reportandonos desde telemedellin en mi barrio\t"
   wrongHeader1Text: "Visita del Inder al barrio de telemedellin\t"
   wrongHeader2Text: Cuando llegamos al barrio, todo fue muy diferernte
+  defaultHeaderText: 
   noPoseHeaderText: 
   fadeOutDuration: 0.3
   fadeInDuration: 0.3
@@ -32074,12 +32105,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cinematics:
-  - id: Presentacion
-    director: {fileID: 342006456}
-    virtualCamera: {fileID: 68178743}
   - id: MainMenu
     director: {fileID: 1608282797}
     virtualCamera: {fileID: 2045834158}
+  - id: Presentacion
+    director: {fileID: 342006456}
+    virtualCamera: {fileID: 68178743}
   - id: Tutorial
     director: {fileID: 1542835400}
     virtualCamera: {fileID: 1967728019}
@@ -34583,7 +34614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.9813046
+      value: -0.98130465
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.x
@@ -34591,7 +34622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.19246127
+      value: -0.1924613
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.z
@@ -35711,7 +35742,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.005740579
+      value: 0.0057405797
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -35719,7 +35750,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0016632677
+      value: 0.0016632682
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -35727,11 +35758,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.034286365
+      value: -0.03428637
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.006080774
+      value: -0.0060807737
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.z
@@ -36158,7 +36189,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2137537822
 RectTransform:
   m_ObjectHideFlags: 0

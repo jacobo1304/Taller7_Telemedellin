@@ -58,6 +58,16 @@ public class CameraCrewInteractionAction : InteractionActionBase
         SetActiveCameraForOption(WrongOption2Index);
     }
 
+    protected override void ApplyDefaultEffect()
+    {
+        if (defaultVirtualCamera == null)
+        {
+            return;
+        }
+
+        SetOnlyActiveCamera(defaultVirtualCamera);
+    }
+
     private void SetActiveCameraForOption(int optionIndex)
     {
         if (cameraOptionVirtualCameras == null || optionIndex < 0 || optionIndex >= cameraOptionVirtualCameras.Length)

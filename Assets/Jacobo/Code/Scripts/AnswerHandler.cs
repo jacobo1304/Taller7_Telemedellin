@@ -5,6 +5,13 @@ using System.Collections.Generic;
 
 public class AnswerHandler : MonoBehaviour
 {
+    public enum AnswerOutcome
+    {
+        Correct,
+        Wrong,
+        NoAnswer
+    }
+
     [Serializable]
     public class AnswerEvent : UnityEvent<InteractionType> { }
 
@@ -34,9 +41,11 @@ public class AnswerHandler : MonoBehaviour
     // NUEVO: interacción actual
     private InteractionType currentInteractionType;
     private bool hasCurrentInteraction = false;
+    private AnswerOutcome lastOutcome = AnswerOutcome.Wrong;
 
     public bool HasCurrentInteraction => hasCurrentInteraction;
     public InteractionType CurrentInteractionType => currentInteractionType;
+    public AnswerOutcome LastOutcome => lastOutcome;
 
     public void SetCurrentInteraction(
         InteractionType interactionType
@@ -164,6 +173,7 @@ public class AnswerHandler : MonoBehaviour
 
         if (isCorrect)
         {
+            lastOutcome = AnswerOutcome.Correct;
             if (debugLogs)
             {
                 Debug.Log(
@@ -178,6 +188,7 @@ public class AnswerHandler : MonoBehaviour
         }
         else
         {
+            lastOutcome = AnswerOutcome.Wrong;
             onAnswerWrong?.Invoke(
                 interactionType
             );
@@ -187,6 +198,50 @@ public class AnswerHandler : MonoBehaviour
         {
             Debug.Log(
                 $"{nameof(AnswerHandler)}: '{interactionType}' opción {selectedOptionIndex} => {(isCorrect ? "CORRECTA" : "INCORRECTA")}",
+                this
+            );
+        }
+    }
+
+    public void SubmitDefaultAnswer(InteractionType interactionType)
+    {
+        if (inputLocked)
+        {
+            if (debugLogs)
+            {
+                Debug.Log(
+                    $"{nameof(AnswerHandler)}: Input bloqueado. Ignorando default para '{interactionType}'.",
+                    this
+                );
+            }
+
+            return;
+        }
+
+        if (!actionByInteractionType.TryGetValue(
+            interactionType,
+            out var action))
+        {
+            if (debugLogs)
+            {
+                Debug.LogWarning(
+                    $"{nameof(AnswerHandler)}: No se encontró interacción para '{interactionType}'.",
+                    this
+                );
+            }
+
+            onAnswerWrong?.Invoke(interactionType);
+            return;
+        }
+
+        action.HandleDefaultAnswer(uiManager);
+        lastOutcome = AnswerOutcome.NoAnswer;
+        onAnswerWrong?.Invoke(interactionType);
+
+        if (debugLogs)
+        {
+            Debug.Log(
+                $"{nameof(AnswerHandler)}: '{interactionType}' default timeout => INCORRECTA",
                 this
             );
         }

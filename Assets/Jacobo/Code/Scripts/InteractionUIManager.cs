@@ -129,6 +129,12 @@ public class InteractionUIManager : MonoBehaviour
             return;
         }
 
+        if (optionIndex < 0 || optionIndex >= holdProgressFills.Length)
+        {
+            ClearHoldProgress();
+            return;
+        }
+
         float progress = Mathf.Clamp01(normalizedProgress);
 
         if (CanLogDebug())

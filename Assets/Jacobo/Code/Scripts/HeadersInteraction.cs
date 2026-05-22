@@ -17,6 +17,7 @@ public class HeadersInteraction : InteractionActionBase
     [TextArea(2, 4)] [SerializeField] private string correctHeaderText;
     [TextArea(2, 4)] [SerializeField] private string wrongHeader1Text;
     [TextArea(2, 4)] [SerializeField] private string wrongHeader2Text;
+    [TextArea(2, 4)] [SerializeField] private string defaultHeaderText;
     [TextArea(2, 4)] [SerializeField] private string noPoseHeaderText = "";
 
     [Header("Fade Transition")]
@@ -172,6 +173,11 @@ public class HeadersInteraction : InteractionActionBase
     protected override void ApplyWrongEffect2()
     {
         ScheduleTextTransition(wrongHeader2Text, true);
+    }
+
+    protected override void ApplyDefaultEffect()
+    {
+        ScheduleTextTransition(defaultHeaderText, true);
     }
 
     private void ScheduleTextTransition(string newText, bool fadeInAfterChange, bool shouldHidePanelAfter = false)

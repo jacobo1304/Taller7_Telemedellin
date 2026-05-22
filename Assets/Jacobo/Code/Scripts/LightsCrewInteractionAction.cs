@@ -12,6 +12,10 @@ public class LightsCrewInteractionAction : InteractionActionBase
     [SerializeField] private float IntensityIncorrect1 = 0.8f;
     [SerializeField] private float IntensityIncorrect2 = 1.2f;
 
+    [Header("Default Timeout")]
+    [SerializeField] private Light LuzDefault;
+    [SerializeField] private float IntensityDefault = 1.0f;
+
     protected override void ApplyCorrectEffect()
     {
         if (LuzCorrecta != null)
@@ -44,6 +48,18 @@ public class LightsCrewInteractionAction : InteractionActionBase
         if (LuzCorrecta != null)
         {
             SetLights(LuzCorrecta, false, 0f);
+        }
+    }
+
+    protected override void ApplyDefaultEffect()
+    {
+        SetLights(LuzCorrecta, false, 0f);
+        SetLights(LuzIncorrecta1, false, 0f);
+        SetLights(LuzIncorrecta2, false, 0f);
+
+        if (LuzDefault != null)
+        {
+            SetLights(LuzDefault, true, IntensityDefault);
         }
     }
 

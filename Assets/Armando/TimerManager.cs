@@ -3,14 +3,6 @@ using UnityEngine;
 
 public class TimerManager : MonoBehaviour
 {
-    [System.Serializable]
-    public class DefaultAnswerEntry
-    {
-        public InteractionType interactionType;
-        [Tooltip("Default option index when time runs out. Use -1 for empty selection.")]
-        public int defaultOptionIndex = -1;
-    }
-
     [Header("UI")]
     public TMP_Text timerText;
     public GameObject questionPanel;
@@ -20,9 +12,6 @@ public class TimerManager : MonoBehaviour
 
     [Header("Answer System")]
     public AnswerHandler answerHandler;
-
-    [Header("Timeout Defaults")]
-    [SerializeField] private DefaultAnswerEntry[] defaultAnswers = new DefaultAnswerEntry[0];
 
     [Header("Feedback")]
     [SerializeField] private TimerFeedbackController feedbackController;
@@ -123,17 +112,14 @@ public class TimerManager : MonoBehaviour
             answerHandler
                 .CurrentInteractionType;
 
-        int defaultOption = GetDefaultOption(currentType);
-
         Debug.Log(
             $"Tiempo agotado | " +
             $"Interacción: {currentType} | " +
-            $"Respuesta automática: {defaultOption}"
+            "Respuesta automática: default timeout"
         );
 
-        answerHandler.SubmitAnswer(
-            currentType,
-            defaultOption
+        answerHandler.SubmitDefaultAnswer(
+            currentType
         );
 
         answerSubmitted = true;
@@ -164,22 +150,4 @@ public class TimerManager : MonoBehaviour
         }
     }
 
-    private int GetDefaultOption(InteractionType interactionType)
-    {
-        if (defaultAnswers == null)
-        {
-            return -1;
-        }
-
-        for (int i = 0; i < defaultAnswers.Length; i++)
-        {
-            DefaultAnswerEntry entry = defaultAnswers[i];
-            if (entry != null && entry.interactionType == interactionType)
-            {
-                return Mathf.Clamp(entry.defaultOptionIndex, -1, 2);
-            }
-        }
-
-        return -1;
-    }
 }
