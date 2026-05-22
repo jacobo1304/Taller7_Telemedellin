@@ -15,6 +15,9 @@ public class SoundCrewInteractionAction : InteractionActionBase
     [SerializeField] private AudioSource voiceAudioSource;
     [SerializeField] private AudioSource ambienceAudioSource;
 
+    [Header("UI")]
+    [SerializeField] private AudioMeterUI audioMeterUI;
+
     [System.Serializable]
     private class AudioOptionProfile
     {
@@ -43,10 +46,17 @@ public class SoundCrewInteractionAction : InteractionActionBase
     private int currentPreviewOption = -1;
     private AudioOptionProfile currentProfile;
 
+    public AudioSource VoiceAudioSource => voiceAudioSource;
+
     public void StartPlayback()
     {
         StartAudioSource(voiceAudioSource);
         StartAudioSource(ambienceAudioSource);
+
+        if (audioMeterUI != null && voiceAudioSource != null)
+        {
+            audioMeterUI.SetAudioSource(voiceAudioSource);
+        }
     }
 
     public void StopPlayback()
@@ -56,6 +66,25 @@ public class SoundCrewInteractionAction : InteractionActionBase
 
         if (ambienceAudioSource != null)
             ambienceAudioSource.Stop();
+    }
+
+    public void SetClipsAndRestart(
+        AudioClip voiceClip,
+        AudioClip ambienceClip
+    )
+    {
+        if (voiceAudioSource != null && voiceClip != null)
+        {
+            voiceAudioSource.clip = voiceClip;
+        }
+
+        if (ambienceAudioSource != null && ambienceClip != null)
+        {
+            ambienceAudioSource.clip = ambienceClip;
+        }
+
+        StopPlayback();
+        StartPlayback();
     }
 
     private void StartAudioSource(AudioSource source)

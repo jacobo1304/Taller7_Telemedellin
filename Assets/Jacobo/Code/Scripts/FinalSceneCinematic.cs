@@ -10,6 +10,13 @@ public class FinalSceneCinematic : MonoBehaviour
     [SerializeField] private HeadersInteraction headersInteraction;
     [SerializeField] private bool enableSoundInFinalScene = true; // CAMBIO: Habilitado por defecto para CinematicaEscenaFinal
 
+    [Header("UI")]
+    [SerializeField] private AudioMeterUI audioMeterUI;
+
+    [Header("Final Scene Clips")]
+    [SerializeField] private AudioClip finalVoiceClip;
+    [SerializeField] private AudioClip finalAmbienceClip;
+
     [Header("Final Header Panel")]
     [SerializeField] private GameObject finalHeaderPanel;
     [SerializeField] private TMP_Text finalHeaderText;
@@ -131,6 +138,15 @@ public class FinalSceneCinematic : MonoBehaviour
         }
 
         soundInteraction.RestoreStoredSelection();
+        soundInteraction.SetClipsAndRestart(
+            finalVoiceClip,
+            finalAmbienceClip
+        );
+
+        if (audioMeterUI != null && soundInteraction.VoiceAudioSource != null)
+        {
+            audioMeterUI.SetAudioSource(soundInteraction.VoiceAudioSource);
+        }
 
         if (debugLogs)
         {
