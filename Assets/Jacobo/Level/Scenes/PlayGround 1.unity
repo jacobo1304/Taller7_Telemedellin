@@ -435,7 +435,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 4f6f081ebfc9efe41b696a1b016b7058, type: 3}
+  m_Resource: {fileID: 8300000, guid: e09962e504f887d4399dd708b12375f1, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -542,7 +542,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 708809304}
   m_Father: {fileID: 753902375}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &27106811
@@ -12289,7 +12290,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 400, y: -111}
+  m_AnchoredPosition: {x: 400, y: -110.99997}
   m_SizeDelta: {x: -2313.2, y: -1277.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &558988875
@@ -12504,7 +12505,7 @@ MonoBehaviour:
   playerRatingTextTransform: {fileID: 713764832}
   playerTextMinY: -750
   playerTextMaxY: 0
-  animateDuration: 2.5
+  animateDuration: 2
   debugLogs: 0
 --- !u!114 &576333457
 MonoBehaviour:
@@ -12526,7 +12527,7 @@ MonoBehaviour:
   cinematicManager: {fileID: 1835777535}
   ratingsPanelRoot: {fileID: 1509457498}
   postAnimationDelay: 2
-  showFromZeroDelay: 2
+  showFromZeroDelay: 1.5
   postRatingAudioDelay: 0.5
   debugLogs: 0
 --- !u!114 &576333458
@@ -17004,7 +17005,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 753902375}
+  m_Father: {fileID: 22653296}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &713764831
 GameObject:
@@ -17584,7 +17585,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 363136164}
-  - {fileID: 708809304}
   - {fileID: 22653296}
   - {fileID: 398877050}
   - {fileID: 1982405403}
@@ -17881,7 +17881,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6e8e48a96570afc40b4f40feb5d46b7a, type: 3}
   - {fileID: 8300000, guid: 7274585096af2804997e4c73044ad2dd, type: 3}
   - {fileID: 8300000, guid: d9913e1bf1e26974c818606b61a7b951, type: 3}
-  noPoseClips: []
+  noPoseClips:
+  - {fileID: 0}
   audioSource: {fileID: 0}
   sfxVolume: 0.91
   debugLogs: 0
@@ -17918,7 +17919,7 @@ MonoBehaviour:
   minDb: -60
   maxDb: 0
   clipThresholdDb: -8
-  clipSampleThreshold: 0.98
+  clipSampleThreshold: 0.63
   riseSpeed: 15
   fallSpeed: 8
   clipHoldTime: 0.2
@@ -17938,20 +17939,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 783523581}
   muyMalClips:
-  - {fileID: 8300000, guid: 6b8016cea4b537540b338869dfcdedce, type: 3}
+  - {fileID: 8300000, guid: 2755afb27790a234daa60844dadd7d59, type: 3}
+  - {fileID: 8300000, guid: bb9486559874f194da45f574c4908e51, type: 3}
   malClips:
-  - {fileID: 8300000, guid: 6e8e48a96570afc40b4f40feb5d46b7a, type: 3}
+  - {fileID: 8300000, guid: 9576b72d18979574794e33c13e1bef53, type: 3}
+  - {fileID: 8300000, guid: 60e44ce32cba03549b26b8e1b360795f, type: 3}
   promedioClips:
-  - {fileID: 8300000, guid: 7b3b5770bccfaeb41acc0974383af6f4, type: 3}
+  - {fileID: 8300000, guid: 28210ddef8c0be04998cea465d9f0188, type: 3}
+  - {fileID: 8300000, guid: 5bb040729dbd2124cb55797fd5a58f42, type: 3}
   bienClips:
-  - {fileID: 8300000, guid: 6e041aa7821b636408a6a20e00d15a13, type: 3}
-  - {fileID: 8300000, guid: a40868e54045fbe42b81ff4007ef0f84, type: 3}
+  - {fileID: 8300000, guid: fe5b922e97936d74185e0fe2e943542e, type: 3}
+  - {fileID: 8300000, guid: ed3a2748d5b56524da6a69adfcab1951, type: 3}
   muyBienClips:
-  - {fileID: 8300000, guid: 985b61632b6215a418351d8024e9236c, type: 3}
+  - {fileID: 8300000, guid: 7095235c8fecc6046847d6f720bbf59d, type: 3}
+  - {fileID: 8300000, guid: 0b7e6036d9dc3dc4c87a7ad0b770762f, type: 3}
   tickClip: {fileID: 8300000, guid: 8b405f5feb93eb54796b372d0eb4b213, type: 3}
-  stayAtTopClip: {fileID: 8300000, guid: 4f6f081ebfc9efe41b696a1b016b7058, type: 3}
-  stayAtBottomClip: {fileID: 8300000, guid: 30cf0f00189642940ad993039c858313, type: 3}
-  sfxVolume: 0.58
+  stayAtTopClip: {fileID: 8300000, guid: d493244e6492b1c439e5e3d27da2c6e5, type: 3}
+  stayAtBottomClip: {fileID: 8300000, guid: 015d9bb9f78fbd54b999f8cc2300cd31, type: 3}
+  sfxVolume: 0.5
   debugLogs: 0
 --- !u!1 &780267366
 GameObject:
@@ -22211,7 +22216,7 @@ PlayableDirector:
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: a618829aa94726d4db594a3df0d23c05, type: 2}
   m_InitialState: 0
-  m_WrapMode: 1
+  m_WrapMode: 0
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
