@@ -25,7 +25,7 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 6873304072071347599}
-    m_Duration: 27.533061224489796
+    m_Duration: 27.794285714285714
     m_TimeScale: 1
     m_ParentTrack: {fileID: -7498473013170701195}
     m_EaseInDuration: 0
@@ -93,6 +93,23 @@ MonoBehaviour:
   m_Markers:
     m_Objects: []
   TrackPriority: 0
+--- !u!114 &-3911046154247195699
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f10dd60657c6004587f237a7e90f8e4, type: 3}
+  m_Name: AudioPlayableAsset
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 8300000, guid: 14c3e31cf4a2e2048b70a20a6095c312, type: 3}
+  m_Loop: 0
+  m_bufferingTime: 0.1
+  m_ClipProperties:
+    volume: 1
 --- !u!114 &-3055737391562577465
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -117,8 +134,8 @@ MonoBehaviour:
   - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: 6413182537306561071}
-    m_Duration: 27.533061224489796
+    m_Asset: {fileID: -3911046154247195699}
+    m_Duration: 27.794285714285714
     m_TimeScale: 1
     m_ParentTrack: {fileID: -3055737391562577465}
     m_EaseInDuration: 0
@@ -182,7 +199,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: "Titulares - Explicaci\xF3n"
+    m_DisplayName: "Introducci\xF3nTitulares_TeleMedellin"
   m_Markers:
     m_Objects: []
   m_TrackProperties:
@@ -261,23 +278,6 @@ MonoBehaviour:
   m_Markers:
     m_Objects:
     - {fileID: 8501036791027034734}
---- !u!114 &6413182537306561071
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f10dd60657c6004587f237a7e90f8e4, type: 3}
-  m_Name: AudioPlayableAsset
-  m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: 35ad7fa5e55a7624ba5d9bb54a2b3a8c, type: 3}
-  m_Loop: 0
-  m_bufferingTime: 0.1
-  m_ClipProperties:
-    volume: 1
 --- !u!114 &6873304072071347599
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
   m_Name: Signal Emitter
   m_EditorClassIdentifier: 
-  m_Time: 27.533061224489796
+  m_Time: 27.794285714285714
   m_Retroactive: 0
   m_EmitOnce: 0
   m_Asset: {fileID: 11400000, guid: 8323ac3b607be9048be714cbc358fd1d, type: 2}
@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
   m_Name: Signal Emitter
   m_EditorClassIdentifier: 
-  m_Time: 27.533061224489796
+  m_Time: 27.794285714285714
   m_Retroactive: 0
   m_EmitOnce: 0
   m_Asset: {fileID: 11400000, guid: acc0c1fdc3cbb684384e50f2678904cd, type: 2}

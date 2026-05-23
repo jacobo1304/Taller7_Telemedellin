@@ -25,13 +25,13 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 4649569855716562818}
-    m_Duration: 10.98340360121801
+    m_Duration: 14.533333333333333
     m_TimeScale: 1
     m_ParentTrack: {fileID: -5921850518255703948}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: -1
-    m_BlendOutDuration: 8.027487010229374
+    m_BlendOutDuration: 11.577416742344697
     m_MixInCurve:
       serializedVersion: 2
       m_Curve:
@@ -94,12 +94,12 @@ MonoBehaviour:
     m_Start: 2.955916590988636
     m_ClipIn: 0
     m_Asset: {fileID: 1963405952647658195}
-    m_Duration: 8.027487010229379
+    m_Duration: 17.236736470235854
     m_TimeScale: 1
     m_ParentTrack: {fileID: -5921850518255703948}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
-    m_BlendInDuration: 8.027487010229374
+    m_BlendInDuration: 11.577416742344697
     m_BlendOutDuration: -1
     m_MixInCurve:
       serializedVersion: 2
@@ -214,8 +214,8 @@ MonoBehaviour:
   - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: 6413182537306561071}
-    m_Duration: 10.983403601218015
+    m_Asset: {fileID: 8828223494252370144}
+    m_Duration: 20.19265306122449
     m_TimeScale: 1
     m_ParentTrack: {fileID: -3055737391562577465}
     m_EaseInDuration: 0
@@ -279,7 +279,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: "Titulares - Explicaci\xF3n"
+    m_DisplayName: EscenaFinal_TeleMedellin
   m_Markers:
     m_Objects: []
   m_TrackProperties:
@@ -308,10 +308,10 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 10.98340360121801
+    m_Start: 20.19265306122449
     m_ClipIn: 0
     m_Asset: {fileID: -5248452817593413587}
-    m_Duration: 16.54965762327178
+    m_Duration: 7.340408163265302
     m_TimeScale: 1
     m_ParentTrack: {fileID: -354182793723552568}
     m_EaseInDuration: 0
@@ -457,7 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
   m_Name: Signal Emitter
   m_EditorClassIdentifier: 
-  m_Time: 10.983403601218015
+  m_Time: 20.19265306122449
   m_Retroactive: 0
   m_EmitOnce: 0
   m_Asset: {fileID: 11400000, guid: df5b5853c335ffd4483b5b6a75595c54, type: 2}
@@ -502,23 +502,6 @@ MonoBehaviour:
     m_Objects:
     - {fileID: 8501036791027034734}
     - {fileID: 3526941893862859718}
---- !u!114 &6413182537306561071
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f10dd60657c6004587f237a7e90f8e4, type: 3}
-  m_Name: AudioPlayableAsset
-  m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: 5f112c26554a2854caea2c2c86bbee9a, type: 3}
-  m_Loop: 0
-  m_bufferingTime: 0.1
-  m_ClipProperties:
-    volume: 1
 --- !u!114 &7786468511528020102
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -573,10 +556,10 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 10.983403601218015
+    m_Start: 20.19265306122449
     m_ClipIn: 0
     m_Asset: {fileID: 8414999736861683668}
-    m_Duration: 16.54965762327178
+    m_Duration: 7.3404081632653035
     m_TimeScale: 1
     m_ParentTrack: {fileID: 8285335741432348112}
     m_EaseInDuration: 0
@@ -672,3 +655,20 @@ MonoBehaviour:
   m_Retroactive: 0
   m_EmitOnce: 0
   m_Asset: {fileID: 11400000, guid: 9146b437d4415864cb7cce439ce4f1f7, type: 2}
+--- !u!114 &8828223494252370144
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f10dd60657c6004587f237a7e90f8e4, type: 3}
+  m_Name: AudioPlayableAsset
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 8300000, guid: 2386947c974522749b155a14dc67c2a2, type: 3}
+  m_Loop: 0
+  m_bufferingTime: 0.1
+  m_ClipProperties:
+    volume: 1
