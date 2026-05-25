@@ -118,12 +118,11 @@ public class PoseGenerator : MonoBehaviour
     {
         CreateAndSaveNumberedPose("01", 28f, new List<PoseData.JointAngleCondition>
         {
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 120f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 170f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 45f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 95f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftLeg, targetAngle = 150f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightLeg, targetAngle = 150f }
+            // Matriz nueva (fila 1, col 1): brazos en "V" (tipo Y)
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 130f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 130f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 175f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 175f }
         });
     }
 
@@ -132,12 +131,11 @@ public class PoseGenerator : MonoBehaviour
     {
         CreateAndSaveNumberedPose("02", 28f, new List<PoseData.JointAngleCondition>
         {
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 140f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 140f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 155f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 155f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftLeg, targetAngle = 170f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightLeg, targetAngle = 95f }
+            // Matriz nueva (fila 1, col 2): brazos arriba (más vertical)
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 170f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 170f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 175f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 175f }
         });
     }
 
@@ -146,12 +144,11 @@ public class PoseGenerator : MonoBehaviour
     {
         CreateAndSaveNumberedPose("03", 28f, new List<PoseData.JointAngleCondition>
         {
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 165f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 170f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 20f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 120f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftLeg, targetAngle = 170f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightLeg, targetAngle = 95f }
+            // Matriz nueva (fila 1, col 3): manos en la cabeza (codos hacia afuera)
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 75f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 75f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 55f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 55f }
         });
     }
 
@@ -160,12 +157,11 @@ public class PoseGenerator : MonoBehaviour
     {
         CreateAndSaveNumberedPose("04", 28f, new List<PoseData.JointAngleCondition>
         {
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 150f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 90f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 90f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 170f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftLeg, targetAngle = 170f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightLeg, targetAngle = 165f }
+            // Matriz nueva (fila 1, col 4): gesto de "no sé" (brazos abiertos + codos flexionados)
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 95f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 95f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 95f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 95f }
         });
     }
 
@@ -174,12 +170,12 @@ public class PoseGenerator : MonoBehaviour
     {
         CreateAndSaveNumberedPose("05", 28f, new List<PoseData.JointAngleCondition>
         {
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 95f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 95f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 165f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 95f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftLeg, targetAngle = 170f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightLeg, targetAngle = 170f }
+            // Matriz nueva: "EsCine" (última pose de la imagen) — brazos arriba en gesto de celebración.
+            // Solo brazos/hombros (sin piernas/pies). Pose simétrica (no requiere mirror).
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 150f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 150f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 135f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 135f }
         });
     }
 
@@ -188,12 +184,12 @@ public class PoseGenerator : MonoBehaviour
     {
         CreateAndSaveNumberedPose("06", 28f, new List<PoseData.JointAngleCondition>
         {
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 45f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 45f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 95f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 95f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftLeg, targetAngle = 165f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightLeg, targetAngle = 115f }
+            // Matriz nueva (fila 2, col 2): apuntando lateral (unilateral) + otro brazo flexionado
+            // Nota mirror: si en el arte el brazo levantado/apuntando es "derecho", aquí se usa lado izquierdo.
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 90f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 180f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 30f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 90f }
         });
     }
 
@@ -202,12 +198,12 @@ public class PoseGenerator : MonoBehaviour
     {
         CreateAndSaveNumberedPose("07", 28f, new List<PoseData.JointAngleCondition>
         {
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 160f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 120f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 95f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 165f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftLeg, targetAngle = 170f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightLeg, targetAngle = 95f }
+            // Matriz nueva (fila 2, col 3): "enfoque preciso" (una mano al frente + otra recogida)
+            // Se mantiene como pose levemente asimétrica, sin depender de piernas.
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 60f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 95f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 25f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 120f }
         });
     }
 
@@ -216,12 +212,11 @@ public class PoseGenerator : MonoBehaviour
     {
         CreateAndSaveNumberedPose("08", 28f, new List<PoseData.JointAngleCondition>
         {
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 165f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 170f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 80f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 165f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftLeg, targetAngle = 170f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightLeg, targetAngle = 170f }
+            // Matriz nueva (fila 2, col 4): manos en la cabeza (variante)
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 85f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 85f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 45f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 45f }
         });
     }
 
@@ -230,12 +225,11 @@ public class PoseGenerator : MonoBehaviour
     {
         CreateAndSaveNumberedPose("09", 28f, new List<PoseData.JointAngleCondition>
         {
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 90f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 90f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 90f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 90f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftLeg, targetAngle = 170f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightLeg, targetAngle = 170f }
+            // Matriz nueva (fila 3, col 1): "gran escena" (brazos arriba pero flexionados)
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 120f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 120f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 75f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 75f }
         });
     }
 
@@ -244,12 +238,11 @@ public class PoseGenerator : MonoBehaviour
     {
         CreateAndSaveNumberedPose("10", 28f, new List<PoseData.JointAngleCondition>
         {
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 50f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 50f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 105f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 105f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftLeg, targetAngle = 165f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightLeg, targetAngle = 165f }
+            // Matriz nueva (fila 3, col 2): "micrófono al suelo" (brazos hacia abajo, extendidos)
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 15f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 15f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 175f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 175f }
         });
     }
 
@@ -258,12 +251,12 @@ public class PoseGenerator : MonoBehaviour
     {
         CreateAndSaveNumberedPose("11", 28f, new List<PoseData.JointAngleCondition>
         {
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 155f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 95f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 30f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 165f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftLeg, targetAngle = 135f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightLeg, targetAngle = 135f }
+            // Matriz nueva (fila 3, col 3): "cantante" (unilateral: un brazo arriba + el otro flexionado)
+            // Nota mirror: si el arte muestra el brazo derecho arriba, aquí se usa el izquierdo.
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 170f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 175f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 70f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 55f }
         });
     }
 

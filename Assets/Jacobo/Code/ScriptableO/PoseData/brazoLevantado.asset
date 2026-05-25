@@ -14,25 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poseName: brazoLevantado
   poseImage: {fileID: -543373753, guid: 41c6790ed0d966345b142197b1b24431, type: 3}
-  marginDegrees: 25
+  marginDegrees: 20
   conditions:
-  - jointType: 3
-    customJointA: 11
-    customJointB: 13
-    customJointC: 15
-    targetAngle: 170
-  - jointType: 1
-    customJointA: 11
-    customJointB: 13
-    customJointC: 15
-    targetAngle: 175
   - jointType: 2
     customJointA: 11
     customJointB: 13
     customJointC: 15
-    targetAngle: 15
+    targetAngle: 170
   - jointType: 0
     customJointA: 11
     customJointB: 13
     customJointC: 15
-    targetAngle: 170
+    targetAngle: 175

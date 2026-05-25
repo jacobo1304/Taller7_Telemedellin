@@ -13,36 +13,26 @@ MonoBehaviour:
   m_Name: 07
   m_EditorClassIdentifier: 
   poseName: 07
-  poseImage: {fileID: 21300000, guid: 4d5d15b6ea0b3da47987ce4f37ce1f98, type: 3}
-  marginDegrees: 35
+  poseImage: {fileID: 0}
+  marginDegrees: 28
   conditions:
+  - jointType: 2
+    customJointA: 11
+    customJointB: 13
+    customJointC: 15
+    targetAngle: 60
+  - jointType: 0
+    customJointA: 11
+    customJointB: 13
+    customJointC: 15
+    targetAngle: 95
   - jointType: 3
     customJointA: 11
     customJointB: 13
     customJointC: 15
-    targetAngle: 160
+    targetAngle: 25
   - jointType: 1
     customJointA: 11
     customJointB: 13
     customJointC: 15
     targetAngle: 120
-  - jointType: 2
-    customJointA: 11
-    customJointB: 13
-    customJointC: 15
-    targetAngle: 95
-  - jointType: 0
-    customJointA: 11
-    customJointB: 13
-    customJointC: 15
-    targetAngle: 165
-  - jointType: 4
-    customJointA: 11
-    customJointB: 13
-    customJointC: 15
-    targetAngle: 170
-  - jointType: 5
-    customJointA: 11
-    customJointB: 13
-    customJointC: 15
-    targetAngle: 95
