@@ -595,9 +595,9 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: e09962e504f887d4399dd708b12375f1, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.825
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1139,7 +1139,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9570006
+      value: 0.95700055
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2267,7 +2267,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.005739924
+      value: 0.0057399245
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2275,7 +2275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0016635177
+      value: 0.001663516
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2283,15 +2283,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.034286365
+      value: -0.03428637
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.006080774
+      value: -0.0060808053
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.07799246
+      value: 0.07799247
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 8c1a6e2ad6d71bf4496a435f40fe066a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5587,7 +5587,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Levanta tu brazo izquierdo para iniciar la experiencia
+  m_text: Levanta tu brazo derecho para iniciar la experiencia
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 501bed2b2e00a894daa1d3dc5d5d7550, type: 2}
   m_sharedMaterial: {fileID: -4580137084665851945, guid: 501bed2b2e00a894daa1d3dc5d5d7550, type: 2}
@@ -9819,6 +9819,18 @@ MonoBehaviour:
   onHoldComplete:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 22653294}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Stop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 363136163}
         m_TargetAssemblyTypeName: SoundCrewInteractionAction, Assembly-CSharp
         m_MethodName: StopPlayback
@@ -9856,6 +9868,18 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2064863713}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2137537821}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -11817,7 +11841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questionMusicSource: {fileID: 783523581}
   questionMusicClip: {fileID: 8300000, guid: 43efc8766bde1274daf16145c8535cfb, type: 3}
-  questionMusicVolume: 0.384
+  questionMusicVolume: 0.313
   clockAnimator: {fileID: 0}
   clockTriggerName: ClockStart
   clockTriggerSeconds: 10
@@ -11975,7 +11999,7 @@ MonoBehaviour:
   use3DAngles: 0
   holdTimeSeconds: 1.5
   defaultMarginDegrees: 20
-  matchLossGraceSeconds: 0.2
+  matchLossGraceSeconds: 0.15
   currentInteraction: {fileID: 0}
   onAnyPoseMatched:
     m_PersistentCalls:
@@ -12900,6 +12924,7 @@ MonoBehaviour:
   playerTextMinY: -750
   playerTextMaxY: 0
   animateDuration: 2
+  tickStep: 10
   debugLogs: 0
 --- !u!114 &576333457
 MonoBehaviour:
@@ -12920,7 +12945,7 @@ MonoBehaviour:
   answerHandler: {fileID: 235863370}
   cinematicManager: {fileID: 1835777535}
   ratingsPanelRoot: {fileID: 1509457498}
-  timerFeedbackController: {fileID: 0}
+  timerFeedbackController: {fileID: 484739236}
   postAnimationDelay: 2
   showFromZeroDelay: 1.5
   postRatingAudioDelay: 0.5
@@ -15826,8 +15851,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 47.3
-  m_fontSizeBase: 47.3
+  m_fontSize: 46.25
+  m_fontSizeBase: 46.25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -19538,7 +19563,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 780267366}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.003417992}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.92492, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19547,8 +19572,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1625.0022, y: 417.9989}
-  m_SizeDelta: {x: 1655.6, y: 241.8}
+  m_AnchoredPosition: {x: 1616.5, y: 689.5}
+  m_SizeDelta: {x: 1468.8, y: 296.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &780267368
 MonoBehaviour:
@@ -19684,7 +19709,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 43efc8766bde1274daf16145c8535cfb, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.516
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -21771,7 +21796,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &878320071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21850,13 +21875,13 @@ MonoBehaviour:
   headersInteraction: {fileID: 1549080680}
   enableSoundInFinalScene: 1
   audioMeterUI: {fileID: 779003711}
-  finalVoiceClip: {fileID: 8300000, guid: fa4a6653673040e4baecc173fb4cadf9, type: 3}
-  finalAmbienceClip: {fileID: 8300000, guid: a1d8c8be0cb90314ea8e67059c08abb5, type: 3}
+  finalVoiceClip: {fileID: 8300000, guid: 469cea4bce08cae43880143b1aac416a, type: 3}
+  finalAmbienceClip: {fileID: 8300000, guid: 93872baa3d97ed34c8593975e56338b6, type: 3}
   finalHeaderPanel: {fileID: 100199436}
   finalHeaderText: {fileID: 1430305341}
   showHeaderPanelInCinematic: 0
   panelToDeactivate: {fileID: 780267366}
-  finalCameraPriority: 150
+  finalCameraPriority: 0
   debugLogs: 0
 --- !u!320 &878320073
 PlayableDirector:
@@ -21895,6 +21920,8 @@ PlayableDirector:
     value: {fileID: 100199436}
   - key: {fileID: -2554834847142110527, guid: 9714cc32fb7265549b83bbace71c6031, type: 2}
     value: {fileID: 363136161}
+  - key: {fileID: 465893649690065571, guid: 9714cc32fb7265549b83bbace71c6031, type: 2}
+    value: {fileID: 2137537821}
   m_ExposedReferences:
     m_References:
     - 559a0e5ed245ed949b69b3aeab63eae4: {fileID: 1564149699}
@@ -23755,7 +23782,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!320 &1213172966
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -23791,6 +23818,10 @@ PlayableDirector:
     value: {fileID: 55595886}
   - key: {fileID: -7387665136826165421, guid: a618829aa94726d4db594a3df0d23c05, type: 2}
     value: {fileID: 646111225}
+  - key: {fileID: 7179640440787685201, guid: a618829aa94726d4db594a3df0d23c05, type: 2}
+    value: {fileID: 1509457498}
+  - key: {fileID: -3737341267155254967, guid: a618829aa94726d4db594a3df0d23c05, type: 2}
+    value: {fileID: 576333458}
   m_ExposedReferences:
     m_References:
     - fa3c41990a738e94aa50cdffa63fc63b: {fileID: 1187792106}
@@ -26248,7 +26279,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 581
+  m_Intensity: 0
   m_Range: 61.03
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -28149,9 +28180,10 @@ MonoBehaviour:
   allowPanelActivation: 1
   headerText: {fileID: 703992265}
   headerCanvasGroup: {fileID: 703992267}
-  correctHeaderText: "Reportandonos desde telemedellin en mi barrio\t"
-  wrongHeader1Text: "Visita del Inder al barrio de telemedellin\t"
-  wrongHeader2Text: Cuando llegamos al barrio, todo fue muy diferernte
+  correctHeaderText: El parque del barrio recibe visitas culturales durante esta
+    semana
+  wrongHeader1Text: "J\xF3venes viven la experiancia de la televisi\xF3n desde Boston"
+  wrongHeader2Text: Estamos aca en boston gente
   defaultHeaderText: Inserte su titular aqui
   noPoseHeaderText: ...
   fadeOutDuration: 0.3
@@ -30241,7 +30273,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 6dc048baa536bdc45b847f610a143a55, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.439
+  m_Volume: 0.176
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -32005,16 +32037,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1819741561}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2137537822}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -7, y: 167}
-  m_SizeDelta: {x: 252.53, y: 45.81}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 8.199997}
+  m_SizeDelta: {x: 346.14, y: 112.04001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1819741563
 MonoBehaviour:
@@ -32045,8 +32077,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278242047
+  m_fontColor: {r: 1, g: 0.7928119, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -32063,13 +32095,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 52.03
+  m_fontSizeBase: 52.03
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -36351,7 +36383,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 197, y: 237}
+  m_AnchoredPosition: {x: 2237, y: 687}
   m_SizeDelta: {x: 622, y: 475}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2137537823

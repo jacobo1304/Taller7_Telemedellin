@@ -65,6 +65,24 @@ public class FinalSceneCinematic : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        // Si la cinemática final se apaga (por ejemplo al terminar el Director), aseguramos que su audio NO quede en loop.
+        if (soundInteraction != null)
+        {
+            soundInteraction.StopPlayback();
+        }
+    }
+
+    // Llamar desde Signal al final del Timeline si se requiere un corte explícito.
+    public void StopFinalSceneAudio()
+    {
+        if (soundInteraction != null)
+        {
+            soundInteraction.StopPlayback();
+        }
+    }
+
     /// <summary>
     /// Public signal entry point from Timeline/Director.
     /// Applies the stored crew selections to the final scene.
@@ -136,6 +154,9 @@ public class FinalSceneCinematic : MonoBehaviour
         {
             return;
         }
+
+        // En la escena final los clips NO deben quedar en loop.
+        soundInteraction.SetLooping(false);
 
         soundInteraction.RestoreStoredSelection();
         soundInteraction.SetClipsAndRestart(

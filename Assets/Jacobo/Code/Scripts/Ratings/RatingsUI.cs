@@ -22,6 +22,10 @@ public class RatingsUI : MonoBehaviour
     [Header("Animation")]
     [SerializeField] private float animateDuration = 2.5f;
 
+    [Header("Audio")]
+    [Tooltip("Cada cuántos puntos de rating suena el tick durante la animación.\nEj: 10 => suena cada 10 puntos.")]
+    [SerializeField, Min(1)] private int tickStep = 10;
+
     [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
 
@@ -49,7 +53,7 @@ public class RatingsUI : MonoBehaviour
         SetBars(startPlayer, startComp);
         SetPlayerNumber(startPlayer);
 
-        int lastNumber = startPlayer;
+        int lastTickValue = startPlayer;
         float duration = Mathf.Max(0.01f, animateDuration);
         float t = 0f;
 
@@ -68,9 +72,16 @@ public class RatingsUI : MonoBehaviour
             SetBars(playerValue, compValues);
             SetPlayerNumber(playerValue);
 
-            if (playerValue != lastNumber)
+            // Tick: no en cada cambio (que puede ser muy frecuente), sino cada N puntos.
+            int step = Mathf.Max(1, tickStep);
+            if (Mathf.Abs(playerValue - lastTickValue) >= step)
             {
-                lastNumber = playerValue;
+                // Alinear a múltiplos del step para evitar doble tick por saltos grandes.
+                int aligned = playerValue >= lastTickValue
+                    ? (playerValue / step) * step
+                    : ((playerValue + step - 1) / step) * step;
+
+                lastTickValue = aligned;
                 audioLib?.PlayTick();
             }
 

@@ -56,7 +56,11 @@ public class TimerManager : MonoBehaviour
         if (!panelIsActive)
         {
             timerRunning = false;
-            feedbackController?.OnTimerStopped();
+            // Solo disparar stop una vez al cerrarse el panel.
+            if (panelWasActive)
+            {
+                feedbackController?.OnTimerStopped();
+            }
         }
 
         panelWasActive = panelIsActive;

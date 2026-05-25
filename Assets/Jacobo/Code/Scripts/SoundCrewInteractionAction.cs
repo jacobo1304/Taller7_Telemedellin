@@ -52,6 +52,20 @@ public class SoundCrewInteractionAction : InteractionActionBase
     private AudioOptionProfile currentProfile;
 
     public AudioSource VoiceAudioSource => voiceAudioSource;
+    public AudioSource AmbienceAudioSource => ambienceAudioSource;
+
+    public void SetLooping(bool loop)
+    {
+        if (voiceAudioSource != null)
+        {
+            voiceAudioSource.loop = loop;
+        }
+
+        if (ambienceAudioSource != null)
+        {
+            ambienceAudioSource.loop = loop;
+        }
+    }
 
     public void StartPlayback()
     {

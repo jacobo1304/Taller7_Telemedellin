@@ -185,6 +185,7 @@ public class GameManager : MonoBehaviour
         answerHandler?.SetInputLocked(false);
         customPoseDetector?.SetResponseLock(false);
         customPoseDetector?.SetCurrentInteraction(current);
+        answerHandler?.SetCurrentInteraction(current.InteractionType);
         current.PresentToUI(uiManager);
         uiManager?.ClearHoldProgress();
     }

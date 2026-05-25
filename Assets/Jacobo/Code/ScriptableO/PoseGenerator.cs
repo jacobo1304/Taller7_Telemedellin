@@ -65,13 +65,10 @@ public class PoseGenerator : MonoBehaviour
         brazoLevantado.marginDegrees = 25f;
         brazoLevantado.conditions = new List<PoseData.JointAngleCondition>
         {
-            // Brazo derecho arriba y extendido
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightShoulder, targetAngle = 170f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.RightArm, targetAngle = 175f },
-
-            // Brazo izquierdo abajo y extendido
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 15f },
-            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 170f }
+            // Nota: En pantalla/cámara espejada (mirror horizontal) el "brazo derecho" se detecta como el lado izquierdo.
+            // Además: solo importa el brazo levantado; el otro brazo se ignora completamente.
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftShoulder, targetAngle = 170f },
+            new PoseData.JointAngleCondition { jointType = PoseData.JointAngleCondition.PresetJoint.LeftArm, targetAngle = 175f }
         };
 
         SavePoseAsset(brazoLevantado, "brazoLevantado");
