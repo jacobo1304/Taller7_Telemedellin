@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TPose
   m_EditorClassIdentifier: 
   poseName: T-Pose
-  poseImage: {fileID: 21300000, guid: 8d4f7c3b480094e4ca25b2ada01e47d9, type: 3}
+  poseImage: {fileID: -761684281, guid: b363ddf223844a7409221f78d77df1e1, type: 3}
   marginDegrees: 20
   conditions:
   - jointType: 2

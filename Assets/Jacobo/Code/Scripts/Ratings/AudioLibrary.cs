@@ -31,6 +31,11 @@ public class AudioLibrary : MonoBehaviour
         }
     }
 
+    public float GetTickClipLength()
+    {
+        return tickClip != null ? tickClip.length : 0f;
+    }
+
     public void PlayTick()
     {
         PlayClip(tickClip, "Tick");

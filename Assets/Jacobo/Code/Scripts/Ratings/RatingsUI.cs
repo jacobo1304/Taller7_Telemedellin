@@ -53,9 +53,28 @@ public class RatingsUI : MonoBehaviour
         SetBars(startPlayer, startComp);
         SetPlayerNumber(startPlayer);
 
-        int lastTickValue = startPlayer;
         float duration = Mathf.Max(0.01f, animateDuration);
         float t = 0f;
+
+        // Tick pacing: garantiza que haya ticks durante TODA la animación mientras el rating cambie,
+        // sin depender de redondeos del número (que pueden "pegarse" al final).
+        int ratingDiff = Mathf.Abs(targetPlayer - startPlayer);
+        int step = Mathf.Max(1, tickStep);
+        int desiredTicks = ratingDiff > 0 ? Mathf.Max(1, ratingDiff / step) : 0;
+
+        float tickClipLength = audioLib != null ? audioLib.GetTickClipLength() : 0f;
+        float minTickInterval = tickClipLength > 0f ? Mathf.Clamp(tickClipLength * 0.9f, 0.05f, 0.25f) : 0.07f;
+        float maxTickInterval = Mathf.Max(minTickInterval, 0.25f);
+        float computedInterval = desiredTicks > 0 ? (duration / desiredTicks) : duration;
+        float tickInterval = Mathf.Clamp(computedInterval, minTickInterval, maxTickInterval);
+
+        // Primer tick al iniciar la subida.
+        if (desiredTicks > 0 && audioLib != null)
+        {
+            audioLib.PlayTick();
+        }
+
+        float nextTickAt = tickInterval;
 
         while (t < duration)
         {
@@ -72,17 +91,10 @@ public class RatingsUI : MonoBehaviour
             SetBars(playerValue, compValues);
             SetPlayerNumber(playerValue);
 
-            // Tick: no en cada cambio (que puede ser muy frecuente), sino cada N puntos.
-            int step = Mathf.Max(1, tickStep);
-            if (Mathf.Abs(playerValue - lastTickValue) >= step)
+            if (desiredTicks > 0 && audioLib != null && t >= nextTickAt)
             {
-                // Alinear a múltiplos del step para evitar doble tick por saltos grandes.
-                int aligned = playerValue >= lastTickValue
-                    ? (playerValue / step) * step
-                    : ((playerValue + step - 1) / step) * step;
-
-                lastTickValue = aligned;
-                audioLib?.PlayTick();
+                audioLib.PlayTick();
+                nextTickAt += tickInterval;
             }
 
             yield return null;

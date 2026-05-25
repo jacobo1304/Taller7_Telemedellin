@@ -3,7 +3,1747 @@ guid: 6082fb88d440edc448f3bce8283e400a
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Acera_Acera_BaseColor
+    second: {fileID: 2800000, guid: 26f7d292a0b217f409b4b9bf3b88bc65, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Acera_Acera_Emissive
+    second: {fileID: 2800000, guid: 78c284c931dfc37458222133a20b74ce, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Acera_Acera_Metallic
+    second: {fileID: 2800000, guid: 795c1d20af60af44183aca43611201fe, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Acera_Acera_Normal
+    second: {fileID: 2800000, guid: 37a3a014c79b82f4ca71571c61d43c94, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Acera_Acera_Roughness
+    second: {fileID: 2800000, guid: 6d60a6e920f2a554eada2079f9853a29, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Arboles_HojaArbol_BaseColor
+    second: {fileID: 2800000, guid: 9f6827ccd6abf724baff0b35744cd035, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Arboles_HojaArbol_Emissive
+    second: {fileID: 2800000, guid: 4d58542f1a01add4dbc30c8f32fb5190, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Arboles_HojaArbol_Metallic
+    second: {fileID: 2800000, guid: b245a2a2c022375478a46fda6ca364bc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Arboles_HojaArbol_Normal
+    second: {fileID: 2800000, guid: 431fa3b400eb12f44af126b3c5bb0c06, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Arboles_HojaArbol_Roughness
+    second: {fileID: 2800000, guid: 4b4dd467c1872ab4aa23e5ca21efb17f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Arboles_Tronco_BaseColor
+    second: {fileID: 2800000, guid: 0ddc16071b8b41a4790c6f8a939bc755, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Arboles_Tronco_Emissive
+    second: {fileID: 2800000, guid: 0a4b6b4b74c211446b695d8c31907d82, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Arboles_Tronco_Metallic
+    second: {fileID: 2800000, guid: 7605b113d094cf94ab6f0c2f2e414fa3, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Arboles_Tronco_Normal
+    second: {fileID: 2800000, guid: df6327f371f4c444d8365525bb9c2149, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Arboles_Tronco_Roughness
+    second: {fileID: 2800000, guid: 5340d3fab4f47f540a31f70d70370d99, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: ChatGPT Image 25 may 2026, 01_47_36 a.m.
+    second: {fileID: 2800000, guid: 4e2c4640500f05b4abb5ad33156dea95, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: ChatGPT Image 25 may 2026, 01_55_18 a.m.
+    second: {fileID: 2800000, guid: 553bbb64ac4b6aa45a52573e64197eaa, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: ChatGPT Image 25 may 2026, 02_11_20 a.m.
+    second: {fileID: 2800000, guid: 72fe81e0505fb7f46bb7ea4767a11497, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: ChatGPT Image 25 may 2026, 04_47_03 a.m.
+    second: {fileID: 2800000, guid: 2764cda2957cb3c4781e4f4f7a5533c0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Colegio_BaseColor
+    second: {fileID: 2800000, guid: 968358afd4685b34a951c20256e12971, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Colegio_Emissive
+    second: {fileID: 2800000, guid: c9e3204a5321aff498a15ea6bfc695f1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Colegio_Metallic
+    second: {fileID: 2800000, guid: 3aa9d47ff3ed9e146aebb8483ccc4e23, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Colegio_Normal
+    second: {fileID: 2800000, guid: f7bb88628ec6a9c408cab76f7b28bcd9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Colegio_Roughness
+    second: {fileID: 2800000, guid: a1ae0e9c313dc6f448d9a9debea39170, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Iglesia_BaseColor
+    second: {fileID: 2800000, guid: 7908ac3fb7f55d34ebfc88fad1c15b2e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Iglesia_Emissive
+    second: {fileID: 2800000, guid: 77b0cc3a913b5fa4a8714429239257f4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Iglesia_Metallic
+    second: {fileID: 2800000, guid: 47d6e79e0197cc645999bd8a8c6c4ff6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Iglesia_Normal
+    second: {fileID: 2800000, guid: 9738ddc3aa85c6e41ba18d63ead28a2c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Iglesia_Roughness
+    second: {fileID: 2800000, guid: aab436844fc87324cb1aacdd7b314365, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_MaderaBancaParque_BaseColor
+    second: {fileID: 2800000, guid: ebaf6d7912f5b9b49a8dabb1d51324a9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_MaderaBancaParque_Emissive
+    second: {fileID: 2800000, guid: 1920050ffe1838c47b939d34e80a9bcf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_MaderaBancaParque_Metallic
+    second: {fileID: 2800000, guid: 36331870ce8fcd4489bae40162c0077c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_MaderaBancaParque_Normal
+    second: {fileID: 2800000, guid: 678ce895a22564049b8a9afce6e3d8c1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_MaderaBancaParque_Roughness
+    second: {fileID: 2800000, guid: 7697e8f3456dc7245afb221f9a2fb8af, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_MetalCruz_BaseColor
+    second: {fileID: 2800000, guid: 79002043981c61f45b797e9808e42844, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_MetalCruz_Emissive
+    second: {fileID: 2800000, guid: d19dbff3292829f4d8abf1f0ee30dd99, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_MetalCruz_Metallic
+    second: {fileID: 2800000, guid: d8ece01913b2f1a4f897ca79c0d2c124, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_MetalCruz_Normal
+    second: {fileID: 2800000, guid: 2c16a7ed4e34e7f4da3a20ce531241f2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_MetalCruz_Roughness
+    second: {fileID: 2800000, guid: aca3d17eadcb0c545a8f3d69231a84c8, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_PuertaColegio_BaseColor
+    second: {fileID: 2800000, guid: 10102148fe02ab1489c610b21ccc708e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_PuertaColegio_Emissive
+    second: {fileID: 2800000, guid: f75cf68c87ba9254583f87d2a853708f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_PuertaColegio_Metallic
+    second: {fileID: 2800000, guid: bc0f2201a46cf5f45887704368e2601a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_PuertaColegio_Normal
+    second: {fileID: 2800000, guid: 6565378484695c04a824161822ac817e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_PuertaColegio_Roughness
+    second: {fileID: 2800000, guid: 3bfcd1d63d004f043818ed2ea009654e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_TechoIgglesia_BaseColor
+    second: {fileID: 2800000, guid: 22269b231c353d74d825548a8dbb7de6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_TechoIgglesia_Emissive
+    second: {fileID: 2800000, guid: ffc395e66911c194fb9fbbd6162a83f9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_TechoIgglesia_Metallic
+    second: {fileID: 2800000, guid: 9e0371fae23ca944284ed2859aefa3cb, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_TechoIgglesia_Normal
+    second: {fileID: 2800000, guid: d9ba937209a8f9e49b9a22ecb64729e8, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_TechoIgglesia_Roughness
+    second: {fileID: 2800000, guid: ffe803b1535a33a47900ac57791da7be, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Ventana_BaseColor
+    second: {fileID: 2800000, guid: c5f64b6b8cd742e479b89fb561f8db7a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Ventana_Emissive
+    second: {fileID: 2800000, guid: a24d7f53d8b596543aa146f3689990fc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Ventana_Metallic
+    second: {fileID: 2800000, guid: f2817dcb41ffc8d41b30a10912166218, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Ventana_Normal
+    second: {fileID: 2800000, guid: a4a6e8286e2a13545b9735b81ea9a088, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_Ventana_Roughness
+    second: {fileID: 2800000, guid: 485ceb43af02bcf4aae6d707e762bb9d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_VentanasColegio_BaseColor
+    second: {fileID: 2800000, guid: dcf2c7d1a90e95147b2aea5f300acd72, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_VentanasColegio_Emissive
+    second: {fileID: 2800000, guid: 3760325bb8f258e428a4edf419c2a2f0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_VentanasColegio_Metallic
+    second: {fileID: 2800000, guid: edc7e661f83e53e48977e0fcd49ecd91, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_VentanasColegio_Normal
+    second: {fileID: 2800000, guid: 87e213819abc097439c2db20fb380c21, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios1_VentanasColegio_Roughness
+    second: {fileID: 2800000, guid: d451a405de42d2648a584cf82fc129b7, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BalconEdificio2_BaseColor
+    second: {fileID: 2800000, guid: f115b01ae572a38409e5f3365d1fce75, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BalconEdificio2_Emissive
+    second: {fileID: 2800000, guid: a4666318e00b02c4bad06d4d1498e109, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BalconEdificio2_Metallic
+    second: {fileID: 2800000, guid: 464ba06f81a9c6c4aaad169adbb5c1a6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BalconEdificio2_Normal
+    second: {fileID: 2800000, guid: 135a72680d8303e4d928ad3bb0a04b30, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BalconEdificio2_Roughness
+    second: {fileID: 2800000, guid: 61b098ad0bd82494b88d616823d6c090, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Bodega2_BaseColor
+    second: {fileID: 2800000, guid: 4a09f6d12d76e024ab3ebb1df9a382f6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Bodega2_Emissive
+    second: {fileID: 2800000, guid: 465e9a6b3ef22de43ac441b605ea8163, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Bodega2_Metallic
+    second: {fileID: 2800000, guid: d5302567baadf20439c8a859f273a18d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Bodega2_Normal
+    second: {fileID: 2800000, guid: c6bcd6a9facb74d41963f6f68805cc0c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Bodega2_Roughness
+    second: {fileID: 2800000, guid: 5d625b1588309224b969b989ba6b150f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BodegaCasas2_BaseColor
+    second: {fileID: 2800000, guid: f1677ce18ea2d124eacfd7a5ba77bc13, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BodegaCasas2_Emissive
+    second: {fileID: 2800000, guid: ee57709d660e7e047801ef033fbc8cc0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BodegaCasas2_Metallic
+    second: {fileID: 2800000, guid: 97bb6cc5a3e10474c9eb9e607fbe7b8e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BodegaCasas2_Normal
+    second: {fileID: 2800000, guid: 63a8fd557ef138e4183057d9f879e12e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BodegaCasas2_Roughness
+    second: {fileID: 2800000, guid: bc8d0f30137cfcc4792f46fb42f9ba0c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BordeEdificio_BaseColor
+    second: {fileID: 2800000, guid: 068105ee775f5dd478706c7099ab7706, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BordeEdificio_Emissive
+    second: {fileID: 2800000, guid: 3d59c187df206674fad89d1201fd8b37, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BordeEdificio_Metallic
+    second: {fileID: 2800000, guid: 2cc679a6f8165194aabc80909959d33e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BordeEdificio_Normal
+    second: {fileID: 2800000, guid: e54151bcd99b2ea428ff124950bc4e08, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_BordeEdificio_Roughness
+    second: {fileID: 2800000, guid: 26f209c640341f6428e3f619139ea49b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa1.001_BaseColor
+    second: {fileID: 2800000, guid: 35b1b1e84568bb44da603e5b4814ac41, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa1.001_Emissive
+    second: {fileID: 2800000, guid: 0f8ba22e02f668942b688e341cfc91bf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa1.001_Metallic
+    second: {fileID: 2800000, guid: b93c664e197b87348ad152867f616e0a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa1.001_Normal
+    second: {fileID: 2800000, guid: b96333cd853b53a4d9137974a5ecec99, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa1.001_Roughness
+    second: {fileID: 2800000, guid: 31210b81b6ac1b94b8bd0313055843dc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa2_BaseColor
+    second: {fileID: 2800000, guid: 62f89f61684396b438ca74fe91548194, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa2_Emissive
+    second: {fileID: 2800000, guid: a6cfe15ce20bd504cabc36f07851f034, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa2_Metallic
+    second: {fileID: 2800000, guid: faedd52f03fda6443a76b8f43482cc1f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa2_Normal
+    second: {fileID: 2800000, guid: 8661fea2743aff144b0f9ee624655f1a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa2_Roughness
+    second: {fileID: 2800000, guid: 8f58718fa3828c44eaf0693930838092, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa3_BaseColor
+    second: {fileID: 2800000, guid: 78000c0988a9c944aad6a9d5aee31e4c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa3_Emissive
+    second: {fileID: 2800000, guid: 2947c7cc39c60b6439eb3d9ec060388b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa3_Metallic
+    second: {fileID: 2800000, guid: 6008acb30a99c10409afcca5bf6edd0c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa3_Normal
+    second: {fileID: 2800000, guid: beea05a8a46392940ba855e71a43a545, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Casa3_Roughness
+    second: {fileID: 2800000, guid: d85880d14b691d04f915acfd66a7f292, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio1_BaseColor
+    second: {fileID: 2800000, guid: 1b8b224df55759b4797cb8f2bda89ee4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio1_Emissive
+    second: {fileID: 2800000, guid: a6f7d237b9e8aed488a427e5a73066d4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio1_Metallic
+    second: {fileID: 2800000, guid: 3c99f35b2783bcd42aacc01dc0923f20, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio1_Normal
+    second: {fileID: 2800000, guid: cff54cf8f6875484182206a060bf9d20, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio1_Roughness
+    second: {fileID: 2800000, guid: f21b882ebe78f5743bf10e46f45fa9b0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio2.1_BaseColor
+    second: {fileID: 2800000, guid: 15aa56d1583f1984b84cc076e78fc5bf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio2.1_Emissive
+    second: {fileID: 2800000, guid: 1f32f329d4342d5428cadee5412397e5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio2.1_Metallic
+    second: {fileID: 2800000, guid: 0851fa81eb10f9b4e83ae50eebef905e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio2.1_Normal
+    second: {fileID: 2800000, guid: 9579840c60a523743b20805ab9177a00, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio2.1_Roughness
+    second: {fileID: 2800000, guid: 3c414c5d7116e3644bf3e3c3f5e83084, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio2_BaseColor
+    second: {fileID: 2800000, guid: 21dd169c583c573498775cb0a35836cf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio2_Emissive
+    second: {fileID: 2800000, guid: b0cee248f72c198459522924e8589f96, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio2_Metallic
+    second: {fileID: 2800000, guid: 9be7907e11f8bf340843640e825ba07c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio2_Normal
+    second: {fileID: 2800000, guid: e511d5eb9658dfc4284e855c5dbdfa03, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Edificio2_Roughness
+    second: {fileID: 2800000, guid: 636326a1c21e69746b834a3ca3795811, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_MaderaBancaParque_BaseColor
+    second: {fileID: 2800000, guid: 58e554afb0294084a96541a983f46e07, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_MaderaBancaParque_Emissive
+    second: {fileID: 2800000, guid: d1dd8d6b79f6aae46a9a532cf9445938, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_MaderaBancaParque_Metallic
+    second: {fileID: 2800000, guid: 6906f3dfde1d3b6478020ab12572ab50, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_MaderaBancaParque_Normal
+    second: {fileID: 2800000, guid: b6e572fa598ba2747b3009ae85dbafc5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_MaderaBancaParque_Roughness
+    second: {fileID: 2800000, guid: c11ce6c1e909a794b982364c67488a1c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_MaderaPuertaCasas_BaseColor
+    second: {fileID: 2800000, guid: 359a04b31d31b6045bc8e454f9687240, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_MaderaPuertaCasas_Emissive
+    second: {fileID: 2800000, guid: 72b224575f505f844a65b93c7e98a4b2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_MaderaPuertaCasas_Metallic
+    second: {fileID: 2800000, guid: c2c5f1ef2c4dc234ba7757186994a1cd, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_MaderaPuertaCasas_Normal
+    second: {fileID: 2800000, guid: 917a0b811e6752544a6ae47495f8516d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_MaderaPuertaCasas_Roughness
+    second: {fileID: 2800000, guid: b43406f05d55d374495e9e246da562fc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Porteria1_BaseColor
+    second: {fileID: 2800000, guid: 0a4aab344e3fe294da00a4bcbae4f9e4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Porteria1_Emissive
+    second: {fileID: 2800000, guid: e5fbeaa35b7844b4c89ec8e5d7a440bc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Porteria1_Metallic
+    second: {fileID: 2800000, guid: cada9623ae8e80441b7a8e5bf332c0da, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Porteria1_Normal
+    second: {fileID: 2800000, guid: 28a3c7f5d8fa18543be12e6611c0c04b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_Porteria1_Roughness
+    second: {fileID: 2800000, guid: 709a098997b0dfa4eae473ba4fee9bd6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PorteriaMetal_BaseColor
+    second: {fileID: 2800000, guid: 33833d0556c86584fa748b03ebac894b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PorteriaMetal_Emissive
+    second: {fileID: 2800000, guid: cbb0132d81b4e0149a8198b7ff8a1cc5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PorteriaMetal_Metallic
+    second: {fileID: 2800000, guid: 8c96197b1692dab4485d832fbc189b20, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PorteriaMetal_Normal
+    second: {fileID: 2800000, guid: 0918e9b3e06d559409c3efe611630e3e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PorteriaMetal_Roughness
+    second: {fileID: 2800000, guid: 3bb13654df832bd439f73e50e3288b82, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PuertaLocalcasa3_BaseColor
+    second: {fileID: 2800000, guid: cebd759b16090dd40a787abac5a33e8a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PuertaLocalcasa3_Emissive
+    second: {fileID: 2800000, guid: f6f474c7dddde554eadbde136d4b734c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PuertaLocalcasa3_Metallic
+    second: {fileID: 2800000, guid: 6ae7ecff46f9062449c6e2e11d1c81cd, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PuertaLocalcasa3_Normal
+    second: {fileID: 2800000, guid: 37423d4c348d07a46ac4d61205184d9f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PuertaLocalcasa3_Roughness
+    second: {fileID: 2800000, guid: 8982f924247178146b1571dad5143424, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PuertaMetalEdificio_BaseColor
+    second: {fileID: 2800000, guid: 5c14f3eaddc7a0148a6c7b9364544384, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PuertaMetalEdificio_Emissive
+    second: {fileID: 2800000, guid: 87863872e09202a43af3830953da9ec5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PuertaMetalEdificio_Metallic
+    second: {fileID: 2800000, guid: a61f4b4518bc67a42b6d2320c4645f42, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PuertaMetalEdificio_Normal
+    second: {fileID: 2800000, guid: 36f29af2a68a06d47942be9f513c01af, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_PuertaMetalEdificio_Roughness
+    second: {fileID: 2800000, guid: 5317ddc901cb3c949842cd7300ab9c9f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoCasa4_BaseColor
+    second: {fileID: 2800000, guid: 592505d42f50a8d459c7b71cae2d20b0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoCasa4_Emissive
+    second: {fileID: 2800000, guid: 48c3fc07d461f354c90215183eb4e3ab, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoCasa4_Metallic
+    second: {fileID: 2800000, guid: 34a3abaa7c8c3824185a31844585ce87, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoCasa4_Normal
+    second: {fileID: 2800000, guid: 345cf892aeda29043b3531b34f01beb5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoCasa4_Roughness
+    second: {fileID: 2800000, guid: eec7df3b0d9080e4cb9c05f2081fc58f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoEdificio2_BaseColor
+    second: {fileID: 2800000, guid: f16661b7a0122ab41b980fef57a15cc0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoEdificio2_Emissive
+    second: {fileID: 2800000, guid: 710307c0a41059c44b74216edc687121, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoEdificio2_Metallic
+    second: {fileID: 2800000, guid: bfd9ce8c392dcc240a33a5ca8d0e6234, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoEdificio2_Normal
+    second: {fileID: 2800000, guid: a3dd07452c31bef45b4bdf5667c9b33a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoEdificio2_Roughness
+    second: {fileID: 2800000, guid: 86b583bc4720ce14886f8a0f16324855, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoPorteria1_BaseColor
+    second: {fileID: 2800000, guid: 800de3a1c449fe24da00a428911cdb87, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoPorteria1_Emissive
+    second: {fileID: 2800000, guid: 31229b365ce51fc429d89f6b1debeacf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoPorteria1_Metallic
+    second: {fileID: 2800000, guid: f5c7e9092119e81489bb63213680e84b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoPorteria1_Normal
+    second: {fileID: 2800000, guid: 4ff70b997c2549e4994c06b1ec56fc66, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TechoPorteria1_Roughness
+    second: {fileID: 2800000, guid: 112b506fa54e9a649aadb326a6e3fdaf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa1_BaseColor
+    second: {fileID: 2800000, guid: 0ab2fb3bcbaf4494288fb35519017c08, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa1_Emissive
+    second: {fileID: 2800000, guid: da2f235493495ee4da6fc1a1af662d94, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa1_Metallic
+    second: {fileID: 2800000, guid: e05488d36ff071b47b8d7a214f6c0aa4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa1_Normal
+    second: {fileID: 2800000, guid: 5ace5720ee639ed499f76cecdb8a9c33, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa1_Roughness
+    second: {fileID: 2800000, guid: b07e0b10b2763c544a92775eb426740f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa2_BaseColor
+    second: {fileID: 2800000, guid: 3d84c804bf0a7b44e9b7e4eeb2f0df0c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa2_Emissive
+    second: {fileID: 2800000, guid: 978fda5b40a23d74889298a94f995e7a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa2_Metallic
+    second: {fileID: 2800000, guid: d33682c9eb497df4aba5977e3eeb1e28, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa2_Normal
+    second: {fileID: 2800000, guid: 0a424a8ad5c33794e8aee0fb93fa5b51, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa2_Roughness
+    second: {fileID: 2800000, guid: be65a8ba2f20cc8469d0826c18df6d62, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa3_BaseColor
+    second: {fileID: 2800000, guid: 5de9191a2fd2523459bec1b9abb7cc70, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa3_Emissive
+    second: {fileID: 2800000, guid: 4bc83265111ce304087dc6fef06f9edc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa3_Metallic
+    second: {fileID: 2800000, guid: d900331aaf432194395cf2b4a9c594a4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa3_Normal
+    second: {fileID: 2800000, guid: 72bba3c0b9de0c2448847e3df642a701, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios2_TejasCasa3_Roughness
+    second: {fileID: 2800000, guid: a469acedea8e92745bf101fd18ae29d3, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_BodegaCasas_BaseColor
+    second: {fileID: 2800000, guid: 3f1a5173ef1885c4cbfa2ad77d595422, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_BodegaCasas_Emissive
+    second: {fileID: 2800000, guid: a63225bd9814b07439045f1a493f6e5f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_BodegaCasas_Metallic
+    second: {fileID: 2800000, guid: 6b24ffbda8ccc4a48b5af3c17e0669db, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_BodegaCasas_Normal
+    second: {fileID: 2800000, guid: 1fc4fe7c27145cb4a9390043e2b49f95, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_BodegaCasas_Roughness
+    second: {fileID: 2800000, guid: 22c8964a33910b347881deadfeb5afe2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_BordeEdificio_BaseColor
+    second: {fileID: 2800000, guid: ec3e568332423dd4fa8fcfbad57b5d64, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_BordeEdificio_Emissive
+    second: {fileID: 2800000, guid: 1bece62778beef74ab642f1d9cc94ca6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_BordeEdificio_Metallic
+    second: {fileID: 2800000, guid: 6a1b884032ced78438e52f42511dbff0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_BordeEdificio_Normal
+    second: {fileID: 2800000, guid: c3a91db60b487884eb1278f9f6195d7e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_BordeEdificio_Roughness
+    second: {fileID: 2800000, guid: e6415dd9c9671d4469bb0fc47c3aef36, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Casa5_BaseColor
+    second: {fileID: 2800000, guid: b95de1d262908324aa276a65d514d0c4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Casa5_Emissive
+    second: {fileID: 2800000, guid: 8c98cd61fc1954f47924589f68b2653f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Casa5_Metallic
+    second: {fileID: 2800000, guid: 8f8ed2f18d5a9c647860249eb659881f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Casa5_Normal
+    second: {fileID: 2800000, guid: ba78eca7bed0182498485978da5ffc87, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Casa5_Roughness
+    second: {fileID: 2800000, guid: 5c70eab1c1cb5b14999e82d65402dd5d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio3_BaseColor
+    second: {fileID: 2800000, guid: 73231eb90f2304343b102a1b6e2a9a48, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio3_Emissive
+    second: {fileID: 2800000, guid: 3d81d3d3506f9394cb283a582f752f6c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio3_Metallic
+    second: {fileID: 2800000, guid: 2017cffa916b9584391fee57b5dd5837, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio3_Normal
+    second: {fileID: 2800000, guid: 30018422e1a4d064f814199d548afee0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio3_Roughness
+    second: {fileID: 2800000, guid: a7a4ec5e596c9e444bf0237d228b429f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio4_BaseColor
+    second: {fileID: 2800000, guid: 3d5414991a9a99c43af77b0b0da14c44, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio4_Emissive
+    second: {fileID: 2800000, guid: 538c120b0b0867546bb992d85bdceca1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio4_Metallic
+    second: {fileID: 2800000, guid: 9c4880c9fcf158f4985cf5d2077a8f4f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio4_Normal
+    second: {fileID: 2800000, guid: e5e97fed17be34747b23d6e8793a16a0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio4_Roughness
+    second: {fileID: 2800000, guid: 1017688dfe0abb444ba606b27f891c27, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio5_BaseColor
+    second: {fileID: 2800000, guid: 0555a4c443a243343aa7da601fd588f2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio5_Emissive
+    second: {fileID: 2800000, guid: 5a481ee99437f8a46905b537cc2c251e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio5_Metallic
+    second: {fileID: 2800000, guid: c3b8271187d089f4ead9dd346771b67e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio5_Normal
+    second: {fileID: 2800000, guid: d6f65cd045d0ffc4796c4e9e00cdc0f2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio5_Roughness
+    second: {fileID: 2800000, guid: c674e675175a332419bbc0a2126b0936, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio6_BaseColor
+    second: {fileID: 2800000, guid: f8f5f296f492e4e43a098826b018399f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio6_Emissive
+    second: {fileID: 2800000, guid: 566a82316ef7d0e4bb6d69a9f61dbea6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio6_Metallic
+    second: {fileID: 2800000, guid: f84d35efa03c9c948aebc7dfc04a7fa8, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio6_Normal
+    second: {fileID: 2800000, guid: ae781ed757ba28f45b891a179b41950e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Edificio6_Roughness
+    second: {fileID: 2800000, guid: 68e73e2513c020c4d8a1179efa1e206e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Material.001_BaseColor
+    second: {fileID: 2800000, guid: da33af47b5e8fd4478d8ef4bbe9ec1c2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Material.001_Emissive
+    second: {fileID: 2800000, guid: 5d5beb68ad1d122428f487d3d7b805f2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Material.001_Metallic
+    second: {fileID: 2800000, guid: 737bbf8891760184ca17a758ee6961d6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Material.001_Normal
+    second: {fileID: 2800000, guid: 0a9bdd723c86b4a4aa5a9fd038656445, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Material.001_Roughness
+    second: {fileID: 2800000, guid: 352f7f2b9200dcf4aa195cb80f053d45, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Material.002_BaseColor
+    second: {fileID: 2800000, guid: 6c374e855da81cd4cb39fcf66ab564b0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Material.002_Emissive
+    second: {fileID: 2800000, guid: a9b3e3edf3448764ebdbcecb095d3f50, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Material.002_Metallic
+    second: {fileID: 2800000, guid: d09e19ad30faf6d448f075162959f687, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Material.002_Normal
+    second: {fileID: 2800000, guid: 9900b0ad276db9c439b8af082273e8dd, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Material.002_Roughness
+    second: {fileID: 2800000, guid: b4304031c24b6cb4ea70b0c7fa0b7d04, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Porteria2_BaseColor
+    second: {fileID: 2800000, guid: 36e77fcecf00ed542b5b2329557b49fe, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Porteria2_Emissive
+    second: {fileID: 2800000, guid: eb2a850ae4e94244d92f4656e20e36e2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Porteria2_Metallic
+    second: {fileID: 2800000, guid: bca7a660d901de64abde37d9d23cd9af, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Porteria2_Normal
+    second: {fileID: 2800000, guid: 1976df54832806148816032ee9ca91df, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_Porteria2_Roughness
+    second: {fileID: 2800000, guid: c8d1683ce7924b94ebefdea7829e00c6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PorteriaMetal_BaseColor
+    second: {fileID: 2800000, guid: 53568560176815449aa960a68a5c2892, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PorteriaMetal_Emissive
+    second: {fileID: 2800000, guid: fa22e6191c76612488896ab9a42dc582, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PorteriaMetal_Metallic
+    second: {fileID: 2800000, guid: 4c2fa085823da3f46aedc9200939c951, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PorteriaMetal_Normal
+    second: {fileID: 2800000, guid: e1d8aeeb163c5924d9777a395d763489, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PorteriaMetal_Roughness
+    second: {fileID: 2800000, guid: 99c6d1399d2430a41b95ef5dfd011f64, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PuertaLocalcasa3_BaseColor
+    second: {fileID: 2800000, guid: d931f95e43e04ec49a356250891dca03, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PuertaLocalcasa3_Emissive
+    second: {fileID: 2800000, guid: 6adade7906c3e994bbc9ff1e30c9ac72, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PuertaLocalcasa3_Metallic
+    second: {fileID: 2800000, guid: 7db269c92f12e334083cfac1d716c333, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PuertaLocalcasa3_Normal
+    second: {fileID: 2800000, guid: d987c1206f4fdda4da824cfef7a68e98, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PuertaLocalcasa3_Roughness
+    second: {fileID: 2800000, guid: d18d6e2916392c7419c4edf81dcd35f4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PuertaMetalEdificio_BaseColor
+    second: {fileID: 2800000, guid: b753c33768219264aadbce39b45bca6a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PuertaMetalEdificio_Emissive
+    second: {fileID: 2800000, guid: 6723029f5f382cf48add5da7313b4c77, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PuertaMetalEdificio_Metallic
+    second: {fileID: 2800000, guid: 1d87a16b71bcc7c4f9e54154240f7671, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PuertaMetalEdificio_Normal
+    second: {fileID: 2800000, guid: 142bd05be21b64e488472fefbb253949, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_PuertaMetalEdificio_Roughness
+    second: {fileID: 2800000, guid: f7c8380e8c0533745bd897b4889dca27, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TechoEdificio2_BaseColor
+    second: {fileID: 2800000, guid: 6e7926d8727487e4fb48fa8b93298bbf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TechoEdificio2_Emissive
+    second: {fileID: 2800000, guid: 8ba810c772ff1d042b1191897c1a3d08, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TechoEdificio2_Metallic
+    second: {fileID: 2800000, guid: 89a7986661379ee49b58e86299282049, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TechoEdificio2_Normal
+    second: {fileID: 2800000, guid: 709e71b48df29e345a2b2b54c3f79eeb, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TechoEdificio2_Roughness
+    second: {fileID: 2800000, guid: 44a7b1b43487ad041941035f385e6c24, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TechoPorteria1_BaseColor
+    second: {fileID: 2800000, guid: d359c68b399cbf4468599dcca7e6762e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TechoPorteria1_Emissive
+    second: {fileID: 2800000, guid: 1842d4bb90d82314fb429c5037cd0aa0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TechoPorteria1_Metallic
+    second: {fileID: 2800000, guid: c81a5cb96c380ce4c8453cde8e3d92fb, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TechoPorteria1_Normal
+    second: {fileID: 2800000, guid: 17434195c93049d4c9c053eebe423db2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TechoPorteria1_Roughness
+    second: {fileID: 2800000, guid: 347452e0aa419854ea524a5ccaf96c1f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TejasCasa1.004_BaseColor
+    second: {fileID: 2800000, guid: c82554b369468e24f882bf779002516f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TejasCasa1.004_Emissive
+    second: {fileID: 2800000, guid: 9dad2a552275829419fd3a5891d1cba9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TejasCasa1.004_Metallic
+    second: {fileID: 2800000, guid: 1226e03b88879e546a03ccd8606c9158, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TejasCasa1.004_Normal
+    second: {fileID: 2800000, guid: 1ac2eb2061459c44abb6651bd567a780, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TejasCasa1.004_Roughness
+    second: {fileID: 2800000, guid: a690a9cb366f4e04b8beda47b4105af2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TejasCasa3_BaseColor
+    second: {fileID: 2800000, guid: 96df4ec9327886340af60fc30eccbdb6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TejasCasa3_Emissive
+    second: {fileID: 2800000, guid: 19ca324800c9a484b93ebc73460f8975, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TejasCasa3_Metallic
+    second: {fileID: 2800000, guid: 44a68ec63f0307a488ac3289467eb218, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TejasCasa3_Normal
+    second: {fileID: 2800000, guid: a43418c42ea79d94babaac4b32a54dbf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios3_TejasCasa3_Roughness
+    second: {fileID: 2800000, guid: 0db80359baf3bf740a1afe2f2ebcb86f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_BodegaCasas.002_BaseColor
+    second: {fileID: 2800000, guid: 86192f219837b34409f78df5658be50a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_BodegaCasas.002_Emissive
+    second: {fileID: 2800000, guid: a87e70c4c54209145bf1ac89dcb39ac0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_BodegaCasas.002_Metallic
+    second: {fileID: 2800000, guid: eaebcea0b6628b14b93fe02d53bc8a30, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_BodegaCasas.002_Normal
+    second: {fileID: 2800000, guid: a413864e7568c4742967d6bbbe9d18a1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_BodegaCasas.002_Roughness
+    second: {fileID: 2800000, guid: f9c2ca20680b22c43b3dc9916ad00979, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_BordeTilesCasa6_BaseColor
+    second: {fileID: 2800000, guid: ad6f4b8f9b5a393448fb4e59b61c9b02, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_BordeTilesCasa6_Emissive
+    second: {fileID: 2800000, guid: 36eac620edaee374ebe23a5c7f16a5e3, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_BordeTilesCasa6_Metallic
+    second: {fileID: 2800000, guid: e16ec21b0bec27e49b176bdfc5f67f81, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_BordeTilesCasa6_Normal
+    second: {fileID: 2800000, guid: 99d8e0427a6b89348abee9c9f5159684, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_BordeTilesCasa6_Roughness
+    second: {fileID: 2800000, guid: fe580a98ff725e348807c9382d8099fd, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa10_BaseColor
+    second: {fileID: 2800000, guid: a6bbf65667593a6478d9b201922539ed, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa10_Emissive
+    second: {fileID: 2800000, guid: c497791fb8f957844809ab660eb15f95, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa10_Metallic
+    second: {fileID: 2800000, guid: 03e034235ef9def4387fe8aa3c0b9c1a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa10_Normal
+    second: {fileID: 2800000, guid: b1de5684ddc04c74aa146e605f014009, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa10_Roughness
+    second: {fileID: 2800000, guid: 0ad9764a30dc6bf488a6da623134afcc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa6_BaseColor
+    second: {fileID: 2800000, guid: c48b9dae7d051cb4ab9b1b454d4279ad, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa6_Emissive
+    second: {fileID: 2800000, guid: 9a44221abc1c77943bb9d5b0c59be662, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa6_Metallic
+    second: {fileID: 2800000, guid: 7ebcaf3068ac4ea4993805c2e1a97d49, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa6_Normal
+    second: {fileID: 2800000, guid: 30e5d337e478dab4594162f9b5051ee6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa6_Roughness
+    second: {fileID: 2800000, guid: 40e5adcb464bbcf47bd4018e0ab3ac01, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa7_BaseColor
+    second: {fileID: 2800000, guid: d26c73bec5e8f8e45a12c4aad3992c2a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa7_Emissive
+    second: {fileID: 2800000, guid: 1f6907975f4f5a74e94e1b8109b3ede2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa7_Metallic
+    second: {fileID: 2800000, guid: 4fae3368e85bd6f4781eca69aaaed8e9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa7_Normal
+    second: {fileID: 2800000, guid: 49c6de6a3a20a3c47aedf6b32fdc7603, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa7_Roughness
+    second: {fileID: 2800000, guid: 07eb19601d767ff44a9d0e1ab4a68d84, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa8_BaseColor
+    second: {fileID: 2800000, guid: 11e03cbd71694be48ad9b2692a298781, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa8_Emissive
+    second: {fileID: 2800000, guid: fbe5196b8faad174e9abf1c3f5b77721, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa8_Metallic
+    second: {fileID: 2800000, guid: ad08a9df16be88c4994731aa3368d4e1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa8_Normal
+    second: {fileID: 2800000, guid: a0dc35e7eed0d594a975cba0e4baa829, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa8_Roughness
+    second: {fileID: 2800000, guid: ee7d4e800e4be47448edc5c92b34e9ad, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa9_BaseColor
+    second: {fileID: 2800000, guid: d26149102775b9a459fed09b47caee6a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa9_Emissive
+    second: {fileID: 2800000, guid: 196eda386f2f66e47bc7bd15e1513c7b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa9_Metallic
+    second: {fileID: 2800000, guid: 2570174cdedf74740a8c898f9f6e0f72, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa9_Normal
+    second: {fileID: 2800000, guid: bc47036f513d9b540a6f9e4d55069cf7, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Casa9_Roughness
+    second: {fileID: 2800000, guid: 3b274ace8f54acb4eb986ea989223d94, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_MaderaPuertaCasas_BaseColor
+    second: {fileID: 2800000, guid: 91afe6e09fea65f47b302a0f6f582c5b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_MaderaPuertaCasas_Emissive
+    second: {fileID: 2800000, guid: dc480df1197d29144a2ec12984be8edc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_MaderaPuertaCasas_Metallic
+    second: {fileID: 2800000, guid: 820613c6f4bd35d4e87216658f093df5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_MaderaPuertaCasas_Normal
+    second: {fileID: 2800000, guid: e55d8099f4c4f4445b2028413da9eaaa, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_MaderaPuertaCasas_Roughness
+    second: {fileID: 2800000, guid: e99d4e4c135e9614b9e5162be163e47d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Material.003_BaseColor
+    second: {fileID: 2800000, guid: 4a64864b4838cbd49a931b7bcabee1dd, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Material.003_Emissive
+    second: {fileID: 2800000, guid: 9b29836abd8ec6240b6b3c073baa4537, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Material.003_Metallic
+    second: {fileID: 2800000, guid: 80d91ece21eaf6547b070b413a1f8e0b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Material.003_Normal
+    second: {fileID: 2800000, guid: 881057e83f10c2b4d8c0f6419b6d719a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Material.003_Roughness
+    second: {fileID: 2800000, guid: a3202db31167ea44a90c1ba8ed787938, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Material.004_BaseColor
+    second: {fileID: 2800000, guid: 025f834f3ab7cca44a54b38a801da9ae, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Material.004_Emissive
+    second: {fileID: 2800000, guid: b88986813e133c64aa50cde9d0107e38, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Material.004_Metallic
+    second: {fileID: 2800000, guid: 8a0d901b1ac9b254993767dbd00d74de, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Material.004_Normal
+    second: {fileID: 2800000, guid: 162cf165e2fe91e4e8d1638669944985, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_Material.004_Roughness
+    second: {fileID: 2800000, guid: 789111160f0eed34abab9cebece3cbf1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_PuertaLocalcasa3.002_BaseColor
+    second: {fileID: 2800000, guid: a47a45f34e4eac746abc39a8877042f4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_PuertaLocalcasa3.002_Emissive
+    second: {fileID: 2800000, guid: a55207a2bca35ae40b2f80b6c2d06292, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_PuertaLocalcasa3.002_Metallic
+    second: {fileID: 2800000, guid: 6a34d1e56e2210942acc708814b9f4a7, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_PuertaLocalcasa3.002_Normal
+    second: {fileID: 2800000, guid: d23b08d953f339f4db54e02fb12b80bf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_PuertaLocalcasa3.002_Roughness
+    second: {fileID: 2800000, guid: 1c36e2afd3667aa4cb7e4b5f5ccf1ed4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_PuertaMetalEdificio.002_BaseColor
+    second: {fileID: 2800000, guid: 659b64b34d56cee4081244a11f24fd9c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_PuertaMetalEdificio.002_Emissive
+    second: {fileID: 2800000, guid: 5231bc8f3290e424a931d4d29fd33b88, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_PuertaMetalEdificio.002_Metallic
+    second: {fileID: 2800000, guid: 10941dcca6f0db14da3f70d928601056, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_PuertaMetalEdificio.002_Normal
+    second: {fileID: 2800000, guid: 8aca15e1641fe904f9806c40efd54c29, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_PuertaMetalEdificio.002_Roughness
+    second: {fileID: 2800000, guid: d77e407eb6cbdd34f902167ad76e7557, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TechoCasa7_BaseColor
+    second: {fileID: 2800000, guid: 0c2137d7d8a82c441bfdad0cfb12884c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TechoCasa7_Emissive
+    second: {fileID: 2800000, guid: 8b8218d7c87bd704891501576b1809a5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TechoCasa7_Metallic
+    second: {fileID: 2800000, guid: 5581ec0a99e4e5a4a8b0d85caf382ce0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TechoCasa7_Normal
+    second: {fileID: 2800000, guid: 33b5767304c8fbb49abc8baec9191535, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TechoCasa7_Roughness
+    second: {fileID: 2800000, guid: 13f429276c814054fad046bcc401559b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TejasCasa2.001_BaseColor
+    second: {fileID: 2800000, guid: bb0a31a91d73a7c4db240293d298c19c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TejasCasa2.001_Emissive
+    second: {fileID: 2800000, guid: 2c2fb45b719915446a618582b3f3e7a1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TejasCasa2.001_Metallic
+    second: {fileID: 2800000, guid: a3e78c8279c7702439b9a2e0ab3e909a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TejasCasa2.001_Normal
+    second: {fileID: 2800000, guid: 5ef92bc23f69df74d9229e765350e0a2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TejasCasa2.001_Roughness
+    second: {fileID: 2800000, guid: c0381715c16d54a4985fb45c41351e1c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TejasCasa2_BaseColor
+    second: {fileID: 2800000, guid: f086a06be7a41e4488150dd5a7fde1e0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TejasCasa2_Emissive
+    second: {fileID: 2800000, guid: 92aa06b3fd6f9514ca0502901ca9b5fc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TejasCasa2_Metallic
+    second: {fileID: 2800000, guid: 085295aab5338714ab9b94ac74ac1c14, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TejasCasa2_Normal
+    second: {fileID: 2800000, guid: be2128a9b98cff54abb15be8c5b26426, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Edificios4_TejasCasa2_Roughness
+    second: {fileID: 2800000, guid: a19a878b571684e4d9f34b047c86fc5e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: INOX_baseColor
+    second: {fileID: 2800000, guid: cf3e0e5506a0d7844aed528494ff0fff, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Murito_Murito_BaseColor
+    second: {fileID: 2800000, guid: 65a15dce7501108468332a263f126e78, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Murito_Murito_Emissive
+    second: {fileID: 2800000, guid: 2496a22921cde4b4bb80ddf08a1e5db9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Murito_Murito_Metallic
+    second: {fileID: 2800000, guid: 34a5c9dfe60ab37468e87d2ccf22b6d5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Murito_Murito_Normal
+    second: {fileID: 2800000, guid: d596d20467fa33a4fb988221a567bf69, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Murito_Murito_Roughness
+    second: {fileID: 2800000, guid: 1cef85469840e3b49b5dae684ab30a7c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: SimplygonCastMaterial.012_baseColor
+    second: {fileID: 2800000, guid: 09cab20323e98f64aa13aff792254e47, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: SimplygonCastMaterial.012_normal
+    second: {fileID: 2800000, guid: 37ef51fafff18b3419f3616a17cc45f8, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Slide 16_9 - 1
+    second: {fileID: 2800000, guid: 7b331468b6a14c540a107713f57c3b57, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Slide 16_9 - 2
+    second: {fileID: 2800000, guid: e70fd28991a807e4a80d1cd44ce81b5a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: TexturasEntorno_Calle_BaseColor
+    second: {fileID: 2800000, guid: 7dae55015dbda43439af40bcbd0a5882, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: TexturasEntorno_Calle_Emissive
+    second: {fileID: 2800000, guid: ab6e57f9b08aec041b672a263fe2d540, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: TexturasEntorno_Calle_Metallic
+    second: {fileID: 2800000, guid: 701fd7bd4ef4647419364486294f12a1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: TexturasEntorno_Calle_Normal
+    second: {fileID: 2800000, guid: 9010538d1d146be4b81fb6860204fc17, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: TexturasEntorno_Calle_Roughness
+    second: {fileID: 2800000, guid: 1b232eee344e58a4d8147d73e21b1fd2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: blackMetal
+    second: {fileID: 2800000, guid: 67f17e5d84337f94aa7d3c808d67dc9d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: softboxLight
+    second: {fileID: 2800000, guid: 3a26e819fdbfe854295ef9ac649cfbd5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: supportArm
+    second: {fileID: 2800000, guid: 90ab9eebd6be1234f94741d1ccbac4e9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: supportWheel
+    second: {fileID: 2800000, guid: 2c49875dde47e7a42885fcfca739e8c1, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -33,7 +1773,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.7
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -88,7 +1828,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 0.0069999998
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
