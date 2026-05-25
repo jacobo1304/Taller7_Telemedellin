@@ -30,10 +30,36 @@ public class CinematicManager : MonoBehaviour
     [Header("Events")]
     [SerializeField] private IntEvent onCinematicChanged;
 
+    [Header("Background Music")]
+    [Tooltip("AudioSource de la música de fondo que debe sonar DURANTE las cinemáticas (excepto en índices de excepción).")]
+    [SerializeField] private AudioSource backgroundMusicSource;
+
+    [Tooltip("Índices de cinemáticas en las que la música de fondo debe estar en pausa (por ejemplo: intro y cierre).")]
+    [SerializeField] private int[] backgroundMusicPausedCinematicIndices = Array.Empty<int>();
+
+    [Tooltip("Si está activo, la música de fondo se pausa cuando NO hay una cinemática reproduciéndose (típicamente durante interactions/preguntas).")]
+    [SerializeField] private bool pauseBackgroundMusicWhenNoCinematicPlaying = true;
+
     [SerializeField] bool debugLogs = false;    
     private int currentIndex = -1;
 
+    private bool backgroundMusicManuallyPaused;
+    private bool backgroundMusicInteractionPaused;
+    private bool lastDesiredBackgroundMusicState;
+
+    private readonly Dictionary<PlayableDirector, int> directorToIndex = new Dictionary<PlayableDirector, int>();
+    private bool directorEventsHooked;
+
     public int CurrentIndex => currentIndex;
+
+    public bool IsCurrentCinematicPlaying
+    {
+        get
+        {
+            var entry = GetCurrent();
+            return entry != null && entry.director != null && entry.director.state == PlayState.Playing;
+        }
+    }
 
     private void Start()
     {
@@ -46,12 +72,30 @@ public class CinematicManager : MonoBehaviour
             return;
         }
 
+        // Default: por especificación, la intro (0) y el cierre (último) son excepciones.
+        if (backgroundMusicPausedCinematicIndices == null || backgroundMusicPausedCinematicIndices.Length == 0)
+        {
+            backgroundMusicPausedCinematicIndices = cinematics.Count <= 1
+                ? new[] { 0 }
+                : new[] { 0, cinematics.Count - 1 };
+        }
+
+        RebuildDirectorIndex();
+        HookDirectorEvents();
+
         SetCurrentIndex(Mathf.Clamp(startIndex, 0, cinematics.Count - 1), false);
+
+        UpdateBackgroundMusicState(forceApply: true);
 
         if (autoPlayOnStart)
         {
             PlayCurrent();
         }
+    }
+
+    private void OnDestroy()
+    {
+        UnhookDirectorEvents();
     }
 
     public void PlayCurrent()
@@ -72,6 +116,11 @@ public class CinematicManager : MonoBehaviour
             Debug.Log($"{nameof(CinematicManager)}: Playing current director={(entry.director == null ? "null" : entry.director.name)}", this);
         }
         entry.director?.Play();
+
+        // Volver de interaction: al iniciar cinemática se limpia la pausa por interacción.
+        backgroundMusicInteractionPaused = false;
+
+        UpdateBackgroundMusicState(forceApply: true);
     }
 
     public void ReplayCurrent()
@@ -106,6 +155,10 @@ public class CinematicManager : MonoBehaviour
         entry.director.time = 0d;
         entry.director.Evaluate();
         entry.director.Play();
+
+        backgroundMusicInteractionPaused = false;
+
+        UpdateBackgroundMusicState(forceApply: true);
     }
 
     public void StopCurrent()
@@ -122,6 +175,8 @@ public class CinematicManager : MonoBehaviour
         {
             entry.director.gameObject.SetActive(false);
         }
+
+        UpdateBackgroundMusicState(forceApply: true);
     }
 
     public void StopAll()
@@ -142,6 +197,8 @@ public class CinematicManager : MonoBehaviour
                 SetCameraPriority(entry.virtualCamera, inactiveCameraPriority);
             }
         }
+
+        UpdateBackgroundMusicState(forceApply: true);
     }
 
     public void PlayNext()
@@ -304,7 +361,212 @@ public class CinematicManager : MonoBehaviour
                 Debug.Log($"{nameof(CinematicManager)}: Play director={(current.director == null ? "null" : current.director.name)} at index={currentIndex}", this);
             }
             current.director?.Play();
+
+            backgroundMusicInteractionPaused = false;
         }
+
+        UpdateBackgroundMusicState(forceApply: true);
+    }
+
+    public void PauseBackgroundMusic()
+    {
+        backgroundMusicManuallyPaused = true;
+        UpdateBackgroundMusicState(forceApply: true);
+    }
+
+    public void ResumeBackgroundMusic()
+    {
+        backgroundMusicManuallyPaused = false;
+        UpdateBackgroundMusicState(forceApply: true);
+    }
+
+    // Helpers para enganchar en UnityEvents cuando entras/sales de una pregunta/interaction.
+    public void OnInteractionStarted()
+    {
+        backgroundMusicInteractionPaused = true;
+        UpdateBackgroundMusicState(forceApply: true);
+    }
+
+    public void OnInteractionEnded()
+    {
+        backgroundMusicInteractionPaused = false;
+        UpdateBackgroundMusicState(forceApply: true);
+    }
+
+    private void UpdateBackgroundMusicState(bool forceApply)
+    {
+        if (backgroundMusicSource == null)
+        {
+            return;
+        }
+
+        bool cinematicPlaying = IsCurrentCinematicPlaying;
+        bool isExceptionIndex = IsCurrentIndexBackgroundMusicException();
+
+        bool allowOutsideCinematic = !pauseBackgroundMusicWhenNoCinematicPlaying;
+
+        bool shouldPlay = !backgroundMusicManuallyPaused
+            && !backgroundMusicInteractionPaused
+            && !isExceptionIndex
+            && (cinematicPlaying || allowOutsideCinematic);
+
+        if (!forceApply && shouldPlay == lastDesiredBackgroundMusicState)
+        {
+            return;
+        }
+
+        lastDesiredBackgroundMusicState = shouldPlay;
+
+        if (shouldPlay)
+        {
+            // UnPause mantiene el tiempo si venía pausada.
+            if (!backgroundMusicSource.isPlaying)
+            {
+                if (backgroundMusicSource.timeSamples > 0)
+                {
+                    backgroundMusicSource.UnPause();
+                }
+                else
+                {
+                    backgroundMusicSource.Play();
+                }
+            }
+
+            if (debugLogs)
+            {
+                Debug.Log($"{nameof(CinematicManager)}: BackgroundMusic -> PLAY (index={currentIndex}, cinematicPlaying={cinematicPlaying}, exception={isExceptionIndex}, manualPause={backgroundMusicManuallyPaused}, interactionPause={backgroundMusicInteractionPaused})", this);
+            }
+        }
+        else
+        {
+            if (backgroundMusicSource.isPlaying)
+            {
+                backgroundMusicSource.Pause();
+            }
+
+            if (debugLogs)
+            {
+                Debug.Log($"{nameof(CinematicManager)}: BackgroundMusic -> PAUSE (index={currentIndex}, cinematicPlaying={cinematicPlaying}, exception={isExceptionIndex}, manualPause={backgroundMusicManuallyPaused}, interactionPause={backgroundMusicInteractionPaused})", this);
+            }
+        }
+    }
+
+    private void RebuildDirectorIndex()
+    {
+        directorToIndex.Clear();
+
+        for (int i = 0; i < cinematics.Count; i++)
+        {
+            var entry = cinematics[i];
+            if (entry == null || entry.director == null)
+            {
+                continue;
+            }
+
+            // Si se repite un director por error, nos quedamos con el primer índice.
+            if (!directorToIndex.ContainsKey(entry.director))
+            {
+                directorToIndex.Add(entry.director, i);
+            }
+        }
+    }
+
+    private void HookDirectorEvents()
+    {
+        if (directorEventsHooked)
+        {
+            return;
+        }
+
+        foreach (var kvp in directorToIndex)
+        {
+            var director = kvp.Key;
+            if (director == null)
+            {
+                continue;
+            }
+
+            director.played += OnDirectorPlayed;
+            director.paused += OnDirectorPaused;
+            director.stopped += OnDirectorStopped;
+        }
+
+        directorEventsHooked = true;
+    }
+
+    private void UnhookDirectorEvents()
+    {
+        if (!directorEventsHooked)
+        {
+            return;
+        }
+
+        foreach (var kvp in directorToIndex)
+        {
+            var director = kvp.Key;
+            if (director == null)
+            {
+                continue;
+            }
+
+            director.played -= OnDirectorPlayed;
+            director.paused -= OnDirectorPaused;
+            director.stopped -= OnDirectorStopped;
+        }
+
+        directorEventsHooked = false;
+    }
+
+    private void OnDirectorPlayed(PlayableDirector director)
+    {
+        if (debugLogs)
+        {
+            int idx = director != null && directorToIndex.TryGetValue(director, out int found) ? found : -1;
+            Debug.Log($"{nameof(CinematicManager)}: Director played. index={idx}, currentIndex={currentIndex}", this);
+        }
+
+        UpdateBackgroundMusicState(forceApply: true);
+    }
+
+    private void OnDirectorPaused(PlayableDirector director)
+    {
+        if (debugLogs)
+        {
+            int idx = director != null && directorToIndex.TryGetValue(director, out int found) ? found : -1;
+            Debug.Log($"{nameof(CinematicManager)}: Director paused. index={idx}, currentIndex={currentIndex}", this);
+        }
+
+        UpdateBackgroundMusicState(forceApply: true);
+    }
+
+    private void OnDirectorStopped(PlayableDirector director)
+    {
+        if (debugLogs)
+        {
+            int idx = director != null && directorToIndex.TryGetValue(director, out int found) ? found : -1;
+            Debug.Log($"{nameof(CinematicManager)}: Director stopped. index={idx}, currentIndex={currentIndex}", this);
+        }
+
+        UpdateBackgroundMusicState(forceApply: true);
+    }
+
+    private bool IsCurrentIndexBackgroundMusicException()
+    {
+        if (backgroundMusicPausedCinematicIndices == null || backgroundMusicPausedCinematicIndices.Length == 0)
+        {
+            return false;
+        }
+
+        int index = currentIndex;
+        for (int i = 0; i < backgroundMusicPausedCinematicIndices.Length; i++)
+        {
+            if (backgroundMusicPausedCinematicIndices[i] == index)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void ApplyCameraPriority(int activeIndex)

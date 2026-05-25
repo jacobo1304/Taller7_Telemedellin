@@ -13,6 +13,13 @@ public class TimerManager : MonoBehaviour
     [Header("Answer System")]
     public AnswerHandler answerHandler;
 
+    [Header("Interaction")]
+    [Tooltip("Fallback usado si AnswerHandler aún no tiene interacción actual (por orden de ejecución o configuración).")]
+    [SerializeField] private InteractionType fallbackInteractionType = InteractionType.Titulares;
+
+    [Tooltip("Si no hay interacción actual, setea AnswerHandler.SetCurrentInteraction(fallbackInteractionType) al iniciar la pregunta.")]
+    [SerializeField] private bool setAnswerHandlerCurrentInteractionOnQuestionStart = true;
+
     [Header("Feedback")]
     [SerializeField] private TimerFeedbackController feedbackController;
 
@@ -80,6 +87,18 @@ public class TimerManager : MonoBehaviour
         timerRunning = true;
         answerSubmitted = false;
 
+        InteractionType resolvedType = fallbackInteractionType;
+        if (answerHandler != null && answerHandler.HasCurrentInteraction)
+        {
+            resolvedType = answerHandler.CurrentInteractionType;
+        }
+        else if (answerHandler != null && setAnswerHandlerCurrentInteractionOnQuestionStart)
+        {
+            answerHandler.SetCurrentInteraction(resolvedType);
+        }
+
+        feedbackController?.SetCurrentInteractionType(resolvedType);
+
         feedbackController?.OnTimerStart(startTime);
 
         UpdateTimerText();
@@ -99,18 +118,25 @@ public class TimerManager : MonoBehaviour
             return;
         }
 
-        if (!answerHandler
-            .HasCurrentInteraction)
+        InteractionType currentType = fallbackInteractionType;
+        if (answerHandler.HasCurrentInteraction)
         {
-            Debug.LogWarning(
-                "No hay interacción actual."
-            );
-            return;
+            currentType = answerHandler.CurrentInteractionType;
         }
-
-        InteractionType currentType =
-            answerHandler
-                .CurrentInteractionType;
+        else
+        {
+            // Si el flujo no alcanzó a setear la interacción actual, usamos fallback.
+            if (setAnswerHandlerCurrentInteractionOnQuestionStart)
+            {
+                answerHandler.SetCurrentInteraction(currentType);
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "No hay interacción actual. Usando fallbackInteractionType."
+                );
+            }
+        }
 
         Debug.Log(
             $"Tiempo agotado | " +

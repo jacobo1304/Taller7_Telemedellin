@@ -119,6 +119,11 @@ public class RatingsUI : MonoBehaviour
             playerRatingText.text = value.ToString();
         }
 
+        if (titleText != null)
+        {
+            titleText.text = value.ToString();
+        }
+
         UpdatePlayerTextPosition(value);
     }
 
@@ -127,11 +132,6 @@ public class RatingsUI : MonoBehaviour
         int[] zeros = new int[3];
         SetBars(0, zeros);
         SetPlayerNumber(0);
-
-        if (titleText != null)
-        {
-            titleText.text = string.Empty;
-        }
     }
 
     private void UpdatePlayerTextPosition(int value)

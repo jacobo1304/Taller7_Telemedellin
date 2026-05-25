@@ -14,8 +14,11 @@ public class TimerFeedbackController : MonoBehaviour
 
     [Header("Question Music")]
     [SerializeField] private AudioSource questionMusicSource;
-    [SerializeField] private float minPitch = 1f;
-    [SerializeField] private float maxPitch = 1.5f;
+    [Tooltip("Clip fijo de música que debe sonar durante la pregunta (su duración debe coincidir con el tiempo de la pregunta).")]
+    [SerializeField] private AudioClip questionMusicClip;
+    [Tooltip("Volumen para la música de la pregunta (0-1).")]
+    [Range(0f, 1f)]
+    [SerializeField] private float questionMusicVolume = 1f;
 
     [Header("Clock Animation")]
     [SerializeField] private Animator clockAnimator;
@@ -32,28 +35,91 @@ public class TimerFeedbackController : MonoBehaviour
     private bool clockTriggered = false;
     private bool[] firedCues = new bool[0];
 
+    private InteractionType currentInteractionType = InteractionType.Titulares;
+    private bool hasCurrentInteractionType;
+
+    private void Awake()
+    {
+        if (questionMusicSource == null)
+        {
+            questionMusicSource = GetComponent<AudioSource>();
+        }
+    }
+
+    public void SetCurrentInteractionType(InteractionType interactionType)
+    {
+        currentInteractionType = interactionType;
+        hasCurrentInteractionType = true;
+
+        if (debugLogs)
+        {
+            Debug.Log($"{nameof(TimerFeedbackController)}: CurrentInteractionType={currentInteractionType}", this);
+        }
+    }
+
     public void OnTimerStart(float startTime)
     {
         clockTriggered = false;
         PrepareCueState();
-        UpdatePitch(startTime, startTime);
+
+        // Reset any previous audio.
+        StopQuestionMusic();
+
+        if (cueAudioSource != null)
+        {
+            cueAudioSource.Stop();
+        }
+
+        TryStartQuestionMusic();
+
+        if (debugLogs)
+        {
+            Debug.Log($"{nameof(TimerFeedbackController)}: Timer started. startTime={startTime:F2}s interaction={(hasCurrentInteractionType ? currentInteractionType.ToString() : "(not-set)")}", this);
+        }
     }
 
     public void OnTick(float remaining, float startTime)
     {
-        UpdatePitch(remaining, startTime);
         TryTriggerClock(remaining);
         TryTriggerCues(remaining);
     }
 
     public void OnTimeout()
     {
-        UpdatePitch(0f, 1f);
+        StopQuestionMusic();
+
+        if (debugLogs)
+        {
+            Debug.Log($"{nameof(TimerFeedbackController)}: Timeout.", this);
+        }
     }
 
     public void OnTimerStopped()
     {
-        UpdatePitch(1f, 1f);
+        StopQuestionMusic();
+
+        if (cueAudioSource != null)
+        {
+            cueAudioSource.Stop();
+        }
+
+        if (debugLogs)
+        {
+            Debug.Log($"{nameof(TimerFeedbackController)}: Timer stopped.", this);
+        }
+    }
+
+    public void StopQuestionMusic()
+    {
+        if (questionMusicSource == null)
+        {
+            return;
+        }
+
+        if (questionMusicSource.isPlaying)
+        {
+            questionMusicSource.Stop();
+        }
     }
 
     private void PrepareCueState()
@@ -67,18 +133,7 @@ public class TimerFeedbackController : MonoBehaviour
         firedCues = new bool[cues.Length];
     }
 
-    private void UpdatePitch(float remaining, float startTime)
-    {
-        if (questionMusicSource == null)
-        {
-            return;
-        }
 
-        float safeStart = Mathf.Max(0.01f, startTime);
-        float t = Mathf.Clamp01(1f - Mathf.Clamp01(remaining / safeStart));
-        float pitch = Mathf.Lerp(minPitch, maxPitch, t);
-        questionMusicSource.pitch = pitch;
-    }
 
     private void TryTriggerClock(float remaining)
     {
@@ -101,6 +156,12 @@ public class TimerFeedbackController : MonoBehaviour
 
     private void TryTriggerCues(float remaining)
     {
+        // En la interacción de Sonidos NO reproducimos cues durante la pregunta.
+        if (currentInteractionType == InteractionType.Sonidos)
+        {
+            return;
+        }
+
         if (cues == null || cues.Length == 0 || cueAudioSource == null)
         {
             return;
@@ -151,6 +212,36 @@ public class TimerFeedbackController : MonoBehaviour
         if (debugLogs)
         {
             Debug.Log($"{nameof(TimerFeedbackController)}: Playing cue '{clip.name}' at {cue.secondsRemaining:F2}s.");
+        }
+    }
+
+    private void TryStartQuestionMusic()
+    {
+        // En la interacción de Sonidos NO suena la música de la pregunta.
+        if (currentInteractionType == InteractionType.Sonidos)
+        {
+            return;
+        }
+
+        if (questionMusicSource == null || questionMusicClip == null)
+        {
+            if (debugLogs)
+            {
+                Debug.LogWarning($"{nameof(TimerFeedbackController)}: Missing questionMusicSource or questionMusicClip.", this);
+            }
+            return;
+        }
+
+        questionMusicSource.playOnAwake = false;
+        questionMusicSource.loop = false;
+        questionMusicSource.volume = questionMusicVolume;
+        questionMusicSource.clip = questionMusicClip;
+        questionMusicSource.time = 0f;
+        questionMusicSource.Play();
+
+        if (debugLogs)
+        {
+            Debug.Log($"{nameof(TimerFeedbackController)}: Playing question music '{questionMusicClip.name}'.", this);
         }
     }
 }
