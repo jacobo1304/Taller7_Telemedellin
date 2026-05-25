@@ -153,6 +153,12 @@ public class CustomPoseDetector : MonoBehaviour
 
         if (!hasFrame)
         {
+            // Si el stream de landmarks se detiene, aplicamos la misma lógica de gracia/reset
+            // para evitar que un hold quede "congelado" por tiempo indefinido.
+            if (anyWasMatched || lastMatchedProgress > 0f)
+            {
+                HandleMatchLossWithGrace();
+            }
             return;
         }
 
@@ -374,6 +380,14 @@ public class CustomPoseDetector : MonoBehaviour
         }
 
         bool keepMatchByGrace = !currentAnyMatched && IsWithinMatchLossGrace();
+
+        // Si NO hay match y ya se acabó la gracia, hay que resetear los holds acumulados.
+        // (Antes solo se limpiaba la UI, pero el hold quedaba guardado y podía reanudarse minutos después).
+        if (!currentAnyMatched && !keepMatchByGrace)
+        {
+            ResetHoldTimersOnly();
+        }
+
         bool effectiveAnyMatched = currentAnyMatched || keepMatchByGrace;
 
         if (currentAnyMatched && highestProgress > 0f && activeOptionIndex >= 0)
@@ -431,6 +445,19 @@ public class CustomPoseDetector : MonoBehaviour
             onAllPosesLost?.Invoke();
             anyWasMatched = false;
         }
+    }
+
+    private void ResetHoldTimersOnly()
+    {
+        for (int i = 0; i < holdTimers.Length; i++)
+        {
+            holdTimers[i] = 0f;
+            holdEventsFired[i] = false;
+        }
+
+        lastStrictMatchTime = float.NegativeInfinity;
+        lastMatchedOptionIndex = -1;
+        lastMatchedProgress = 0f;
     }
 
     private void ResetAllHolds()
