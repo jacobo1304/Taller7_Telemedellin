@@ -67,11 +67,10 @@ public class FinalSceneCinematic : MonoBehaviour
 
     private void OnDisable()
     {
-        // Si la cinemática final se apaga (por ejemplo al terminar el Director), aseguramos que su audio NO quede en loop.
-        if (soundInteraction != null)
-        {
-            soundInteraction.StopPlayback();
-        }
+        // Importante: NO cortar el audio acá.
+        // El Timeline/Director suele desactivar este componente al finalizar, y si paramos aquí
+        // también se corta el `finalVoiceClip` justo cuando debería escucharse.
+        // Si se requiere un corte explícito, usar el Signal que llama `StopFinalSceneAudio()`.
     }
 
     // Llamar desde Signal al final del Timeline si se requiere un corte explícito.
@@ -163,6 +162,19 @@ public class FinalSceneCinematic : MonoBehaviour
             finalVoiceClip,
             finalAmbienceClip
         );
+
+        if (debugLogs)
+        {
+            if (finalVoiceClip == null)
+            {
+                Debug.LogWarning($"{nameof(FinalSceneCinematic)}: finalVoiceClip is NULL. Voice will not play unless VoiceAudioSource already has a clip.", this);
+            }
+
+            if (soundInteraction.VoiceAudioSource == null)
+            {
+                Debug.LogWarning($"{nameof(FinalSceneCinematic)}: soundInteraction.VoiceAudioSource is NULL (not assigned in inspector?)", this);
+            }
+        }
 
         if (audioMeterUI != null && soundInteraction.VoiceAudioSource != null)
         {

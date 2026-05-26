@@ -26,13 +26,3 @@ MonoBehaviour:
     customJointB: 13
     customJointC: 15
     targetAngle: 180
-  - jointType: 3
-    customJointA: 11
-    customJointB: 13
-    customJointC: 15
-    targetAngle: 30
-  - jointType: 1
-    customJointA: 11
-    customJointB: 13
-    customJointC: 15
-    targetAngle: 90

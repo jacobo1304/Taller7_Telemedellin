@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poseName: 04
   poseImage: {fileID: -952681528, guid: b363ddf223844a7409221f78d77df1e1, type: 3}
-  marginDegrees: 39.9
+  marginDegrees: 28
   conditions:
   - jointType: 0
     customJointA: 11
